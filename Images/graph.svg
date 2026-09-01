@@ -1,0 +1,61 @@
+<svg width="683" height="245" viewBox="0 0 683 245" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Light lavender chart background -->
+  <rect width="683" height="245" rx="15" fill="#F8F6FF"/>
+
+  <!-- Filled area -->
+  <path
+    d="M0 198
+       C45 190 80 169 120 145
+       C158 122 195 111 230 119
+       C264 127 285 143 320 137
+       C357 131 391 103 431 96
+       C466 90 491 104 518 118
+       C546 132 574 132 606 119
+       C636 107 659 91 683 94
+       L683 245
+       L0 245
+       Z"
+    fill="url(#paint0_linear)"
+  />
+
+  <!-- Purple growth line -->
+  <path
+    d="M0 198
+       C45 190 80 169 120 145
+       C158 122 195 111 230 119
+       C264 127 285 143 320 137
+       C357 131 391 103 431 96
+       C466 90 491 104 518 118
+       C546 132 574 132 606 119
+       C636 107 659 91 683 94"
+    stroke="#7650CE"
+    stroke-width="5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <defs>
+    <linearGradient
+      id="paint0_linear"
+      x1="341.5"
+      y1="90"
+      x2="341.5"
+      y2="245"
+      gradientUnits="userSpaceOnUse"
+    >
+      <!-- Strong lavender directly underneath the line -->
+      <stop offset="0" stop-color="#BBA7EC" stop-opacity="0.70"/>
+
+      <!-- Gradually fading -->
+      <stop offset="0.45" stop-color="#D7CCF2" stop-opacity="0.42"/>
+
+      <!-- Almost completely faded -->
+      <stop offset="0.78" stop-color="#EEEAF9" stop-opacity="0.18"/>
+
+      <!-- Fully transparent at bottom -->
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+</svg>
