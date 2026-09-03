@@ -50,14 +50,14 @@ button {
 button:hover {
   transform: translateY(-0.0625rem);
 }
-button:active,
+button:not(.mobile-menu-btn):not(.footer-accordion-btn):active,
 .styled-link:active {
   background: var(--violet);
   border-color: var(--violet);
   color: var(--white);
   transform: translateY(0.0625rem);
 }
-button:focus-visible,
+button:not(.mobile-menu-btn):not(.footer-accordion-btn):focus-visible,
 .styled-link:focus-visible,
 .nav-links a:focus-visible {
   outline: 3px solid var(--lav);
@@ -144,6 +144,9 @@ nav {
 .mobile-menu-btn:active {
   outline: none !important;
   box-shadow: none !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  transform: none !important;
   -webkit-tap-highlight-color: transparent !important;
 }
 .mobile-menu-btn span {
@@ -1746,6 +1749,10 @@ nav {
 .footer-accordion-btn:active {
   outline: none !important;
   box-shadow: none !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+  transform: none !important;
   -webkit-tap-highlight-color: transparent !important;
 }
 .footer-accordion-btn h3 {
@@ -2421,7 +2428,7 @@ nav {
   }
 
   .footer-column.active {
-    background: rgba(109, 40, 217, 0.025);
+    background: transparent !important;
   }
 
   .footer-accordion-btn {
@@ -2431,6 +2438,9 @@ nav {
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    background: transparent !important;
+    border: none !important;
+    transform: none !important;
     -webkit-tap-highlight-color: transparent !important;
     -webkit-touch-callout: none !important;
     user-select: none !important;
@@ -2444,6 +2454,10 @@ nav {
   .footer-accordion-btn:active {
     outline: none !important;
     box-shadow: none !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    color: inherit !important;
+    transform: none !important;
     -webkit-tap-highlight-color: transparent !important;
   }
 
@@ -2452,14 +2466,16 @@ nav {
     font-size: 0.925rem;
     font-weight: 800;
     letter-spacing: 0.04em;
-    color: var(--ink);
-    transition: color 0.2s ease;
+    color: var(--ink) !important;
+    transition: none;
   }
 
+  /* No purple color change on the heading when clicked or active */
   .footer-column.active .footer-accordion-btn h3 {
-    color: var(--violet);
+    color: var(--ink) !important;
   }
 
+  /* Clean neutral icon circle - NO purple highlight */
   .accordion-icon {
     display: flex;
     align-items: center;
@@ -2467,20 +2483,20 @@ nav {
     width: 1.85rem;
     height: 1.85rem;
     border-radius: 50%;
-    background: #f3e8ff;
-    border: 1px solid rgba(109, 40, 217, 0.15);
+    background: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
     font-size: 1.15rem;
     font-weight: 700;
-    color: var(--violet);
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color: #475569 !important;
+    transition: transform 0.3s ease;
   }
 
   .footer-column.active .accordion-icon {
     transform: rotate(135deg);
-    background: var(--violet);
-    color: #fff;
-    border-color: var(--violet);
-    box-shadow: 0 0 14px rgba(109, 40, 217, 0.4);
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: none !important;
   }
 
   .footer-column-content {
