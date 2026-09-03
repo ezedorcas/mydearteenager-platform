@@ -642,11 +642,12 @@ input.signup-text-input:focus {
 /* Checkbox Row - Checkbox on the END LEFT, words LONG on a single line matching sign-up-form.png */
 .signup-checkbox-row {
   display: flex !important;
-  align-items: center !important;
+  align-items: flex-start !important; /* Neatly aligns checkbox with top of first line */
   justify-content: flex-start !important; /* Checkbox on the END LEFT */
-  gap: 12px !important;
-  margin-top: 1.6rem !important;
+  gap: 11px !important;
+  margin-top: 1.5rem !important;
   width: 100% !important;
+  max-width: 100% !important;
   padding-left: 2px !important;
   box-sizing: border-box !important;
 }
@@ -655,12 +656,12 @@ input[type="checkbox"].signup-custom-checkbox,
 .signup-custom-checkbox {
   all: unset !important;
   box-sizing: border-box !important;
-  width: 20px !important;
-  min-width: 20px !important;
-  max-width: 20px !important;
-  height: 20px !important;
-  min-height: 20px !important;
-  max-height: 20px !important;
+  width: 19px !important;
+  min-width: 19px !important;
+  max-width: 19px !important;
+  height: 19px !important;
+  min-height: 19px !important;
+  max-height: 19px !important;
   border: 1.5px solid #cbd5e1 !important;
   border-radius: 6px !important;
   background: #ffffff !important;
@@ -668,7 +669,7 @@ input[type="checkbox"].signup-custom-checkbox,
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  margin: 0 !important;
+  margin: 2.5px 0 0 0 !important; /* Aligns with the cap height of the first line of text */
   padding: 0 !important;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
   transition: all 0.2s ease !important;
@@ -699,15 +700,37 @@ input[type="checkbox"].signup-custom-checkbox:focus,
 }
 
 .signup-checkbox-label {
-  display: inline !important;
-  font-size: 0.92rem !important;
+  display: block !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+  font-size: 0.9rem !important;
   color: #475569 !important;
   font-weight: 500 !important;
   cursor: pointer !important;
-  line-height: 1.4 !important;
-  white-space: nowrap !important; /* Long single line, not short or wrapped */
+  line-height: 1.45 !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
   margin: 0 !important;
   letter-spacing: -0.01em !important;
+}
+
+/* On desktop screens where there is plenty of room, keep it on a single line */
+@media (min-width: 580px) {
+  .signup-checkbox-label {
+    white-space: nowrap !important;
+  }
+}
+
+/* On mobile screen sizes, wrap comfortably to the next line without overflowing */
+@media (max-width: 579px) {
+  .signup-checkbox-label {
+    white-space: normal !important;
+    font-size: 0.84rem !important;
+    line-height: 1.4 !important;
+  }
+  .signup-checkbox-row {
+    gap: 9px !important;
+  }
 }
 
 .signup-checkbox-label a {

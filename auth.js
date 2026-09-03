@@ -1435,54 +1435,13 @@ function AuthPage() {
                 <span className="notification-dot"></span>
               </button>
 
-              <div className="topbar-profile-wrapper">
-                <button
-                  type="button"
-                  className="topbar-profile-btn"
-                  onClick={() => setShowUserDropdown((prev) => !prev)}
-                  title="Account menu"
-                  aria-label="Account menu"
-                >
-                  <img
-                    className="profile-img-sm"
-                    src={account.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"}
-                    alt={account.name || "User"}
-                  />
-                  <span className="topbar-username">{account.name || "Daniel"}</span>
-                  <span className="topbar-profile-caret">⌄</span>
-                </button>
-
-                {showUserDropdown && (
-                  <div className="topbar-profile-dropdown">
-                    <div className="dropdown-user-header">
-                      <img
-                        className="dropdown-avatar-thumb"
-                        src={account.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"}
-                        alt={account.name || "User"}
-                      />
-                      <div className="dropdown-user-text">
-                        <strong>{account.name || "Daniel"}</strong>
-                        <small>{account.email}</small>
-                      </div>
-                    </div>
-                    <hr className="dropdown-divider" />
-                    <button
-                      type="button"
-                      className="dropdown-logout-btn"
-                      onClick={() => {
-                        setShowUserDropdown(false);
-                        logout();
-                      }}
-                    >
-                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                      </svg>
-                      <span>Log Out</span>
-                    </button>
-                  </div>
-                )}
+              <div className="topbar-profile">
+                <img
+                  className="profile-img-sm"
+                  src={account.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"}
+                  alt={account.name || "User"}
+                />
+                <span className="topbar-username">{account.name || "Daniel"}</span>
               </div>
             </div>
           </header>

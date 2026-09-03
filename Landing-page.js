@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileBtn.classList.toggle('active');
     });
 
-    navLinks.querySelectorAll('a').forEach(link => {
+    // Close drawer when clicking in-page section links
+    navLinks.querySelectorAll('a[href^="#"]').forEach(link => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('open');
         mobileBtn.classList.remove('active');
@@ -119,8 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Allow standard browser tab shortcuts (Ctrl/Cmd/Shift click)
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
+      const targetUrl = link.getAttribute('href') || 'auth.html';
       e.preventDefault();
-      const targetUrl = link.getAttribute('href');
 
       // Visual press animation on the clicked link
       link.classList.add('cta-btn-launching');
@@ -129,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.add('page-transition-exit');
 
       setTimeout(() => {
-        window.location.href = targetUrl;
-      }, 240);
+        window.location.assign(targetUrl);
+      }, 180);
     });
   });
 });
