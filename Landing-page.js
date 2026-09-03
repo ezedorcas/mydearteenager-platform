@@ -45,30 +45,92 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 3. Scroll-Triggered Fade & Slide-In Reveal Animations
+  // 3. Ultra-Smooth Bi-Directional Scroll Reveal Animations
   if ('IntersectionObserver' in window) {
+    let lastScrollY = window.scrollY;
+    let scrollDirection = 'down';
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        const currentScrollY = window.scrollY;
+        scrollDirection = currentScrollY < lastScrollY ? 'up' : 'down';
+        lastScrollY = currentScrollY;
+      },
+      { passive: true }
+    );
+
     const revealObserver = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach(entry => {
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target;
+
           if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
+            // Adapt entrance direction to match scroll motion
+            if (scrollDirection === 'up') {
+              el.classList.add('from-top');
+            } else {
+              el.classList.remove('from-top');
+            }
+            el.classList.add('is-visible');
+          } else {
+            // When an element leaves the viewport buffer, allow smooth re-reveal
+            const rect = entry.boundingClientRect;
+            if (rect.top > window.innerHeight + 50 || rect.bottom < -50) {
+              el.classList.remove('is-visible');
+            }
           }
         });
       },
       {
-        threshold: 0.1,
-        rootMargin: '0px 0px -40px 0px'
+        threshold: 0.05,
+        rootMargin: '50px 0px 50px 0px'
       }
     );
 
-    // Target elements across sections for smooth scroll entrance
+    // Target clean, non-nested content blocks to eliminate compound transform jitter
     const revealTargets = document.querySelectorAll(
-      '.greetings-box, .features-box, .discover-section, .build-section, .learning-loop-section, .progress-section, .opportunities-section, .parents-section, .final-section, .footer, .option, .competitions-grid, .socholarships-grid, .events-grid, .opportunity-hub-grid, .box-1, .box-2, .big-box, .parents-inner-box, .teen-inner-box'
+      '.features-box, ' +
+      '.discover-h3, .discover-box, ' +
+      '.build-box, .big-box, .box-1, .box-2, ' +
+      '.learning-loop-box, .curiosity-options .option, ' +
+      '.watch-yourself-box, .your-growth-box, ' +
+      '.lead-box, .opportunities-hub-box, .grid-box-2 > div, ' +
+      '.parents-inner-box, .teen-inner-box, ' +
+      '.final, .footer-inner'
     );
 
-    revealTargets.forEach(el => {
+    revealTargets.forEach((el) => {
       el.classList.add('reveal-on-scroll');
       revealObserver.observe(el);
     });
+
+    // Make hero section visible immediately so initial page load is seamless
+    const greetingsBox = document.querySelector('.greetings-box');
+    if (greetingsBox) {
+      greetingsBox.classList.add('reveal-on-scroll', 'is-visible');
+    }
   }
+
+  // 4. Smooth Page Transition for CTA Buttons leading to auth.html
+  const ctaLinks = document.querySelectorAll('a[href^="auth.html"]');
+  ctaLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      // Allow standard browser tab shortcuts (Ctrl/Cmd/Shift click)
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      e.preventDefault();
+      const targetUrl = link.getAttribute('href');
+
+      // Visual press animation on the clicked link
+      link.classList.add('cta-btn-launching');
+
+      // Trigger smooth exit transition on page body
+      document.body.classList.add('page-transition-exit');
+
+      setTimeout(() => {
+        window.location.href = targetUrl;
+      }, 240);
+    });
+  });
 });

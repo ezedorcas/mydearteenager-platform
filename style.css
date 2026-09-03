@@ -1920,13 +1920,14 @@ nav {
   }
 
   .orbit {
-    width: min(26rem, 80vw);
+    width: min(18rem, 58vw);
     display: block !important;
   }
 
   .phone-image img {
-    width: min(38rem, 85vw);
-    max-height: 420px;
+    width: min(36rem, 95vw);
+    max-height: none;
+    transform: scale(1.16);
     position: relative;
     z-index: 1;
   }
@@ -2153,13 +2154,14 @@ nav {
   }
 
   .orbit {
-    width: min(20rem, 78vw);
+    width: min(14.5rem, 52vw);
     display: block !important;
   }
 
   .phone-image img {
-    width: min(100%, 28rem);
-    max-height: 340px;
+    width: min(30rem, 96vw);
+    max-height: none;
+    transform: scale(1.2);
     position: relative;
     z-index: 1;
   }
@@ -2513,13 +2515,14 @@ nav {
   }
 
   .orbit {
-    width: min(16rem, 76vw);
+    width: min(12.5rem, 48vw);
     display: block !important;
   }
 
   .phone-image img {
-    width: min(100%, 22rem);
-    max-height: 270px;
+    width: min(26rem, 100vw);
+    max-height: none;
+    transform: scale(1.24);
     position: relative;
     z-index: 1;
   }
@@ -2592,15 +2595,22 @@ nav {
 /* Base Scroll Reveal States */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(16px);
+  transition: opacity 0.55s cubic-bezier(0.25, 1, 0.5, 1),
+              transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Natural downward float when scrolling up */
+.reveal-on-scroll.from-top {
+  transform: translateY(-16px);
 }
 
 .reveal-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 /* Floating Hero Mockup Animation */
@@ -2711,4 +2721,21 @@ nav {
   .final {
     animation: none !important;
   }
+}
+
+/* Smooth Page Transition Animation for Landing Page CTAs */
+body.page-transition-exit {
+  opacity: 0;
+  transform: scale(0.985) translateY(-6px);
+  filter: blur(1.5px);
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.cta-btn-launching {
+  transform: scale(0.95) !important;
+  box-shadow: 0 0 24px rgba(109, 40, 217, 0.6) !important;
+  transition: transform 0.16s ease, box-shadow 0.16s ease !important;
 }

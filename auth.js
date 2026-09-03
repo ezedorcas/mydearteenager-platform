@@ -637,6 +637,8 @@ function mergeWithCatalog(savedCourses) {
 function getFreshCourses() {
   return academyCourses.map((course) => ({
     ...course,
+    enrolled: false,
+    status: "not-started",
     curriculum: course.curriculum.map((lesson) => ({
       ...lesson,
       done: false,
@@ -744,11 +746,42 @@ function saveUserData(email, data) {
 
 function AuthPage() {
   const [account, setAccount] = useState(() => readStorage(ACCOUNT_KEY, null));
-  const [view, setView] = useState("login");
+  const [view, setView] = useState(() => {
+    const hash = (window.location.hash || "").replace("#", "").toLowerCase();
+    if (hash === "academy" || hash === "home" || hash === "learning" || hash === "course") {
+      return "dashboard";
+    }
+    if (hash === "login") return "login";
+    if (hash === "signup" || hash === "register") return "signup";
+    return "welcome";
+  });
+  const [isViewTransitioning, setIsViewTransitioning] = useState(false);
+  const [transitionDirection, setTransitionDirection] = useState("forward");
+
+  function transitionToView(targetView, direction = "forward") {
+    if (view === targetView) return;
+    setIsViewTransitioning(true);
+    setTransitionDirection(direction);
+    setTimeout(() => {
+      setView(targetView);
+      setNotice("");
+      setIsViewTransitioning(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 220);
+  }
+
+  const [userRole, setUserRole] = useState("teenager"); // "teenager" | "parent"
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [notice, setNotice] = useState("");
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [rememberMe, setRememberMe] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", password: "", confirmPassword: "", agreeTerms: false });
   const [project, setProject] = useState({ title: "", skill: "", description: "" });
-  const [dashboardView, setDashboardView] = useState("home"); // "home" | "academy" | "learning" | "course"
+  const [dashboardView, setDashboardView] = useState(() => {
+    const hash = (window.location.hash || "").replace("#", "").toLowerCase();
+    if (hash === "academy" || hash === "learning" || hash === "course") return hash;
+    return "home";
+  }); // "home" | "academy" | "learning" | "course"
   const [academyCategory, setAcademyCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [showUserDropdown, setShowUserDropdown] = useState(false);
@@ -938,18 +971,28 @@ function AuthPage() {
     return () => clearInterval(timer);
   }, [dashboardView, isVideoPlaying, activeCourseId, activeLessonIndex]);
 
-  // Sync hash if URL has #academy, #home, #learning, or #course
+  // Sync hash if URL has #academy, #home, #learning, #course, #signup, #login, or #welcome
   useEffect(() => {
     const handleHash = () => {
-      const hash = window.location.hash.replace("#", "");
+      const hash = (window.location.hash || "").replace("#", "").toLowerCase();
       if (hash === "academy") {
+        setView("dashboard");
         setDashboardView("academy");
       } else if (hash === "home") {
+        setView("dashboard");
         setDashboardView("home");
       } else if (hash === "learning" || hash === "mylearning") {
+        setView("dashboard");
         setDashboardView("learning");
       } else if (hash === "course") {
+        setView("dashboard");
         setDashboardView("course");
+      } else if (hash === "signup" || hash === "register") {
+        setView("signup");
+      } else if (hash === "login") {
+        setView("login");
+      } else if (hash === "welcome") {
+        setView("welcome");
       }
     };
     handleHash();
@@ -958,18 +1001,38 @@ function AuthPage() {
   }, []);
 
   function updateForm(event) {
-    setForm({ ...form, [event.target.name]: event.target.value });
+    const { name, value, type, checked } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value
+    }));
     setNotice("");
   }
 
   function submitAuth(event) {
-    event.preventDefault();
+    if (event && event.preventDefault) event.preventDefault();
     const cleanEmail = (form.email || "").trim().toLowerCase();
     const usersDb = readStorage(USERS_DB_KEY, [defaultAccount]);
 
     if (view === "signup") {
+      if (!form.name.trim()) {
+        setNotice("Please enter your full name.");
+        return;
+      }
+      if (!cleanEmail) {
+        setNotice("Please enter your email address.");
+        return;
+      }
       if (form.password.length < 6) {
         setNotice("Your password needs at least 6 characters.");
+        return;
+      }
+      if (form.password !== form.confirmPassword) {
+        setNotice("Passwords do not match. Please confirm your password.");
+        return;
+      }
+      if (!form.agreeTerms) {
+        setNotice("Please agree to the Terms of Service and Privacy Policy.");
         return;
       }
 
@@ -981,9 +1044,10 @@ function AuthPage() {
       }
 
       const newAccount = {
-        name: form.name.trim() || "Teen Learner",
+        name: form.name.trim() || (userRole === "parent" ? "Parent / Mentor" : "Teen Learner"),
         email: cleanEmail,
         password: form.password,
+        role: userRole,
         avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
       };
 
@@ -1003,6 +1067,9 @@ function AuthPage() {
       setCoursesList(freshData.coursesList);
       setProjects(freshData.projects);
       setNotice("");
+      setView("dashboard");
+      setDashboardView("home");
+      window.location.hash = "home";
       return;
     }
 
@@ -1030,6 +1097,9 @@ function AuthPage() {
       setCoursesList(userSavedData.coursesList);
       setProjects(userSavedData.projects || []);
       setNotice("");
+      setView("dashboard");
+      setDashboardView("home");
+      window.location.hash = "home";
       return;
     }
   }
@@ -1037,7 +1107,8 @@ function AuthPage() {
   function logout() {
     setAccount(null);
     localStorage.removeItem(ACCOUNT_KEY);
-    setView("login");
+    setView("welcome");
+    window.location.hash = "";
     setForm({ name: "", email: "", password: "" });
     setNotice("");
   }
@@ -1055,6 +1126,18 @@ function AuthPage() {
   function openCourseVideo(course, lessonIndex = null) {
     const targetCourse = (course && coursesList.find((c) => c.id === course.id)) || course || coursesList[0] || academyCourses[0];
     setActiveCourseId(targetCourse.id);
+
+    // Mark course as enrolled / in-progress when the user opens or starts watching it
+    if (!targetCourse.enrolled) {
+      const updatedCourses = coursesList.map((c) => {
+        if (c.id === targetCourse.id) {
+          return { ...c, enrolled: true, status: "in-progress" };
+        }
+        return c;
+      });
+      setCoursesList(updatedCourses);
+      persistUserProgress({ coursesList: updatedCourses });
+    }
 
     let targetIdx = 0;
     if (typeof lessonIndex === "number") {
@@ -1157,10 +1240,11 @@ function AuthPage() {
 
   const categoriesList = ["All", "Design", "Marketing", "Web Development", "Media", "Business"];
 
-  // Filter courses that are strictly ongoing (progress > 0% and < 100%) - Completed (100%) courses are automatically removed!
+  // Filter courses that are strictly ongoing (user enrolled or started watching, and not 100% completed)
   const ongoingCourses = coursesList.filter((course) => {
     const pct = getCourseProgress(course);
-    return pct > 0 && pct < 100;
+    const hasStartedWatching = course.curriculum && course.curriculum.some((l) => l.done || (l.savedTimestamp && l.savedTimestamp > 0));
+    return (course.enrolled || hasStartedWatching || pct > 0) && pct < 100;
   });
 
   const featuredOngoingCourse = ongoingCourses.length > 0 ? ongoingCourses[0] : null;
@@ -1204,13 +1288,13 @@ function AuthPage() {
 
   const currentLessonRemainingSec = Math.max(0, currentLessonTotalSec - lessonWatchTimestamp);
 
-  // If user is logged in, show Dashboard
-  if (account) {
+  // If user is logged in and on dashboard view, show Dashboard
+  if (account && view === "dashboard") {
     return (
       <div className="dashboard-app">
         {/* Left Sidebar */}
         <aside className="dashboard-sidebar">
-          <a className="dashboard-logo" href="Landing-page.html">
+          <a className="dashboard-logo" href="index.html">
             <span className="brand-logo-text">
               <span className="logo-purple">MyDear</span>
               <span className="logo-dark">Teenager</span>
@@ -1284,19 +1368,31 @@ function AuthPage() {
               {showUserDropdown && (
                 <div className="sidebar-profile-dropdown">
                   <div className="dropdown-user-header">
-                    <strong>{account.name || "Daniel"}</strong>
-                    <small>{account.email}</small>
+                    <img
+                      className="dropdown-avatar-thumb"
+                      src={account.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"}
+                      alt={account.name || "User"}
+                    />
+                    <div className="dropdown-user-text">
+                      <strong>{account.name || "Daniel"}</strong>
+                      <small>{account.email}</small>
+                    </div>
                   </div>
                   <hr className="dropdown-divider" />
                   <button
+                    type="button"
                     className="dropdown-logout-btn"
                     onClick={() => {
                       setShowUserDropdown(false);
                       logout();
                     }}
                   >
-                    <span>🚪</span>
-                    <span>Logout?</span>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                      <polyline points="16 17 21 12 16 7"></polyline>
+                      <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Log Out</span>
                   </button>
                 </div>
               )}
@@ -1339,13 +1435,54 @@ function AuthPage() {
                 <span className="notification-dot"></span>
               </button>
 
-              <div className="topbar-profile">
-                <img
-                  className="profile-img-sm"
-                  src={account.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"}
-                  alt={account.name || "User"}
-                />
-                <span className="topbar-username">{account.name || "Daniel"}</span>
+              <div className="topbar-profile-wrapper">
+                <button
+                  type="button"
+                  className="topbar-profile-btn"
+                  onClick={() => setShowUserDropdown((prev) => !prev)}
+                  title="Account menu"
+                  aria-label="Account menu"
+                >
+                  <img
+                    className="profile-img-sm"
+                    src={account.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"}
+                    alt={account.name || "User"}
+                  />
+                  <span className="topbar-username">{account.name || "Daniel"}</span>
+                  <span className="topbar-profile-caret">⌄</span>
+                </button>
+
+                {showUserDropdown && (
+                  <div className="topbar-profile-dropdown">
+                    <div className="dropdown-user-header">
+                      <img
+                        className="dropdown-avatar-thumb"
+                        src={account.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"}
+                        alt={account.name || "User"}
+                      />
+                      <div className="dropdown-user-text">
+                        <strong>{account.name || "Daniel"}</strong>
+                        <small>{account.email}</small>
+                      </div>
+                    </div>
+                    <hr className="dropdown-divider" />
+                    <button
+                      type="button"
+                      className="dropdown-logout-btn"
+                      onClick={() => {
+                        setShowUserDropdown(false);
+                        logout();
+                      }}
+                    >
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                      </svg>
+                      <span>Log Out</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </header>
@@ -1771,7 +1908,7 @@ function AuthPage() {
                         }
                       }}
                     >
-                      Resume Learning →
+                      {featuredOngoingCourse ? "Resume Learning →" : "Start Learning →"}
                     </button>
                     <button className="hero-btn-outline" onClick={() => setDashboardView("academy")}>
                       Explore Skills →
@@ -1808,14 +1945,25 @@ function AuthPage() {
                     </div>
                   </div>
                   <button
+                    type="button"
                     className={`orange-button ${isStreakClaimedToday ? "disabled-btn" : ""}`}
                     onClick={incrementStreak}
                     disabled={isStreakClaimedToday}
                     title={isStreakClaimedToday ? "Streak already recorded for today! Come back tomorrow to continue your streak." : "Click to keep your daily streak going"}
                   >
-                    {isStreakClaimedToday
-                      ? "✓ Streak Kept for Today!"
-                      : (streak === 0 ? "🔥 Start Daily Streak (+50 XP)" : "🔥 Keep It Going (+50 XP)")}
+                    {isStreakClaimedToday ? (
+                      <>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", verticalAlign: "middle" }}>
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>Streak Kept for Today!</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="streak-flame-icon">🔥</span>
+                        <span>{streak === 0 ? "Start Daily Streak" : "Keep It Going"}</span>
+                      </>
+                    )}
                   </button>
                 </section>
 
@@ -1831,19 +1979,22 @@ function AuthPage() {
                         <Icon name="chart" size={16} />
                       </span>
                     </div>
-                    <div className="meter-label-row">
-                      <small>To Level {userLevel + 1}</small>
-                      <b>{levelProgressPct}%</b>
-                    </div>
-                    <div className="meter purple-meter">
-                      <span style={{ width: `${levelProgressPct}%` }}></span>
-                    </div>
-                    <div className="meter-label-row" style={{ marginTop: ".35rem" }}>
-                      <small>Weekly XP Goal</small>
-                      <b>{weeklyXpGoalPct}%</b>
-                    </div>
-                    <div className="meter orange-meter">
-                      <span style={{ width: `${weeklyXpGoalPct}%` }}></span>
+                    <div className="meter-group">
+                      <div className="meter-label-row">
+                        <small>To Level {userLevel + 1}</small>
+                        <b>{levelProgressPct}%</b>
+                      </div>
+                      <div className="meter purple-meter">
+                        <span style={{ width: `${levelProgressPct}%` }}></span>
+                      </div>
+
+                      <div className="meter-label-row">
+                        <small>Weekly XP Goal</small>
+                        <b>{weeklyXpGoalPct}%</b>
+                      </div>
+                      <div className="meter orange-meter">
+                        <span style={{ width: `${weeklyXpGoalPct}%` }}></span>
+                      </div>
                     </div>
                   </div>
 
@@ -1853,25 +2004,28 @@ function AuthPage() {
                     <div className="card-header-icon-row">
                       <div>
                         <div className="card-label">Courses</div>
-                        <strong className="summary-card-title-sm">{ongoingCourses.length || 3} Active</strong>
+                        <strong className="summary-card-title-sm">{ongoingCourses.length} Active</strong>
                       </div>
                       <span className="card-corner-icon blue-icon-box">
                         <Icon name="monitor" size={16} />
                       </span>
                     </div>
                     <div className="courses-dots-list">
-                      <div className="course-dot-item">
-                        <span><i className="dot-purple">●</i> UI/UX Design</span>
-                        <b>68%</b>
-                      </div>
-                      <div className="course-dot-item">
-                        <span><i className="dot-blue">●</i> Digital Marketing</span>
-                        <b>42%</b>
-                      </div>
-                      <div className="course-dot-item">
-                        <span><i className="dot-dark-purple">●</i> Content Creation</span>
-                        <b>24%</b>
-                      </div>
+                      {ongoingCourses.length === 0 ? (
+                        <p style={{ fontSize: "0.78rem", color: "#94a3b8", margin: "0.4rem 0", fontStyle: "italic" }}>
+                          No active courses yet
+                        </p>
+                      ) : (
+                        ongoingCourses.slice(0, 3).map((c, i) => {
+                          const dotClasses = ["dot-purple", "dot-blue", "dot-dark-purple"];
+                          return (
+                            <div className="course-dot-item" key={c.id}>
+                              <span><i className={dotClasses[i % dotClasses.length]}>●</i> {c.title}</span>
+                              <b>{getCourseProgress(c)}%</b>
+                            </div>
+                          );
+                        })
+                      )}
                     </div>
                   </div>
                 </section>
@@ -1907,7 +2061,7 @@ function AuthPage() {
                   <div className="card-header-icon-row">
                     <div>
                       <div className="card-label">Projects</div>
-                      <strong className="summary-card-title">{projects.length || 8} Completed</strong>
+                      <strong className="summary-card-title">{projects.length} Completed</strong>
                     </div>
                     <span className="card-corner-icon green-icon-box">
                       <Icon name="check" size={16} />
@@ -1918,30 +2072,30 @@ function AuthPage() {
 
                   <div className="projects-shipped-section">
                     <div className="card-label" style={{ marginBottom: ".45rem" }}>Recently Shipped</div>
-                    <ul className="shipped-projects-list">
-                      <li>
-                        <span className="check-green-icon">✓</span>
-                        <span>Portfolio Website</span>
-                      </li>
-                      <li>
-                        <span className="check-green-icon">✓</span>
-                        <span>Poster Series</span>
-                      </li>
-                      <li>
-                        <span className="check-green-icon">✓</span>
-                        <span>Landing Page</span>
-                      </li>
-                    </ul>
+                    {projects.length === 0 ? (
+                      <p style={{ fontSize: "0.78rem", color: "#94a3b8", margin: "0.4rem 0", fontStyle: "italic" }}>
+                        No projects completed yet
+                      </p>
+                    ) : (
+                      <ul className="shipped-projects-list">
+                        {projects.slice(0, 3).map((p) => (
+                          <li key={p.id}>
+                            <span className="check-green-icon">✓</span>
+                            <span>{p.title}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </section>
               </div>
 
-              {/* 3. Continue Learning Section (Large Featured Left + Stacked Mini Right) */}
+              {/* 3. Continue Learning Section (Dynamic: Empty when 0 ongoing courses, Real cards when enrolled) */}
               <section className="continue-learning-home-section" id="learning">
                 <div className="section-heading">
                   <div>
                     <h2>Continue Learning</h2>
-                    <p>Pick up where you left off.</p>
+                    <p>{ongoingCourses.length > 0 ? "Pick up where you left off." : "You have not enrolled in any courses yet."}</p>
                   </div>
                   <a
                     href="#academy"
@@ -1955,115 +2109,134 @@ function AuthPage() {
                   </a>
                 </div>
 
-                <div className="continue-learning-grid-layout">
-                  {/* Left Large Featured Card */}
-                  <div
-                    className="featured-course-banner-card"
-                    onClick={() => openCourseVideo(featuredOngoingCourse || academyCourses[0])}
-                  >
-                    <div className="featured-thumb-laptop-mockup">
-                      <img
-                        src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80"
-                        alt="UI/UX Fundamentals"
-                      />
-                      <div className="laptop-play-btn-circle">
-                        <Icon name="play" size={24} />
-                      </div>
+                {ongoingCourses.length === 0 ? (
+                  <div className="continue-learning-empty-box">
+                    <div className="empty-learning-icon-circle">
+                      <Icon name="monitor" size={28} />
                     </div>
-
-                    <div className="featured-banner-content">
-                      <div className="featured-header-row">
-                        <h3>UI/UX Fundamentals</h3>
-                        <span className="duration-pill-lavender">⏱ 18 Min</span>
-                      </div>
-                      <p className="featured-module-label">Module: <strong>Designing User Interfaces</strong></p>
-                      <p className="featured-lesson-label">Lesson: <strong>Creating Effective Layouts</strong></p>
-
-                      <div className="featured-course-progress-block">
-                        <div className="progress-text-row">
-                          <small>Course Progress</small>
-                          <b>68%</b>
-                        </div>
-                        <div className="meter purple-meter">
-                          <span style={{ width: "68%" }}></span>
-                        </div>
-                      </div>
-
-                      <div className="featured-instructor-action-row">
-                        <div className="instructor-mini-profile">
+                    <h3>No courses in progress</h3>
+                    <p>You haven't enrolled or started watching any courses yet. Explore our Skills Academy to begin your learning journey!</p>
+                    <button
+                      type="button"
+                      className="empty-enroll-btn"
+                      onClick={() => setDashboardView("academy")}
+                    >
+                      Explore Skills Academy →
+                    </button>
+                  </div>
+                ) : (
+                  <div className="continue-learning-grid-layout">
+                    {/* Left Large Featured Card (Dynamic!) */}
+                    {featuredOngoingCourse && (
+                      <div
+                        className="featured-course-banner-card"
+                        onClick={() => openCourseVideo(featuredOngoingCourse)}
+                      >
+                        <div className="featured-thumb-laptop-mockup">
                           <img
-                            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
-                            alt="Joseph Joestar"
+                            src={featuredOngoingCourse.thumbnail}
+                            alt={featuredOngoingCourse.title}
                           />
-                          <div>
-                            <strong>Joseph Joestar</strong>
-                            <small>Product Designer, Tutor</small>
+                          <div className="laptop-play-btn-circle">
+                            <Icon name="play" size={24} />
                           </div>
                         </div>
 
-                        <button
-                          className="featured-continue-btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openCourseVideo(featuredOngoingCourse || academyCourses[0]);
-                          }}
+                        <div className="featured-banner-content">
+                          <div className="featured-header-row">
+                            <h3>{featuredOngoingCourse.title}</h3>
+                            <span className="duration-pill-lavender">⏱ {featuredOngoingCourse.duration || "18 Mins"}</span>
+                          </div>
+                          <p className="featured-module-label">
+                            Module: <strong>{featuredOngoingCourse.curriculum && featuredOngoingCourse.curriculum[0] && featuredOngoingCourse.curriculum[0].tags ? featuredOngoingCourse.curriculum[0].tags[0] : "Core Track"}</strong>
+                          </p>
+                          <p className="featured-lesson-label">
+                            Lesson: <strong>{featuredOngoingCourse.curriculum && featuredOngoingCourse.curriculum.find((l) => !l.done) ? featuredOngoingCourse.curriculum.find((l) => !l.done).title : (featuredOngoingCourse.curriculum[0] && featuredOngoingCourse.curriculum[0].title ? featuredOngoingCourse.curriculum[0].title : "Lesson 1")}</strong>
+                          </p>
+
+                          <div className="featured-course-progress-block">
+                            <div className="progress-text-row">
+                              <small>Course Progress</small>
+                              <b>{getCourseProgress(featuredOngoingCourse)}%</b>
+                            </div>
+                            <div className="meter purple-meter">
+                              <span style={{ width: `${getCourseProgress(featuredOngoingCourse)}%` }}></span>
+                            </div>
+                          </div>
+
+                          <div className="featured-instructor-action-row">
+                            <div className="instructor-mini-profile">
+                              <img
+                                src={featuredOngoingCourse.instructorAvatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"}
+                                alt={featuredOngoingCourse.instructor}
+                              />
+                              <div>
+                                <strong>{featuredOngoingCourse.instructor}</strong>
+                                <small>{featuredOngoingCourse.instructorRole || "Tutor"}</small>
+                              </div>
+                            </div>
+
+                            <button
+                              type="button"
+                              className="featured-continue-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openCourseVideo(featuredOngoingCourse);
+                              }}
+                            >
+                              <span>Continue Learning</span>
+                              <span>→</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Right Stacked Mini Ongoing Cards (Dynamic!) */}
+                    <div className="mini-courses-stacked-col">
+                      {otherOngoingCourses.length > 0 ? (
+                        otherOngoingCourses.slice(0, 2).map((course) => {
+                          const pct = getCourseProgress(course);
+                          return (
+                            <div
+                              className="mini-ongoing-card"
+                              key={course.id}
+                              onClick={() => openCourseVideo(course)}
+                            >
+                              <div className="mini-card-thumb">
+                                <img
+                                  src={course.thumbnail}
+                                  alt={course.title}
+                                />
+                              </div>
+                              <div className="mini-card-info">
+                                <div className="mini-card-top-row">
+                                  <h4>{course.title}</h4>
+                                  <b className="blue-pct">{pct}%</b>
+                                </div>
+                                <small className="mini-category">{course.category}</small>
+                                <div className="meter blue-meter">
+                                  <span style={{ width: `${pct}%` }}></span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div
+                          className="mini-ongoing-card mini-enroll-prompt-card"
+                          onClick={() => setDashboardView("academy")}
                         >
-                          <span>Continue Learning</span>
-                          <span>→</span>
-                        </button>
-                      </div>
+                          <div className="mini-prompt-content">
+                            <h4>Explore More Skills</h4>
+                            <small>Enroll in additional courses to expand your skill set.</small>
+                            <span className="browse-more-link">Browse Academy →</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
-
-                  {/* Right Stacked Mini Ongoing Cards */}
-                  <div className="mini-courses-stacked-col">
-                    {/* Mini Card 1 */}
-                    <div
-                      className="mini-ongoing-card"
-                      onClick={() => openCourseVideo(academyCourses[1] || coursesList[1])}
-                    >
-                      <div className="mini-card-thumb">
-                        <img
-                          src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=400&q=80"
-                          alt="Digital Marketing"
-                        />
-                      </div>
-                      <div className="mini-card-info">
-                        <div className="mini-card-top-row">
-                          <h4>Digital Marketing</h4>
-                          <b className="blue-pct">42%</b>
-                        </div>
-                        <small className="mini-category">Marketing</small>
-                        <div className="meter blue-meter">
-                          <span style={{ width: "42%" }}></span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Mini Card 2 */}
-                    <div
-                      className="mini-ongoing-card"
-                      onClick={() => openCourseVideo(academyCourses[2] || coursesList[2])}
-                    >
-                      <div className="mini-card-thumb">
-                        <img
-                          src="https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=400&q=80"
-                          alt="Content Creation"
-                        />
-                      </div>
-                      <div className="mini-card-info">
-                        <div className="mini-card-top-row">
-                          <h4>Content Creation</h4>
-                          <b className="purple-pct">24%</b>
-                        </div>
-                        <small className="mini-category">Media</small>
-                        <div className="meter purple-meter">
-                          <span style={{ width: "24%" }}></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                )}
               </section>
 
               {/* 4. Middle 2-Column: "Your Next Step" & "Your Growth" */}
@@ -2071,27 +2244,63 @@ function AuthPage() {
                 {/* Left: Your Next Step */}
                 <section className="dashboard-panel next-step-panel">
                   <span className="next-step-badge-pill">✦ Your Next Step</span>
-                  <div className="next-step-content-row">
-                    <div className="next-step-icon-square">
-                      <Icon name="monitor" size={24} />
-                    </div>
-                    <div>
-                      <h3>Complete: Typography Basics</h3>
-                      <p>You're one lesson away from completing this module.</p>
-                    </div>
-                  </div>
+                  {featuredOngoingCourse ? (
+                    <>
+                      <div className="next-step-content-row">
+                        <div className="next-step-icon-square">
+                          <Icon name="monitor" size={24} />
+                        </div>
+                        <div>
+                          <h3>
+                            {featuredOngoingCourse.curriculum && featuredOngoingCourse.curriculum.find((l) => !l.done)
+                              ? featuredOngoingCourse.curriculum.find((l) => !l.done).title
+                              : "Continue Your Course"}
+                          </h3>
+                          <p>
+                            {featuredOngoingCourse.title} • {getCourseProgress(featuredOngoingCourse)}% completed
+                          </p>
+                        </div>
+                      </div>
 
-                  <div className="next-step-tags-row">
-                    <span className="next-tag-pill">⏱ 12 Min</span>
-                    <span className="next-tag-pill xp-orange-tag">⭐ +60 XP</span>
-                  </div>
+                      <div className="next-step-tags-row">
+                        <span className="next-tag-pill">⏱ 15 Min</span>
+                        <span className="next-tag-pill xp-orange-tag">⭐ +50 XP</span>
+                      </div>
 
-                  <button
-                    className="start-lesson-full-btn"
-                    onClick={() => openCourseVideo(featuredOngoingCourse || coursesList[0])}
-                  >
-                    ▶ Start Lesson
-                  </button>
+                      <button
+                        type="button"
+                        className="start-lesson-full-btn"
+                        onClick={() => openCourseVideo(featuredOngoingCourse)}
+                      >
+                        ▶ Resume Lesson
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="next-step-content-row">
+                        <div className="next-step-icon-square">
+                          <Icon name="monitor" size={24} />
+                        </div>
+                        <div>
+                          <h3>Start Your First Course</h3>
+                          <p>Browse our curated tracks and start building real skills.</p>
+                        </div>
+                      </div>
+
+                      <div className="next-step-tags-row">
+                        <span className="next-tag-pill">⏱ 15 Min</span>
+                        <span className="next-tag-pill xp-orange-tag">⭐ +50 XP</span>
+                      </div>
+
+                      <button
+                        type="button"
+                        className="start-lesson-full-btn"
+                        onClick={() => setDashboardView("academy")}
+                      >
+                        ▶ Browse Courses
+                      </button>
+                    </>
+                  )}
                 </section>
 
                 {/* Right: Your Growth */}
@@ -2322,111 +2531,494 @@ function AuthPage() {
     );
   }
 
-  // Auth / Login / Signup View
+  // Auth / Welcome / Signup / Login Views
   return (
-    <main className="auth-shell">
-      <a className="brand auth-brand" href="Landing-page.html">
-        <span className="brand-logo-text">
-          <span className="logo-purple">MyDear</span>
-          <span className="logo-dark">Teenager</span>
-        </span>
-      </a>
-
-      <section className="auth-layout">
-        <div className="auth-intro">
-          <p className="eyebrow">A place to begin</p>
-          <h1>Find the thing you want to make.</h1>
-          <p>
-            Save your learning journey, build projects as you go, and come back whenever your curiosity pulls you forward.
-          </p>
-          <div className="trail">
-            <span>01</span><span>Discover</span><i></i>
-            <span>02</span><span>Build</span><i></i>
-            <span>03</span><span>Grow</span>
+    <div className="welcome-page-shell">
+      {/* 1. Top Navbar with logo image at the left end */}
+      <header className="welcome-navbar">
+        <div className="welcome-nav-inner">
+          <a className="welcome-brand-link" href="index.html" title="Back to Home">
+            <img
+              src="./Images/logo.png"
+              alt="MyDearTeenager"
+              className="welcome-brand-logo-img"
+            />
+          </a>
+          <div className="welcome-nav-user">
+            <button
+              className="welcome-profile-avatar-btn"
+              onClick={() => {
+                if (account) {
+                  setView("dashboard");
+                  window.location.hash = "home";
+                } else {
+                  setView(view === "login" ? "welcome" : "login");
+                  setNotice("");
+                }
+              }}
+              aria-label="Account"
+              title={account ? `Logged in as ${account.name || "User"}` : "Log in"}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </button>
           </div>
         </div>
+      </header>
 
-        <section className="auth-card">
-          <div className="tab-row">
+      {/* 2. Main Stage */}
+      {view === "welcome" ? (
+        /* Welcome Overview matching sign-up-page.png */
+        <main className={`welcome-main-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
+          {/* Illustration Card */}
+          <div className="welcome-card-wrap">
+            <img
+              className="welcome-card-img"
+              src="./Images/sign-up-img.svg?v=3"
+              alt="MyDearTeenager Learning Journey"
+            />
+          </div>
+
+          {/* Heading */}
+          <h1 className="welcome-title">
+            Welcome to<br />
+            <span className="welcome-brand-name">
+              <span className="purple-text">MyDear</span>
+              <span className="dark-text">Teenager</span>{" "}
+              <span className="hand-emoji">👋</span>
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="welcome-subtitle">
+            Learn practical skills, build better habits, and prepare<br />
+            for your future one step at a time.
+          </p>
+
+          {/* Buttons Stack */}
+          <div className="welcome-actions">
             <button
-              className={view === "signup" ? "tab active" : "tab"}
-              onClick={() => { setView("signup"); setNotice(""); }}
+              className="welcome-primary-btn"
+              onClick={(e) => {
+                e.currentTarget.classList.add("btn-launching");
+                transitionToView("signup", "forward");
+              }}
             >
-              Create account
+              Let's Get Started →
             </button>
+
             <button
-              className={view === "login" ? "tab active" : "tab"}
-              onClick={() => { setView("login"); setNotice(""); }}
+              className="welcome-secondary-btn"
+              onClick={(e) => {
+                e.currentTarget.classList.add("btn-launching");
+                transitionToView("login", "forward");
+              }}
+            >
+              I already have an account
+            </button>
+          </div>
+        </main>
+      ) : view === "signup" ? (
+        /* Sign Up Form View - EXACT match to sign-up-form.png */
+        <main className={`signup-flow-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
+          {/* Progress Stepper Bar matching sign-up-form.png */}
+          <div className="signup-stepper-header">
+            <span className="stepper-counter">02 / 07</span>
+            <div className="stepper-segments">
+              <span className="step-bar step-done"></span>
+              <span className="step-bar step-done"></span>
+              <span className="step-bar step-pending"></span>
+              <span className="step-bar step-pending"></span>
+              <span className="step-bar step-pending"></span>
+              <span className="step-bar step-pending"></span>
+              <span className="step-bar step-pending"></span>
+            </div>
+          </div>
+
+          {/* Heading & Subtitle matching sign-up-form.png */}
+          <div className="signup-heading-block">
+            <h1 className="signup-title">Let's get you started</h1>
+            <p className="signup-subtitle">
+              Create your account and start building your learning journey.
+            </p>
+          </div>
+
+          {/* Card Wrapper with exact background circles matching sign-up-form.png */}
+          <div className="signup-card-wrapper">
+            <div className="signup-bg-circle signup-bg-circle-top" aria-hidden="true"></div>
+            <div className="signup-bg-circle signup-bg-circle-bottom" aria-hidden="true"></div>
+
+            <form className="signup-card-container" onSubmit={submitAuth}>
+            {/* Role Switcher Tabs */}
+            <div className="role-selector-pills">
+              <button
+                type="button"
+                className={`role-pill-btn ${userRole === "teenager" ? "active" : ""}`}
+                onClick={() => setUserRole("teenager")}
+              >
+                I am a teenager / learner
+              </button>
+              <button
+                type="button"
+                className={`role-pill-btn ${userRole === "parent" ? "active" : ""}`}
+                onClick={() => setUserRole("parent")}
+              >
+                I am a parent / mentor
+              </button>
+            </div>
+
+            {/* Field 1: Full Name */}
+            <div className="signup-field-group">
+              <label className="signup-field-label">Full Name</label>
+              <div className="signup-input-wrapper">
+                <span className="input-prefix-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </span>
+                <input
+                  name="name"
+                  type="text"
+                  className="signup-text-input"
+                  value={form.name}
+                  onChange={updateForm}
+                  placeholder="Jane Doe"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Field 2: Email Address */}
+            <div className="signup-field-group">
+              <label className="signup-field-label">Email Address</label>
+              <div className="signup-input-wrapper">
+                <span className="input-prefix-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                  </svg>
+                </span>
+                <input
+                  name="email"
+                  type="email"
+                  className="signup-text-input"
+                  value={form.email}
+                  onChange={updateForm}
+                  placeholder="jane@example.com"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Field 3: Password */}
+            <div className="signup-field-group">
+              <label className="signup-field-label">Password</label>
+              <div className="signup-input-wrapper">
+                <span className="input-prefix-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <input
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  className="signup-text-input"
+                  value={form.password}
+                  onChange={updateForm}
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  className="input-suffix-btn"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label="Toggle password visibility"
+                >
+                  {showPassword ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Field 4: Confirm Password */}
+            <div className="signup-field-group">
+              <label className="signup-field-label">Confirm Password</label>
+              <div className="signup-input-wrapper">
+                <span className="input-prefix-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    <circle cx="12" cy="16" r="1" />
+                  </svg>
+                </span>
+                <input
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  className="signup-text-input"
+                  value={form.confirmPassword}
+                  onChange={updateForm}
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  className="input-suffix-btn"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label="Toggle confirm password visibility"
+                >
+                  {showConfirmPassword ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Checkbox: Terms of Service */}
+            <div className="signup-checkbox-row">
+              <input
+                id="agreeTerms"
+                name="agreeTerms"
+                type="checkbox"
+                className="signup-custom-checkbox"
+                checked={form.agreeTerms || false}
+                onChange={updateForm}
+                required
+              />
+              <label htmlFor="agreeTerms" className="signup-checkbox-label">
+                I agree to the <a href="#" onClick={(e) => e.preventDefault()}>Terms of Service</a> and <a href="#" onClick={(e) => e.preventDefault()}>Privacy Policy</a>
+              </label>
+            </div>
+
+            {notice && <p className="signup-notice-box" role="alert">{notice}</p>}
+
+            {/* Hidden submit trigger so Enter key works inside inputs */}
+            <button type="submit" style={{ display: "none" }} aria-hidden="true"></button>
+          </form>
+        </div>
+
+          {/* Already have an account link */}
+          <div className="signup-bottom-switch">
+            Already have an account?{" "}
+            <button
+              type="button"
+              className="signup-switch-link"
+              onClick={() => transitionToView("login", "forward")}
             >
               Log in
             </button>
           </div>
 
-          <h2>{view === "signup" ? "Start your journey." : "Welcome back."}</h2>
-          <p className="card-copy">
-            {view === "signup" ? "Your account is your space to explore and make." : "Pick up where your learning left off."}
-          </p>
-
-          <form onSubmit={submitAuth}>
-            {view === "signup" && (
-              <label>
-                Your name
-                <input
-                  name="name"
-                  value={form.name}
-                  onChange={updateForm}
-                  placeholder="What should we call you?"
-                  required
-                />
-              </label>
-            )}
-
-            <label>
-              Email address
-              <input
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={updateForm}
-                placeholder="you@example.com"
-                required
-              />
-            </label>
-
-            <label>
-              Password
-              <input
-                name="password"
-                type="password"
-                value={form.password}
-                onChange={updateForm}
-                placeholder="At least 6 characters"
-                required
-              />
-            </label>
-
-            {notice && <p className="notice" role="alert">{notice}</p>}
-
-            <button className="primary-button" type="submit">
-              {view === "signup" ? "Create my account" : "Log in"} <span>↗</span>
-            </button>
-          </form>
-
-          <p className="switch-copy">
-            {view === "signup" ? "Already have an account?" : "New to MyDearTeenager?"}{" "}
+          {/* Floating Bottom Action Dock matching sign-up-form.png */}
+          <div className="signup-bottom-dock">
             <button
-              className="inline-button"
-              onClick={() => {
-                setView(view === "signup" ? "login" : "signup");
-                setNotice("");
-              }}
+              type="button"
+              className="dock-back-btn"
+              onClick={() => transitionToView("welcome", "backward")}
             >
-              {view === "signup" ? "Log in" : "Create one"}
+              ← Back
             </button>
-          </p>
-        </section>
-      </section>
-    </main>
+            <button
+              type="button"
+              className="dock-create-btn"
+              onClick={submitAuth}
+            >
+              Create My Account →
+            </button>
+          </div>
+        </main>
+      ) : (
+        /* Login Form View - EXACT match to Images/login-page.png */
+        <main className={`login-page-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
+          <div className="login-card-container">
+            <h1 className="login-title">Welcome back!</h1>
+            <p className="login-subtitle">
+              Log in to your account and continue your learning journey.
+            </p>
+
+            <form onSubmit={submitAuth}>
+              {/* Field 1: Email Address */}
+              <div className="login-field-group">
+                <label className="login-field-label">Email Address</label>
+                <div className="login-input-wrapper">
+                  <span className="input-prefix-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="4" width="20" height="16" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                  </span>
+                  <input
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={updateForm}
+                    placeholder="you@example.com"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Field 2: Password */}
+              <div className="login-field-group">
+                <label className="login-field-label">Password</label>
+                <div className="login-input-wrapper">
+                  <span className="input-prefix-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                  </span>
+                  <input
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    value={form.password}
+                    onChange={updateForm}
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="input-suffix-btn"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label="Toggle password visibility"
+                  >
+                    {showPassword ? (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                        <line x1="1" y1="1" x2="23" y2="23" />
+                      </svg>
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember me & Forgot password? Row */}
+              <div className="login-options-row">
+                <label className="remember-me-toggle">
+                  <input
+                    type="checkbox"
+                    className="remember-me-checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  <span className="remember-me-label">Remember me</span>
+                </label>
+                <a
+                  href="#"
+                  className="forgot-password-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setNotice("Password reset instruction has been sent to your email.");
+                  }}
+                >
+                  Forgot password?
+                </a>
+              </div>
+
+              {notice && <p className="signup-notice-box" role="alert">{notice}</p>}
+
+              {/* Primary Submit Button */}
+              <button type="submit" className="login-submit-btn">
+                Log In →
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="login-divider-row">
+              <span className="login-divider-text">Or log in with</span>
+            </div>
+
+            {/* Social Logins designed as links for easy backend integration */}
+            <a
+              href="/auth/google"
+              className="social-login-btn social-google-btn"
+              onClick={(e) => {
+                // If backend route is not hooked up yet, fall back to preview login
+                if (e.currentTarget.getAttribute("href") === "/auth/google" || e.currentTarget.getAttribute("href") === "#") {
+                  e.preventDefault();
+                  const demoUser = usersDb[0] || defaultAccount;
+                  localStorage.setItem(ACCOUNT_KEY, JSON.stringify(demoUser));
+                  setAccount(demoUser);
+                  setView("dashboard");
+                  setDashboardView("home");
+                  window.location.hash = "home";
+                }
+              }}
+              title="Continue with Google"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.14-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+              </svg>
+              <span>Google</span>
+            </a>
+
+            <a
+              href="/auth/apple"
+              className="social-login-btn social-apple-btn"
+              onClick={(e) => {
+                // If backend route is not hooked up yet, fall back to preview login
+                if (e.currentTarget.getAttribute("href") === "/auth/apple" || e.currentTarget.getAttribute("href") === "#") {
+                  e.preventDefault();
+                  const demoUser = usersDb[0] || defaultAccount;
+                  localStorage.setItem(ACCOUNT_KEY, JSON.stringify(demoUser));
+                  setAccount(demoUser);
+                  setView("dashboard");
+                  setDashboardView("home");
+                  window.location.hash = "home";
+                }
+              }}
+              title="Continue with Apple"
+            >
+              {/* Official Apple Logo SVG */}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.98.6-2.62 1.35-.57.65-.99 1.7-.85 2.72.99.08 2-.51 2.55-1.22z"/>
+              </svg>
+              <span>Apple</span>
+            </a>
+
+            {/* Bottom Switch Text */}
+            <p className="login-footer-copy">
+              Don't have an account?{" "}
+              <button
+                type="button"
+                className="login-switch-link"
+                onClick={() => transitionToView("signup", "backward")}
+              >
+                Sign up
+              </button>
+            </p>
+          </div>
+        </main>
+      )}
+    </div>
   );
 }
 
