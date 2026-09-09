@@ -4,6 +4,229 @@ const { useState, useEffect } = React;
 const ACCOUNT_KEY = "mdt-account";
 const USERS_DB_KEY = "mdt-users-db";
 const PROJECTS_KEY = "mdt-projects";
+const OTP_EXPIRY_KEY = "mdt-otp-expiry-ts";
+const PENDING_ACCOUNT_KEY = "mdt-pending-account";
+const OTP_TIMER_SECONDS = 60; // 60-second OTP countdown for resend availability and expiration
+
+function getRemainingOtpSeconds() {
+  try {
+    const saved = localStorage.getItem(OTP_EXPIRY_KEY);
+    if (!saved) return 0;
+    const expiry = parseInt(saved, 10);
+    if (isNaN(expiry)) return 0;
+    const diff = Math.ceil((expiry - Date.now()) / 1000);
+    return diff > 0 ? diff : 0;
+  } catch (e) {
+    return 0;
+  }
+}
+
+const ALL_COUNTRIES = [
+  { name: "Afghanistan", code: "af", flag: "🇦🇫" },
+  { name: "Albania", code: "al", flag: "🇦🇱" },
+  { name: "Algeria", code: "dz", flag: "🇩🇿" },
+  { name: "Andorra", code: "ad", flag: "🇦🇩" },
+  { name: "Angola", code: "ao", flag: "🇦🇴" },
+  { name: "Antigua and Barbuda", code: "ag", flag: "🇦🇬" },
+  { name: "Argentina", code: "ar", flag: "🇦🇷" },
+  { name: "Armenia", code: "am", flag: "🇦🇲" },
+  { name: "Australia", code: "au", flag: "🇦🇺" },
+  { name: "Austria", code: "at", flag: "🇦🇹" },
+  { name: "Azerbaijan", code: "az", flag: "🇦🇿" },
+  { name: "Bahamas", code: "bs", flag: "🇧🇸" },
+  { name: "Bahrain", code: "bh", flag: "🇧🇭" },
+  { name: "Bangladesh", code: "bd", flag: "🇧🇩" },
+  { name: "Barbados", code: "bb", flag: "🇧🇧" },
+  { name: "Belarus", code: "by", flag: "🇧🇾" },
+  { name: "Belgium", code: "be", flag: "🇧🇪" },
+  { name: "Belize", code: "bz", flag: "🇧🇿" },
+  { name: "Benin", code: "bj", flag: "🇧🇯" },
+  { name: "Bhutan", code: "bt", flag: "🇧🇹" },
+  { name: "Bolivia", code: "bo", flag: "🇧🇴" },
+  { name: "Bosnia and Herzegovina", code: "ba", flag: "🇧🇦" },
+  { name: "Botswana", code: "bw", flag: "🇧🇼" },
+  { name: "Brazil", code: "br", flag: "🇧🇷" },
+  { name: "Brunei", code: "bn", flag: "🇧🇳" },
+  { name: "Bulgaria", code: "bg", flag: "🇧🇬" },
+  { name: "Burkina Faso", code: "bf", flag: "🇧🇫" },
+  { name: "Burundi", code: "bi", flag: "🇧🇮" },
+  { name: "Cabo Verde", code: "cv", flag: "🇨🇻" },
+  { name: "Cambodia", code: "kh", flag: "🇰🇭" },
+  { name: "Cameroon", code: "cm", flag: "🇨🇲" },
+  { name: "Canada", code: "ca", flag: "🇨🇦" },
+  { name: "Central African Republic", code: "cf", flag: "🇨🇫" },
+  { name: "Chad", code: "td", flag: "🇹🇩" },
+  { name: "Chile", code: "cl", flag: "🇨🇱" },
+  { name: "China", code: "cn", flag: "🇨🇳" },
+  { name: "Colombia", code: "co", flag: "🇨🇴" },
+  { name: "Comoros", code: "km", flag: "🇰🇲" },
+  { name: "Congo", code: "cg", flag: "🇨🇬" },
+  { name: "Congo (DRC)", code: "cd", flag: "🇨🇩" },
+  { name: "Costa Rica", code: "cr", flag: "🇨🇷" },
+  { name: "Croatia", code: "hr", flag: "🇭🇷" },
+  { name: "Cuba", code: "cu", flag: "🇨🇺" },
+  { name: "Cyprus", code: "cy", flag: "🇨🇾" },
+  { name: "Czech Republic", code: "cz", flag: "🇨🇿" },
+  { name: "Denmark", code: "dk", flag: "🇩🇰" },
+  { name: "Djibouti", code: "dj", flag: "🇩🇯" },
+  { name: "Dominica", code: "dm", flag: "🇩🇲" },
+  { name: "Dominican Republic", code: "do", flag: "🇩🇴" },
+  { name: "East Timor (Timor-Leste)", code: "tl", flag: "🇹🇱" },
+  { name: "Ecuador", code: "ec", flag: "🇪🇨" },
+  { name: "Egypt", code: "eg", flag: "🇪🇬" },
+  { name: "El Salvador", code: "sv", flag: "🇸🇻" },
+  { name: "Equatorial Guinea", code: "gq", flag: "🇬🇶" },
+  { name: "Eritrea", code: "er", flag: "🇪🇷" },
+  { name: "Estonia", code: "ee", flag: "🇪🇪" },
+  { name: "Eswatini", code: "sz", flag: "🇸🇿" },
+  { name: "Ethiopia", code: "et", flag: "🇪🇹" },
+  { name: "Fiji", code: "fj", flag: "🇫🇯" },
+  { name: "Finland", code: "fi", flag: "🇫🇮" },
+  { name: "France", code: "fr", flag: "🇫🇷" },
+  { name: "Gabon", code: "ga", flag: "🇬🇦" },
+  { name: "Gambia", code: "gm", flag: "🇬🇲" },
+  { name: "Georgia", code: "ge", flag: "🇬🇪" },
+  { name: "Germany", code: "de", flag: "🇩🇪" },
+  { name: "Ghana", code: "gh", flag: "🇬🇭" },
+  { name: "Greece", code: "gr", flag: "🇬🇷" },
+  { name: "Grenada", code: "gd", flag: "🇬🇩" },
+  { name: "Guatemala", code: "gt", flag: "🇬🇹" },
+  { name: "Guinea", code: "gn", flag: "🇬🇳" },
+  { name: "Guinea-Bissau", code: "gw", flag: "🇬🇼" },
+  { name: "Guyana", code: "gy", flag: "🇬🇾" },
+  { name: "Haiti", code: "ht", flag: "🇭🇹" },
+  { name: "Honduras", code: "hn", flag: "🇭🇳" },
+  { name: "Hungary", code: "hu", flag: "🇭🇺" },
+  { name: "Iceland", code: "is", flag: "🇮🇸" },
+  { name: "India", code: "in", flag: "🇮🇳" },
+  { name: "Indonesia", code: "id", flag: "🇮🇩" },
+  { name: "Iran", code: "ir", flag: "🇮🇷" },
+  { name: "Iraq", code: "iq", flag: "🇮🇶" },
+  { name: "Ireland", code: "ie", flag: "🇮🇪" },
+  { name: "Israel", code: "il", flag: "🇮🇱" },
+  { name: "Italy", code: "it", flag: "🇮🇹" },
+  { name: "Ivory Coast", code: "ci", flag: "🇨🇮" },
+  { name: "Jamaica", code: "jm", flag: "🇯🇲" },
+  { name: "Japan", code: "jp", flag: "🇯🇵" },
+  { name: "Jordan", code: "jo", flag: "🇯🇴" },
+  { name: "Kazakhstan", code: "kz", flag: "🇰🇿" },
+  { name: "Kenya", code: "ke", flag: "🇰🇪" },
+  { name: "Kiribati", code: "ki", flag: "🇰🇮" },
+  { name: "Kosovo", code: "xk", flag: "🇽🇰" },
+  { name: "Kuwait", code: "kw", flag: "🇰🇼" },
+  { name: "Kyrgyzstan", code: "kg", flag: "🇰🇬" },
+  { name: "Laos", code: "la", flag: "🇱🇦" },
+  { name: "Latvia", code: "lv", flag: "🇱🇻" },
+  { name: "Lebanon", code: "lb", flag: "🇱🇧" },
+  { name: "Lesotho", code: "ls", flag: "🇱🇸" },
+  { name: "Liberia", code: "lr", flag: "🇱🇷" },
+  { name: "Libya", code: "ly", flag: "🇱🇾" },
+  { name: "Liechtenstein", code: "li", flag: "🇱🇮" },
+  { name: "Lithuania", code: "lt", flag: "🇱🇹" },
+  { name: "Luxembourg", code: "lu", flag: "🇱🇺" },
+  { name: "Madagascar", code: "mg", flag: "🇲🇬" },
+  { name: "Malawi", code: "mw", flag: "🇲🇼" },
+  { name: "Malaysia", code: "my", flag: "🇲🇾" },
+  { name: "Maldives", code: "mv", flag: "🇲🇻" },
+  { name: "Mali", code: "ml", flag: "🇲🇱" },
+  { name: "Malta", code: "mt", flag: "🇲🇹" },
+  { name: "Marshall Islands", code: "mh", flag: "🇲🇭" },
+  { name: "Mauritania", code: "mr", flag: "🇲🇷" },
+  { name: "Mauritius", code: "mu", flag: "🇲🇺" },
+  { name: "Mexico", code: "mx", flag: "🇲🇽" },
+  { name: "Micronesia", code: "fm", flag: "🇫🇲" },
+  { name: "Moldova", code: "md", flag: "🇲🇩" },
+  { name: "Monaco", code: "mc", flag: "🇲🇨" },
+  { name: "Mongolia", code: "mn", flag: "🇲🇳" },
+  { name: "Montenegro", code: "me", flag: "🇲🇪" },
+  { name: "Morocco", code: "ma", flag: "🇲🇦" },
+  { name: "Mozambique", code: "mz", flag: "🇲🇿" },
+  { name: "Myanmar", code: "mm", flag: "🇲🇲" },
+  { name: "Namibia", code: "na", flag: "🇳🇦" },
+  { name: "Nauru", code: "nr", flag: "🇳🇷" },
+  { name: "Nepal", code: "np", flag: "🇳🇵" },
+  { name: "Netherlands", code: "nl", flag: "🇳🇱" },
+  { name: "New Zealand", code: "nz", flag: "🇳🇿" },
+  { name: "Nicaragua", code: "ni", flag: "🇳🇮" },
+  { name: "Niger", code: "ne", flag: "🇳🇪" },
+  { name: "Nigeria", code: "ng", flag: "🇳🇬" },
+  { name: "North Korea", code: "kp", flag: "🇰🇵" },
+  { name: "North Macedonia", code: "mk", flag: "🇲🇰" },
+  { name: "Norway", code: "no", flag: "🇳🇴" },
+  { name: "Oman", code: "om", flag: "🇴🇲" },
+  { name: "Pakistan", code: "pk", flag: "🇵🇰" },
+  { name: "Palau", code: "pw", flag: "🇵🇼" },
+  { name: "Palestine", code: "ps", flag: "🇵🇸" },
+  { name: "Panama", code: "pa", flag: "🇵🇦" },
+  { name: "Papua New Guinea", code: "pg", flag: "🇵🇬" },
+  { name: "Paraguay", code: "py", flag: "🇵🇾" },
+  { name: "Peru", code: "pe", flag: "🇵🇪" },
+  { name: "Philippines", code: "ph", flag: "🇵🇭" },
+  { name: "Poland", code: "pl", flag: "🇵🇱" },
+  { name: "Portugal", code: "pt", flag: "🇵🇹" },
+  { name: "Qatar", code: "qa", flag: "🇶🇦" },
+  { name: "Romania", code: "ro", flag: "🇷🇴" },
+  { name: "Russia", code: "ru", flag: "🇷🇺" },
+  { name: "Rwanda", code: "rw", flag: "🇷🇼" },
+  { name: "Saint Kitts and Nevis", code: "kn", flag: "🇰🇳" },
+  { name: "Saint Lucia", code: "lc", flag: "🇱🇨" },
+  { name: "Saint Vincent and the Grenadines", code: "vc", flag: "🇻🇨" },
+  { name: "Samoa", code: "ws", flag: "🇼🇸" },
+  { name: "San Marino", code: "sm", flag: "🇸🇲" },
+  { name: "Sao Tome and Principe", code: "st", flag: "🇸🇹" },
+  { name: "Saudi Arabia", code: "sa", flag: "🇸🇦" },
+  { name: "Senegal", code: "sn", flag: "🇸🇳" },
+  { name: "Serbia", code: "rs", flag: "🇷🇸" },
+  { name: "Seychelles", code: "sc", flag: "🇸🇨" },
+  { name: "Sierra Leone", code: "sl", flag: "🇸🇱" },
+  { name: "Singapore", code: "sg", flag: "🇸🇬" },
+  { name: "Slovakia", code: "sk", flag: "🇸🇰" },
+  { name: "Slovenia", code: "si", flag: "🇸🇮" },
+  { name: "Solomon Islands", code: "sb", flag: "🇸🇧" },
+  { name: "Somalia", code: "so", flag: "🇸🇴" },
+  { name: "South Africa", code: "za", flag: "🇿🇦" },
+  { name: "South Korea", code: "kr", flag: "🇰🇷" },
+  { name: "South Sudan", code: "ss", flag: "🇸🇸" },
+  { name: "Spain", code: "es", flag: "🇪🇸" },
+  { name: "Sri Lanka", code: "lk", flag: "🇱🇰" },
+  { name: "Sudan", code: "sd", flag: "🇸🇩" },
+  { name: "Suriname", code: "sr", flag: "🇸🇷" },
+  { name: "Sweden", code: "se", flag: "🇸🇪" },
+  { name: "Switzerland", code: "ch", flag: "🇨🇭" },
+  { name: "Syria", code: "sy", flag: "🇸🇾" },
+  { name: "Taiwan", code: "tw", flag: "🇹🇼" },
+  { name: "Tajikistan", code: "tj", flag: "🇹🇯" },
+  { name: "Tanzania", code: "tz", flag: "🇹🇿" },
+  { name: "Thailand", code: "th", flag: "🇹🇭" },
+  { name: "Togo", code: "tg", flag: "🇹🇬" },
+  { name: "Tonga", code: "to", flag: "🇹🇴" },
+  { name: "Trinidad and Tobago", code: "tt", flag: "🇹🇹" },
+  { name: "Tunisia", code: "tn", flag: "🇹🇳" },
+  { name: "Turkey", code: "tr", flag: "🇹🇷" },
+  { name: "Turkmenistan", code: "tm", flag: "🇹🇲" },
+  { name: "Tuvalu", code: "tv", flag: "🇹🇻" },
+  { name: "Uganda", code: "ug", flag: "🇺🇬" },
+  { name: "Ukraine", code: "ua", flag: "🇺🇦" },
+  { name: "United Arab Emirates", code: "ae", flag: "🇦🇪" },
+  { name: "United Kingdom", code: "gb", flag: "🇬🇧" },
+  { name: "United States", code: "us", flag: "🇺🇸" },
+  { name: "Uruguay", code: "uy", flag: "🇺🇾" },
+  { name: "Uzbekistan", code: "uz", flag: "🇺🇿" },
+  { name: "Vanuatu", code: "vu", flag: "🇻🇺" },
+  { name: "Vatican City", code: "va", flag: "🇻🇦" },
+  { name: "Venezuela", code: "ve", flag: "🇻🇪" },
+  { name: "Vietnam", code: "vn", flag: "🇻🇳" },
+  { name: "Yemen", code: "ye", flag: "🇾🇪" },
+  { name: "Zambia", code: "zm", flag: "🇿🇲" },
+  { name: "Zimbabwe", code: "zw", flag: "🇿🇼" },
+];
+
+function getTimeGreeting() {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return "Good Morning";
+  if (hour >= 12 && hour < 17) return "Good Afternoon";
+  return "Good Evening";
+}
 
 // Clean SVG Icon component
 function Icon({ name, size = 20, className = "" }) {
@@ -665,7 +888,8 @@ const defaultAccount = {
   name: "Daniel",
   email: "daniel@mydearteenager.com",
   password: "password123",
-  avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+  avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+  country: "United States"
 };
 
 // Default Daniel demo starter progress (starts with UI/UX course ongoing at Choosing Typefaces)
@@ -748,11 +972,16 @@ function AuthPage() {
   const [account, setAccount] = useState(() => readStorage(ACCOUNT_KEY, null));
   const [view, setView] = useState(() => {
     const hash = (window.location.hash || "").replace("#", "").toLowerCase();
-    if (hash === "academy" || hash === "home" || hash === "learning" || hash === "course") {
-      return "dashboard";
+    // Only OTP page continues across reload so the countdown timer continues from where it stopped
+    if (hash === "otp" || hash === "verify") {
+      return "otp";
     }
-    if (hash === "login") return "login";
-    if (hash === "signup" || hash === "register") return "signup";
+    // Every other page starts again from the beginning (welcome)
+    if (hash && hash !== "welcome") {
+      try {
+        history.replaceState(null, "", window.location.pathname);
+      } catch (e) {}
+    }
     return "welcome";
   });
   const [isViewTransitioning, setIsViewTransitioning] = useState(false);
@@ -768,6 +997,152 @@ function AuthPage() {
       setIsViewTransitioning(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }, 220);
+  }
+
+  // Pending signup details awaiting OTP verification (persisted across page refreshes)
+  const [pendingAccount, setPendingAccount] = useState(() => {
+    try {
+      const saved = localStorage.getItem(PENDING_ACCOUNT_KEY);
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+
+  // OTP 6-digit state
+  const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
+  const [otpTimer, setOtpTimer] = useState(() => {
+    const remaining = getRemainingOtpSeconds();
+    const hash = (window.location.hash || "").replace("#", "").toLowerCase();
+    if ((hash === "otp" || hash === "verify") && remaining === 0 && !localStorage.getItem(OTP_EXPIRY_KEY)) {
+      const expiry = Date.now() + OTP_TIMER_SECONDS * 1000;
+      try { localStorage.setItem(OTP_EXPIRY_KEY, expiry.toString()); } catch (e) {}
+      return OTP_TIMER_SECONDS;
+    }
+    return remaining;
+  });
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [isResendingOtp, setIsResendingOtp] = useState(false);
+  const [otpNotice, setOtpNotice] = useState("");
+  const [showSpamTip, setShowSpamTip] = useState(false);
+
+  // Onboarding "First, let's get to know you" state
+  const [onboardingName, setOnboardingName] = useState("");
+  const [onboardingAge, setOnboardingAge] = useState(null);
+  const [onboardingCountry, setOnboardingCountry] = useState("United States");
+  const [onboardingAvatar, setOnboardingAvatar] = useState(null);
+  const [onboardingNotice, setOnboardingNotice] = useState("");
+  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
+  const [countrySearch, setCountrySearch] = useState("");
+
+  useEffect(() => {
+    if (!isCountryDropdownOpen) return;
+    const handleClickOutside = (e) => {
+      const dropdownWrap = document.querySelector(".about-you-country-custom-select");
+      if (dropdownWrap && !dropdownWrap.contains(e.target)) {
+        setIsCountryDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setIsCountryDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isCountryDropdownOpen]);
+
+  function handlePhotoUpload(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setOnboardingNotice("Please select a valid image (PNG, JPG, JPEG, WEBP).");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setOnboardingNotice("Image file should be smaller than 5MB.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setOnboardingAvatar(e.target.result);
+      setOnboardingNotice("");
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function handleOnboardingComplete() {
+    const preferredName = (onboardingName || "").trim() || (pendingAccount?.name ? pendingAccount.name.split(" ")[0] : "Learner");
+    const originalFullName = pendingAccount?.fullName || pendingAccount?.name || form.name || preferredName;
+
+    const usersDb = readStorage(USERS_DB_KEY, [defaultAccount]);
+    const finalAccount = {
+      ...(pendingAccount || defaultAccount),
+      name: preferredName,
+      fullName: originalFullName,
+      avatar: onboardingAvatar || pendingAccount?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+      age: onboardingAge,
+      country: onboardingCountry || "United States",
+      email: (pendingAccount?.email || form.email || "teen@mydearteenager.com").trim().toLowerCase()
+    };
+
+    const updatedUsersDb = [...usersDb.filter((u) => u.email.toLowerCase() !== finalAccount.email.toLowerCase()), finalAccount];
+    localStorage.setItem(USERS_DB_KEY, JSON.stringify(updatedUsersDb));
+    localStorage.setItem(ACCOUNT_KEY, JSON.stringify(finalAccount));
+
+    const freshData = createFreshUserData(finalAccount);
+    saveUserData(finalAccount.email, freshData);
+
+    setAccount(finalAccount);
+    setUserXp(freshData.userXp);
+    setStreak(freshData.streak);
+    setLastStreakDate(freshData.lastStreakDate);
+    setCoursesList(freshData.coursesList);
+    setProjects(freshData.projects);
+    setNotice("");
+    setPendingAccount(null);
+    try {
+      localStorage.removeItem(PENDING_ACCOUNT_KEY);
+      localStorage.removeItem(OTP_EXPIRY_KEY);
+    } catch (e) {}
+
+    transitionToView("dashboard", "forward");
+    setDashboardView("home");
+    try { history.replaceState(null, "", window.location.pathname); } catch (e) {}
+  }
+
+  // OTP Countdown timer: syncs with persistent timestamp in localStorage across page refreshes
+  useEffect(() => {
+    if (view !== "otp") return;
+
+    const syncRemaining = () => {
+      const remaining = getRemainingOtpSeconds();
+      setOtpTimer(remaining);
+      return remaining;
+    };
+
+    const current = syncRemaining();
+    if (current <= 0) return;
+
+    const interval = setInterval(() => {
+      const rem = syncRemaining();
+      if (rem <= 0) {
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [view, otpTimer > 0]);
+
+  function formatOtpTimer(sec) {
+    const safeSec = Math.max(0, sec || 0);
+    const m = Math.floor(safeSec / 60);
+    const s = safeSec % 60;
+    return `${m < 10 ? "0" + m : m}:${s < 10 ? "0" + s : s}`;
   }
 
   const [userRole, setUserRole] = useState("teenager"); // "teenager" | "parent"
@@ -971,31 +1346,20 @@ function AuthPage() {
     return () => clearInterval(timer);
   }, [dashboardView, isVideoPlaying, activeCourseId, activeLessonIndex]);
 
-  // Sync hash if URL has #academy, #home, #learning, #course, #signup, #login, or #welcome
+  // Hash routing listener: Only OTP retains page state on initial load/reload so the timer can continue from where it stopped
   useEffect(() => {
     const handleHash = () => {
       const hash = (window.location.hash || "").replace("#", "").toLowerCase();
-      if (hash === "academy") {
-        setView("dashboard");
-        setDashboardView("academy");
-      } else if (hash === "home") {
-        setView("dashboard");
-        setDashboardView("home");
-      } else if (hash === "learning" || hash === "mylearning") {
-        setView("dashboard");
-        setDashboardView("learning");
-      } else if (hash === "course") {
-        setView("dashboard");
-        setDashboardView("course");
+      if (hash === "otp" || hash === "verify") {
+        setView("otp");
+      } else if (hash === "welcome" || !hash) {
+        setView("welcome");
       } else if (hash === "signup" || hash === "register") {
         setView("signup");
       } else if (hash === "login") {
         setView("login");
-      } else if (hash === "welcome") {
-        setView("welcome");
       }
     };
-    handleHash();
     window.addEventListener("hashchange", handleHash);
     return () => window.removeEventListener("hashchange", handleHash);
   }, []);
@@ -1043,33 +1407,29 @@ function AuthPage() {
         return;
       }
 
-      const newAccount = {
+      const pending = {
         name: form.name.trim() || (userRole === "parent" ? "Parent / Mentor" : "Teen Learner"),
+        fullName: form.name.trim() || (userRole === "parent" ? "Parent / Mentor" : "Teen Learner"),
         email: cleanEmail,
         password: form.password,
         role: userRole,
         avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
       };
 
-      // Save to users database and active session
-      const updatedUsersDb = [...usersDb, newAccount];
-      localStorage.setItem(USERS_DB_KEY, JSON.stringify(updatedUsersDb));
-      localStorage.setItem(ACCOUNT_KEY, JSON.stringify(newAccount));
-
-      // Brand new account starts fresh with everything at ZERO
-      const freshData = createFreshUserData(newAccount);
-      saveUserData(cleanEmail, freshData);
-
-      setAccount(newAccount);
-      setUserXp(freshData.userXp);
-      setStreak(freshData.streak);
-      setLastStreakDate(freshData.lastStreakDate);
-      setCoursesList(freshData.coursesList);
-      setProjects(freshData.projects);
+      // Transition to OTP verification stage
+      setPendingAccount(pending);
+      try {
+        localStorage.setItem(PENDING_ACCOUNT_KEY, JSON.stringify(pending));
+        const expiry = Date.now() + OTP_TIMER_SECONDS * 1000;
+        localStorage.setItem(OTP_EXPIRY_KEY, expiry.toString());
+      } catch (e) {}
+      setOtpDigits(["", "", "", "", "", ""]);
+      setOtpTimer(OTP_TIMER_SECONDS);
+      setOtpNotice("");
+      setShowSpamTip(false);
       setNotice("");
-      setView("dashboard");
-      setDashboardView("home");
-      window.location.hash = "home";
+      transitionToView("otp", "forward");
+      window.location.hash = "otp";
       return;
     }
 
@@ -1104,6 +1464,179 @@ function AuthPage() {
     }
   }
 
+  // ============================================================================
+  // BACKEND INTEGRATION HOOKS & HANDLERS FOR OTP VERIFICATION
+  // ============================================================================
+  // These functions manage the 6-digit OTP verification flow.
+  // When connecting to your real backend API:
+  // 1. In `handleVerifyOtp`: send POST request to your verification endpoint,
+  //    e.g. POST /api/auth/verify-otp with { email, code }.
+  // 2. In `handleResendOtp`: send POST request to trigger a new code,
+  //    e.g. POST /api/auth/resend-otp with { email }.
+  // ============================================================================
+
+  function handleOtpDigitChange(index, rawValue) {
+    const cleaned = rawValue.replace(/\D/g, "").slice(-1);
+    const updated = [...otpDigits];
+    updated[index] = cleaned;
+    setOtpDigits(updated);
+    setOtpNotice("");
+
+    // Auto-advance to next box if digit was entered
+    if (cleaned && index < 5) {
+      const nextInput = document.getElementById(`otp-digit-${index + 1}`);
+      if (nextInput) nextInput.focus();
+    }
+  }
+
+  function handleOtpKeyDown(index, event) {
+    if (event.key === "Backspace") {
+      if (!otpDigits[index] && index > 0) {
+        // Move back to previous box on backspace if current is empty
+        const prevInput = document.getElementById(`otp-digit-${index - 1}`);
+        if (prevInput) {
+          prevInput.focus();
+          const updated = [...otpDigits];
+          updated[index - 1] = "";
+          setOtpDigits(updated);
+        }
+      }
+    } else if (event.key === "ArrowLeft" && index > 0) {
+      const prevInput = document.getElementById(`otp-digit-${index - 1}`);
+      if (prevInput) prevInput.focus();
+    } else if (event.key === "ArrowRight" && index < 5) {
+      const nextInput = document.getElementById(`otp-digit-${index + 1}`);
+      if (nextInput) nextInput.focus();
+    }
+  }
+
+  function handleOtpPaste(event) {
+    event.preventDefault();
+    const pasted = (event.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0, 6);
+    if (!pasted) return;
+
+    const updated = ["", "", "", "", "", ""];
+    for (let i = 0; i < pasted.length; i++) {
+      updated[i] = pasted[i];
+    }
+    setOtpDigits(updated);
+    setOtpNotice("");
+
+    const targetFocus = Math.min(pasted.length, 5);
+    const targetInput = document.getElementById(`otp-digit-${targetFocus}`);
+    if (targetInput) targetInput.focus();
+  }
+
+  function handleVerifyOtp(event) {
+    if (event && event.preventDefault) event.preventDefault();
+    const code = otpDigits.join("");
+
+    if (code.length < 6) {
+      setOtpNotice("Please enter all 6 digits of your verification code.");
+      return;
+    }
+
+    if (getRemainingOtpSeconds() <= 0 && otpTimer <= 0) {
+      setOtpNotice("Your verification code has expired. Please click 'Resend Code' below to receive a new code.");
+      return;
+    }
+
+    setIsVerifyingOtp(true);
+    setOtpNotice("");
+
+    /*
+      -------------------------------------------------------------------------
+      BACKEND INTEGRATION EXAMPLE:
+      -------------------------------------------------------------------------
+      try {
+        const response = await fetch('/api/auth/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: pendingAccount?.email || form.email,
+            code: code
+          })
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error(data.message || 'Invalid or expired code.');
+        }
+        // Save session data returned from server...
+      } catch (err) {
+        setIsVerifyingOtp(false);
+        setOtpNotice(err.message || 'Verification failed. Please try again.');
+        return;
+      }
+      -------------------------------------------------------------------------
+    */
+
+    // Simulated verification delay (Frontend flow):
+    setTimeout(() => {
+      setIsVerifyingOtp(false);
+      const usersDb = readStorage(USERS_DB_KEY, [defaultAccount]);
+      const targetAccount = pendingAccount || {
+        name: form.name.trim() || (userRole === "parent" ? "Parent / Mentor" : "Teen Learner"),
+        email: (form.email || "teen@mydearteenager.com").trim().toLowerCase(),
+        password: form.password || "password123",
+        role: userRole,
+        avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
+      };
+
+      // Save to registered database and active session
+      const updatedUsersDb = [...usersDb.filter((u) => u.email.toLowerCase() !== targetAccount.email.toLowerCase()), targetAccount];
+      localStorage.setItem(USERS_DB_KEY, JSON.stringify(updatedUsersDb));
+      localStorage.setItem(ACCOUNT_KEY, JSON.stringify(targetAccount));
+
+      // Brand new account starts fresh with everything at zero
+      const freshData = createFreshUserData(targetAccount);
+      saveUserData(targetAccount.email, freshData);
+
+      setAccount(targetAccount);
+      setUserXp(freshData.userXp);
+      setStreak(freshData.streak);
+      setLastStreakDate(freshData.lastStreakDate);
+      setCoursesList(freshData.coursesList);
+      setProjects(freshData.projects);
+      setNotice("");
+      setPendingAccount(null);
+      try {
+        localStorage.removeItem(OTP_EXPIRY_KEY);
+        localStorage.removeItem(PENDING_ACCOUNT_KEY);
+      } catch (e) {}
+
+      // Transition to onboarding ("First, let's get to know you")
+      if (targetAccount.name) {
+        setOnboardingName(targetAccount.name.split(" ")[0]);
+      }
+      transitionToView("about-you", "forward");
+      try { history.replaceState(null, "", window.location.pathname); } catch (e) {}
+    }, 700);
+  }
+
+  function handleResendOtp() {
+    if (otpTimer > 0 || isResendingOtp) return;
+    setIsResendingOtp(true);
+    setOtpNotice("");
+
+    setTimeout(() => {
+      setIsResendingOtp(false);
+      const newExpiry = Date.now() + OTP_TIMER_SECONDS * 1000;
+      try {
+        localStorage.setItem(OTP_EXPIRY_KEY, newExpiry.toString());
+      } catch (e) {}
+      setOtpTimer(OTP_TIMER_SECONDS);
+      setOtpDigits(["", "", "", "", "", ""]);
+      setOtpNotice("A new 6-digit verification code has been dispatched to your email!");
+      const firstBox = document.getElementById("otp-digit-0");
+      if (firstBox) firstBox.focus();
+    }, 500);
+  }
+
+  function handleMagicLink() {
+    const targetEmail = pendingAccount?.email || form.email || "";
+    window.location.href = `mailto:${targetEmail}?subject=Verify%20MyDearTeenager%20Account`;
+  }
+
   function logout() {
     setAccount(null);
     localStorage.removeItem(ACCOUNT_KEY);
@@ -1122,12 +1655,12 @@ function AuthPage() {
     setProject({ title: "", skill: "", description: "" });
   }
 
-  // Open course in the dedicated Ongoing Course page (matching Ongoing course.jpeg)
+ 
   function openCourseVideo(course, lessonIndex = null) {
     const targetCourse = (course && coursesList.find((c) => c.id === course.id)) || course || coursesList[0] || academyCourses[0];
     setActiveCourseId(targetCourse.id);
 
-    // Mark course as enrolled / in-progress when the user opens or starts watching it
+    
     if (!targetCourse.enrolled) {
       const updatedCourses = coursesList.map((c) => {
         if (c.id === targetCourse.id) {
@@ -1156,14 +1689,13 @@ function AuthPage() {
     setLessonWatchTimestamp(initialTime);
 
     setDashboardView("course");
-    window.location.hash = "course";
   }
 
-  // Increment Weekly Streak once per calendar day and award XP
+  
   function incrementStreak() {
     if (isStreakClaimedToday) return;
 
-    // Check if the previous streak was recorded yesterday (1 day difference) to continue streak, otherwise start at 1
+    
     const isConsecutive = lastStreakDate && getDaysDifference(lastStreakDate, todayDateStr) === 1;
     const nextStreak = isConsecutive ? (streak < 14 ? streak + 1 : 1) : 1;
     const nextXp = userXp + 50;
@@ -1181,7 +1713,7 @@ function AuthPage() {
     });
   }
 
-  // Mark the current active lesson on the Ongoing Course page as complete
+  
   function completeCurrentOngoingLesson() {
     const targetCourseId = activeCourseId || (coursesList[0] && coursesList[0].id) || "uiux-1";
     const currentCourse = coursesList.find((c) => c.id === targetCourseId) || coursesList[0];
@@ -1202,7 +1734,7 @@ function AuthPage() {
 
     setCoursesList(updatedCourses);
 
-    // If not already done, award +60 XP
+    
     if (!currentLesson.done) {
       const nextXp = userXp + 60;
       const { userLevel: nextLevel } = getLevelInfo(nextXp);
@@ -1305,7 +1837,7 @@ function AuthPage() {
             <a
               className={dashboardView === "home" ? "selected" : ""}
               href="#home"
-              onClick={(e) => { e.preventDefault(); setDashboardView("home"); window.location.hash = "home"; }}
+              onClick={(e) => { e.preventDefault(); setDashboardView("home"); }}
             >
               <Icon name="home" size={20} />
               <span>Home</span>
@@ -1314,7 +1846,7 @@ function AuthPage() {
             <a
               className={dashboardView === "academy" ? "selected" : ""}
               href="#academy"
-              onClick={(e) => { e.preventDefault(); setDashboardView("academy"); window.location.hash = "academy"; }}
+              onClick={(e) => { e.preventDefault(); setDashboardView("academy"); }}
             >
               <Icon name="academy" size={20} />
               <span>Skill Academy</span>
@@ -1326,7 +1858,6 @@ function AuthPage() {
               onClick={(e) => {
                 e.preventDefault();
                 setDashboardView("learning");
-                window.location.hash = "learning";
               }}
             >
               <Icon name="learning" size={20} />
@@ -1374,7 +1905,7 @@ function AuthPage() {
                       alt={account.name || "User"}
                     />
                     <div className="dropdown-user-text">
-                      <strong>{account.name || "Daniel"}</strong>
+                      <strong>{account.fullName || account.name || "Daniel"}</strong>
                       <small>{account.email}</small>
                     </div>
                   </div>
@@ -1407,7 +1938,7 @@ function AuthPage() {
                   alt={account.name || "User"}
                 />
                 <div className="profile-info">
-                  <strong>{account.name || "Daniel"}</strong>
+                  <strong>{account.fullName || account.name || "Daniel"}</strong>
                   <small>★ Level {userLevel} learner</small>
                 </div>
                 <span className="profile-arrow">{showUserDropdown ? "⌃" : "⌄"}</span>
@@ -1853,7 +2384,7 @@ function AuthPage() {
                   <span className="hero-pill">
                     {streak === 0 ? "Start your daily streak" : (streak === 1 ? "On a 1 day streak" : `On a ${streak} day streak`)}
                   </span>
-                  <h1>Good Morning, {account.name || "Daniel"}</h1>
+                  <h1>{getTimeGreeting()}, {account.name || "Daniel"}</h1>
                   <p>Small steps every day. Keep building the future you want.</p>
                   <small>You're making great progress this week. Keep your learning streak going.</small>
                   <div className="hero-actions">
@@ -2504,25 +3035,42 @@ function AuthPage() {
             />
           </a>
           <div className="welcome-nav-user">
-            <button
-              className="welcome-profile-avatar-btn"
-              onClick={() => {
-                if (account) {
-                  setView("dashboard");
-                  window.location.hash = "home";
-                } else {
-                  setView(view === "login" ? "welcome" : "login");
-                  setNotice("");
-                }
-              }}
-              aria-label="Account"
-              title={account ? `Logged in as ${account.name || "User"}` : "Log in"}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
-            </button>
+            {view === "otp" ? (
+              <div className="otp-header-badge-group">
+                <span className="otp-safe-badge">
+                  <span className="otp-green-dot"></span>
+                  Safe &amp; Secure
+                </span>
+                <button
+                  type="button"
+                  className="otp-help-btn"
+                  title="Need help with verification?"
+                  aria-label="Help"
+                  onClick={() => alert("Verification Help:\n\nA 6-digit verification code has been dispatched to your email address.\n\n• Check your inbox and enter the 6 digits.\n• If you don't see it within 2 minutes, check your Spam or Junk folder.\n• You can also click 'Resend Code' to request a new code.")}
+                >
+                  ?
+                </button>
+              </div>
+            ) : (
+              <button
+                className="welcome-profile-avatar-btn"
+                onClick={() => {
+                  if (account) {
+                    setView("dashboard");
+                  } else {
+                    setView(view === "login" ? "welcome" : "login");
+                    setNotice("");
+                  }
+                }}
+                aria-label="Account"
+                title={account ? `Logged in as ${account.name || "User"}` : "Log in"}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -2806,6 +3354,503 @@ function AuthPage() {
             </button>
           </div>
         </main>
+      ) : view === "otp" ? (
+        /* OTP Verification Screen - EXACT match to Images/otp.png */
+        <main className={`otp-page-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
+          <div className="otp-stage-center">
+            <div className="otp-card-container">
+              {/* 1. Envelope Icon with Security Badge */}
+              <div className="otp-icon-header">
+                <div className="otp-icon-bubble">
+                  <svg className="otp-envelope-svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                  </svg>
+                  <span className="otp-icon-lock-badge" title="Secure OTP">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+              {/* 2. Main Title */}
+              <h1 className="otp-title">Check your email </h1>
+
+              {/* 3. Subtitle */}
+              <p className="otp-subtitle">We sent a 6-digit verification code to</p>
+
+              {/* 4. Target Email Badge Pill */}
+              <div className="otp-email-pill-wrap">
+                <span className="otp-email-pill">
+                  {pendingAccount?.email || form.email || "davidtosin@example.com"}
+                </span>
+              </div>
+
+              {/* 5. OTP 6-Digit Form */}
+              <form className="otp-form" onSubmit={handleVerifyOtp}>
+                <label className="otp-input-label" htmlFor="otp-digit-0">
+                  ENTER 6-DIGIT VERIFICATION CODE
+                </label>
+
+                <div className="otp-boxes-grid">
+                  {otpDigits.map((digit, idx) => (
+                    <input
+                      key={idx}
+                      id={`otp-digit-${idx}`}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      autoComplete={idx === 0 ? "one-time-code" : "off"}
+                      maxLength={1}
+                      placeholder="•"
+                      className={`otp-digit-input ${digit ? "has-value" : ""}`}
+                      value={digit}
+                      onChange={(e) => handleOtpDigitChange(idx, e.target.value)}
+                      onKeyDown={(e) => handleOtpKeyDown(idx, e)}
+                      onPaste={handleOtpPaste}
+                      aria-label={`Verification digit ${idx + 1}`}
+                      autoFocus={idx === 0}
+                    />
+                  ))}
+                </div>
+
+                {/* 6. Timer & Change Email Row */}
+                <div className="otp-timer-row">
+                  <span className="otp-timer-text">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="otp-clock-icon">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    {otpTimer > 0 ? (
+                      <>Code expires in <strong>{formatOtpTimer(otpTimer)}</strong></>
+                    ) : (
+                      <span className="otp-timer-expired-badge">Code expired</span>
+                    )}
+                  </span>
+                  <button
+                    type="button"
+                    className="otp-change-email-btn"
+                    onClick={() => transitionToView("signup", "backward")}
+                  >
+                    Change email
+                  </button>
+                </div>
+
+                {/* Notice / Feedback box */}
+                {otpNotice && (
+                  <div className={`otp-notice-box ${otpNotice.includes("sent") || otpNotice.includes("dispatched") ? "is-success" : "is-error"}`} role="alert">
+                    {otpNotice}
+                  </div>
+                )}
+
+                {/* 7. Verify & Continue Button */}
+                <button
+                  type="submit"
+                  className="otp-verify-btn"
+                  disabled={isVerifyingOtp}
+                >
+                  {isVerifyingOtp ? "Verifying..." : "Verify & Continue →"}
+                </button>
+              </form>
+
+              {/* 8. Direct Link Divider */}
+              <div className="otp-divider">
+                <span className="otp-divider-text">Or prefer a direct link?</span>
+              </div>
+
+              {/* 9. Magic Link Button */}
+              <button
+                type="button"
+                className="otp-magic-link-btn"
+                onClick={handleMagicLink}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+                Open Email App &amp; Click Magic Link
+              </button>
+
+              {/* 10. Resend Code & Check Spam Row */}
+              <div className="otp-resend-row">
+                <span className="otp-resend-prompt">Didn't receive the email?</span>
+                {otpTimer > 0 ? (
+                  <span className="otp-resend-countdown-hint">
+                    Resend in <strong className="otp-countdown-val">{formatOtpTimer(otpTimer)}</strong>
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    className="otp-resend-link is-ready"
+                    onClick={handleResendOtp}
+                    disabled={isResendingOtp}
+                  >
+                    {isResendingOtp ? "Sending..." : "Resend Code"}
+                  </button>
+                )}
+                <span className="otp-dot-separator">·</span>
+                <button
+                  type="button"
+                  className="otp-spam-link"
+                  onClick={() => setShowSpamTip(!showSpamTip)}
+                >
+                  Check Spam
+                </button>
+              </div>
+
+              {showSpamTip && (
+                <div className="otp-spam-tip">
+                  💡 <strong>Spam Folder Tip:</strong> Sometimes emails land in your Spam or Junk folder. Mark emails from MyDearTeenager as "Not Spam" to receive future access links!
+                </div>
+              )}
+
+              {/* 11. Security Trust Badge */}
+              <div className="otp-trust-shield">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <polyline points="9 12 11 14 15 10" />
+                </svg>
+                <span>MDT Teenager-Safe Privacy Shield • Never shared with third parties</span>
+              </div>
+            </div>
+
+            {/* 12. Back to Create Account */}
+            <div className="otp-back-section">
+              <button
+                type="button"
+                className="otp-back-to-signup-btn"
+                onClick={() => transitionToView("signup", "backward")}
+              >
+                ← Back to Create Account
+              </button>
+            </div>
+          </div>
+
+          {/* 13. Legal & Safety Footer (Matching otp.png horizontal layout) */}
+          <footer className="otp-page-footer">
+            <div className="otp-footer-inner">
+              <span className="otp-copyright">© 2026 MyDearTeenager. All rights reserved.</span>
+              <div className="otp-legal-links">
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+                <a href="#safety">Safety Center</a>
+              </div>
+            </div>
+          </footer>
+        </main>
+      ) : view === "about-you" ? (
+        /* "First, let's get to know you" - EXACT match to Images/tell-us-about-you.png */
+        <main className={`about-you-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
+          {/* Progress Stepper Bar 03/07 matching tell-us-about-you.png */}
+          <div className="about-you-stepper">
+            <span className="stepper-counter">03/07</span>
+            <div className="stepper-segments">
+              <span className="step-bar step-done"></span>
+              <span className="step-bar step-done"></span>
+              <span className="step-bar step-done"></span>
+              <span className="step-bar step-pending"></span>
+              <span className="step-bar step-pending"></span>
+              <span className="step-bar step-pending"></span>
+              <span className="step-bar step-pending"></span>
+            </div>
+          </div>
+
+          {/* Title & Subtitle */}
+          <div className="about-you-heading">
+            <h1 className="about-you-title">First, let's get to know you</h1>
+            <p className="about-you-subtitle">
+              This helps us make <span className="logo-purple">MyDear</span><span className="logo-dark">Teenager</span> feel more personal to you.
+            </p>
+          </div>
+
+          {/* Photo Upload Card */}
+          <div className="about-you-avatar-card">
+            <div
+              className={`about-you-avatar-circle ${onboardingAvatar ? "has-image" : ""}`}
+              onClick={() => {
+                const fileIn = document.getElementById("onboarding-avatar-file-input");
+                if (fileIn) fileIn.click();
+              }}
+              title="Click to select a profile picture"
+            >
+              {onboardingAvatar ? (
+                <img
+                  src={onboardingAvatar}
+                  alt="Profile Preview"
+                  className="about-you-avatar-preview"
+                />
+              ) : (
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="about-you-camera-svg">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                  <circle cx="12" cy="13" r="4" />
+                  <line x1="19" y1="10" x2="19" y2="14" />
+                  <line x1="17" y1="12" x2="21" y2="12" />
+                </svg>
+              )}
+            </div>
+
+            <input
+              id="onboarding-avatar-file-input"
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handlePhotoUpload}
+            />
+
+            <div className="about-you-photo-actions">
+              <button
+                type="button"
+                className="about-you-add-photo-btn"
+                onClick={() => {
+                  const fileIn = document.getElementById("onboarding-avatar-file-input");
+                  if (fileIn) fileIn.click();
+                }}
+              >
+                {onboardingAvatar ? "Change photo" : "Add a photo"}
+              </button>
+              {onboardingAvatar ? (
+                <button
+                  type="button"
+                  className="about-you-skip-link"
+                  onClick={() => setOnboardingAvatar(null)}
+                >
+                  Remove photo
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="about-you-skip-link"
+                  onClick={() => setOnboardingNotice("")}
+                >
+                  Skip for now
+                </button>
+              )}
+            </div>
+
+            {onboardingNotice && (
+              <p className="about-you-notice" role="alert">{onboardingNotice}</p>
+            )}
+          </div>
+
+          {/* Form Fields Container */}
+          <div className="about-you-fields-form">
+            {/* Field 1: Your Name */}
+            <div className="about-you-field">
+              <label className="about-you-label" htmlFor="onboarding-name-input">
+                Username
+              </label>
+              <input
+                id="onboarding-name-input"
+                type="text"
+                className="about-you-text-input"
+                value={onboardingName}
+                onChange={(e) => setOnboardingName(e.target.value)}
+                placeholder="David"
+              />
+            </div>
+
+            {/* Field 2: How old are you? */}
+            <div className="about-you-field">
+              <label className="about-you-label">
+                How old are you?
+              </label>
+              <div className="about-you-age-grid">
+                {[13, 14, 15, 16, 17, 18].map((age) => (
+                  <button
+                    key={age}
+                    type="button"
+                    className={`about-you-age-btn ${onboardingAge === age ? "active" : ""}`}
+                    onClick={() => setOnboardingAge(age)}
+                  >
+                    {age}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Field 3: Where do you live? (Comprehensive Alphabetical Countries with Flags & Modern Typography) */}
+            <div className="about-you-field">
+              <label className="about-you-label" htmlFor="onboarding-country-select">
+                Where do you live?
+              </label>
+              <div className="about-you-country-custom-select">
+                {/* Hidden native select keeps state synced for accessibility and direct interactions */}
+                <select
+                  id="onboarding-country-select"
+                  className="about-you-native-select-hidden"
+                  value={onboardingCountry}
+                  onChange={(e) => setOnboardingCountry(e.target.value)}
+                  tabIndex={-1}
+                  aria-hidden="true"
+                >
+                  <option value="" disabled>Select a country</option>
+                  {ALL_COUNTRIES.map((c) => (
+                    <option key={c.code} value={c.name}>{c.name}</option>
+                  ))}
+                </select>
+
+                {/* Custom Trigger Button */}
+                {(() => {
+                  const currentCountryObj = ALL_COUNTRIES.find((c) => c.name === onboardingCountry);
+                  return (
+                    <div
+                      className={`about-you-country-trigger ${isCountryDropdownOpen ? "open" : ""}`}
+                      onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
+                      role="combobox"
+                      aria-expanded={isCountryDropdownOpen}
+                      aria-haspopup="listbox"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+                          e.preventDefault();
+                          setIsCountryDropdownOpen(true);
+                        }
+                      }}
+                    >
+                      <div className="country-trigger-content">
+                        {currentCountryObj ? (
+                          <>
+                            <img
+                              src={`https://flagcdn.com/w40/${currentCountryObj.code.toLowerCase()}.png`}
+                              alt=""
+                              className="country-flag-icon"
+                              loading="lazy"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                                const next = e.currentTarget.nextElementSibling;
+                                if (next) next.style.display = "inline-block";
+                              }}
+                            />
+                            <span className="country-flag-emoji-fallback" style={{ display: "none" }}>
+                              {currentCountryObj.flag}
+                            </span>
+                            <span className="country-trigger-name">{currentCountryObj.name}</span>
+                          </>
+                        ) : (
+                          <span className="country-trigger-placeholder">Select a country</span>
+                        )}
+                      </div>
+                      <span className={`about-you-select-chevron ${isCountryDropdownOpen ? "rotated" : ""}`} aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </span>
+                    </div>
+                  );
+                })()}
+
+                {/* Dropdown Menu */}
+                {isCountryDropdownOpen && (
+                  <div className="about-you-country-menu" role="listbox">
+                    <div className="country-search-wrap">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="country-search-icon">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      </svg>
+                      <input
+                        type="text"
+                        className="country-search-input"
+                        placeholder="Search country..."
+                        value={countrySearch}
+                        onChange={(e) => setCountrySearch(e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                        autoFocus
+                      />
+                      {countrySearch && (
+                        <button
+                          type="button"
+                          className="country-search-clear"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCountrySearch("");
+                          }}
+                          aria-label="Clear search"
+                        >
+                          &times;
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="country-options-list">
+                      {(() => {
+                        const filtered = ALL_COUNTRIES.filter((c) =>
+                          c.name.toLowerCase().includes(countrySearch.toLowerCase().trim())
+                        );
+                        if (filtered.length === 0) {
+                          return (
+                            <div className="country-no-results">
+                              No countries matching "{countrySearch}"
+                            </div>
+                          );
+                        }
+                        return filtered.map((c) => {
+                          const isSelected = onboardingCountry === c.name;
+                          return (
+                            <div
+                              key={c.code}
+                              className={`country-option-item ${isSelected ? "selected" : ""}`}
+                              role="option"
+                              aria-selected={isSelected}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setOnboardingCountry(c.name);
+                                setIsCountryDropdownOpen(false);
+                                setCountrySearch("");
+                              }}
+                            >
+                              <div className="country-option-info">
+                                <img
+                                  src={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png`}
+                                  alt=""
+                                  className="country-flag-icon"
+                                  loading="lazy"
+                                  onError={(e) => {
+                                    e.currentTarget.style.display = "none";
+                                    const next = e.currentTarget.nextElementSibling;
+                                    if (next) next.style.display = "inline-block";
+                                  }}
+                                />
+                                <span className="country-flag-emoji-fallback" style={{ display: "none" }}>
+                                  {c.flag}
+                                </span>
+                                <span className="country-option-name">{c.name}</span>
+                              </div>
+                              {isSelected && (
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5b21b6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="country-check-icon">
+                                  <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                              )}
+                            </div>
+                          );
+                        });
+                      })()}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Floating Bottom Dock matching tell-us-about-you.png */}
+          <div className="about-you-bottom-dock">
+            <button
+              type="button"
+              className="about-you-dock-back"
+              onClick={() => transitionToView("otp", "backward")}
+            >
+              ← Back
+            </button>
+            <button
+              type="button"
+              className="about-you-dock-continue"
+              onClick={handleOnboardingComplete}
+            >
+              Continue →
+            </button>
+          </div>
+        </main>
       ) : (
         /* Login Form View - EXACT match to Images/login-page.png */
         <main className={`login-page-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
@@ -2925,7 +3970,6 @@ function AuthPage() {
                   setAccount(demoUser);
                   setView("dashboard");
                   setDashboardView("home");
-                  window.location.hash = "home";
                 }
               }}
               title="Continue with Google"
@@ -2951,7 +3995,6 @@ function AuthPage() {
                   setAccount(demoUser);
                   setView("dashboard");
                   setDashboardView("home");
-                  window.location.hash = "home";
                 }
               }}
               title="Continue with Apple"
