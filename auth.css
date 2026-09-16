@@ -439,11 +439,15 @@ button { cursor: pointer; }
 }
 
 .step-bar.step-done {
-  background: #00714D; /* Green pill from mockup */
+  background: #15803d; /* Completed green */
+}
+
+.step-bar.step-active {
+  background: #5c3cd6; /* Active purple for current step */
 }
 
 .step-bar.step-pending {
-  background: #dbeafe; /* Soft blue pill from mockup */
+  background: #bfdbfe; /* Soft light blue */
 }
 
 /* 2. Heading & Subtitle */
@@ -4651,8 +4655,8 @@ h1, h2 { font-family: "Inter", sans-serif; }
   }
   100% {
     opacity: 1;
-    transform: translateX(0) scale(1);
-    filter: blur(0);
+    transform: none;
+    filter: none;
   }
 }
 
@@ -4664,17 +4668,17 @@ h1, h2 { font-family: "Inter", sans-serif; }
   }
   100% {
     opacity: 1;
-    transform: translateX(0) scale(1);
-    filter: blur(0);
+    transform: none;
+    filter: none;
   }
 }
 
 .view-enter-forward {
-  animation: viewEnterForward 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: viewEnterForward 0.38s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .view-enter-backward {
-  animation: viewEnterBackward 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: viewEnterBackward 0.38s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .view-exit-forward {
@@ -4794,6 +4798,7 @@ h1, h2 { font-family: "Inter", sans-serif; }
   margin: auto 0;
 }
 
+/* Right Column: OTP Code Verification Card */
 .otp-card-container {
   width: 100%;
   background: #ffffff;
@@ -4803,6 +4808,7 @@ h1, h2 { font-family: "Inter", sans-serif; }
   padding: 2.25rem 2.25rem 1.75rem 2.25rem;
   text-align: center;
   position: relative;
+  box-sizing: border-box;
 }
 
 /* Icon with security lock badge */
@@ -5408,7 +5414,7 @@ h1, h2 { font-family: "Inter", sans-serif; }
 
 .about-you-stage {
   width: 100%;
-  max-width: 600px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 2.25rem 1.5rem 12rem;
   display: flex;
@@ -5451,6 +5457,10 @@ h1, h2 { font-family: "Inter", sans-serif; }
   background: #15803d; /* deep vibrant green matching mockup */
 }
 
+.about-you-stepper .step-active {
+  background: #5c3cd6; /* active purple for current step */
+}
+
 .about-you-stepper .step-pending {
   background: #bfdbfe; /* soft light blue matching mockup */
 }
@@ -5488,18 +5498,71 @@ h1, h2 { font-family: "Inter", sans-serif; }
   font-weight: 700;
 }
 
+/* Desktop 2-Column Grid for Step 03 About You */
+.about-you-desktop-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 2.5rem;
+  align-items: stretch;
+  width: 100%;
+}
+
 /* Photo Upload Card */
 .about-you-avatar-card {
   background: #ffffff;
   border-radius: 24px;
-  padding: 2.25rem 1.5rem 1.75rem;
+  padding: 2.5rem 2rem 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
-  margin-bottom: 2.25rem;
+  margin-bottom: 0;
   text-align: center;
   border: 1px solid rgba(226, 232, 240, 0.85);
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.about-you-card-section-title {
+  font-family: "Inter", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.35rem;
+}
+
+.about-you-card-section-sub {
+  font-size: 0.88rem;
+  color: #64748b;
+  margin: 0 0 1.75rem;
+  line-height: 1.45;
+}
+
+.about-you-privacy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #16a34a;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  margin-top: 1.5rem;
+}
+
+/* Right Column: Form Fields Details Card */
+.about-you-details-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 2.5rem 2.25rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  box-sizing: border-box;
 }
 
 .about-you-avatar-circle {
@@ -5605,6 +5668,23 @@ h1, h2 { font-family: "Inter", sans-serif; }
   margin-bottom: 0.6rem;
 }
 
+.about-you-field-header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.about-you-field-header-row .about-you-label {
+  margin-bottom: 0;
+}
+
+.about-you-field-hint {
+  font-size: 0.82rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
 .about-you-text-input {
   width: 100%;
   height: 54px;
@@ -5628,8 +5708,8 @@ h1, h2 { font-family: "Inter", sans-serif; }
 /* Age Grid */
 .about-you-age-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.85rem;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.75rem;
 }
 
 .about-you-age-btn {
@@ -5917,7 +5997,7 @@ h1, h2 { font-family: "Inter", sans-serif; }
   bottom: 1.25rem;
   left: 50%;
   transform: translateX(-50%);
-  width: min(600px, calc(100% - 2.5rem));
+  width: min(1080px, calc(100% - 2.5rem));
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -6019,5 +6099,1212 @@ h1, h2 { font-family: "Inter", sans-serif; }
   .about-you-dock-continue {
     padding: 0.7rem 1.4rem;
     font-size: 0.92rem;
+  }
+}
+
+/* ==========================================================================
+   ONBOARDING STEP 04/07 & STEP 05/07: SKILLS & GOALS (Matches 05 - Choose Your Goals.png)
+   ========================================================================== */
+
+/* Navbar Stepper */
+.navbar-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.navbar-step-text {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.navbar-step-segments {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navbar-step-segments .step-bar {
+  width: 32px;
+  height: 6px;
+  border-radius: 999px;
+  transition: background 0.25s ease;
+}
+
+.navbar-step-segments .step-done {
+  background: #15803d; /* Completed green */
+}
+
+.navbar-step-segments .step-active {
+  background: #5c3cd6; /* Active purple */
+}
+
+.navbar-step-segments .step-pending {
+  background: #bfdbfe; /* Soft light blue */
+}
+
+/* Stage Layout - 4-Column Wide Container */
+.interests-stage,
+.goals-stage {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 12rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+/* Headings */
+.interests-heading,
+.goals-heading {
+  margin-bottom: 2.75rem;
+  max-width: 700px;
+}
+
+.interests-title,
+.goals-title {
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: #1e1b2e;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.85rem;
+}
+
+.interests-subtitle,
+.goals-subtitle {
+  font-size: 1.08rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* 4-Column Grid matching 05 - Choose Your Goals.png */
+.interests-grid,
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+  margin-bottom: 2.25rem;
+}
+
+/* Card Styling */
+.interest-card,
+.goal-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 22px;
+  padding: 1.75rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  outline: none;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.02);
+  min-height: 135px;
+}
+
+.interest-card:hover,
+.goal-card:hover {
+  border-color: #c4b5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(92, 60, 214, 0.08);
+}
+
+.interest-card:focus-visible,
+.goal-card:focus-visible {
+  box-shadow: 0 0 0 3px rgba(92, 60, 214, 0.25);
+}
+
+/* Selected State */
+.interest-card.selected,
+.goal-card.selected {
+  border: 2px solid #5c3cd6;
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(92, 60, 214, 0.14);
+}
+
+/* Icon Circle */
+.interest-icon-circle,
+.goal-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #4338ca;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.interest-card:hover .interest-icon-circle,
+.goal-card:hover .goal-icon-circle {
+  background: #ede9fe;
+  color: #5c3cd6;
+}
+
+.interest-card.selected .interest-icon-circle,
+.goal-card.selected .goal-icon-circle {
+  background: #5c3cd6 !important;
+  color: #ffffff !important;
+}
+
+/* Typography inside card */
+.interest-card-title,
+.goal-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1e1b2e;
+  line-height: 1.35;
+  margin: 0;
+  letter-spacing: -0.015em;
+}
+
+.interest-card-desc {
+  font-size: 0.88rem;
+  color: #64748b;
+  line-height: 1.4;
+  margin: 0.35rem 0 0;
+  font-weight: 400;
+}
+
+/* Helper Hint Pill matching 05 - Choose Your Goals.png */
+.interests-hint-pill,
+.goals-hint-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1.4rem;
+  background: #eef2ff;
+  color: #475569;
+  border-radius: 9999px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  border: 1px solid rgba(199, 210, 254, 0.65);
+  margin: 0 auto 2.5rem;
+}
+
+/* Floating Bottom Dock */
+.interests-bottom-dock,
+.goals-bottom-dock {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(640px, calc(100% - 2.5rem));
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 20px;
+  padding: 0.85rem 1.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  z-index: 50;
+  box-sizing: border-box;
+}
+
+.interests-dock-back,
+.goals-dock-back {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+
+.interests-dock-back:hover,
+.goals-dock-back:hover {
+  color: #1e293b;
+  background: #f1f5f9;
+}
+
+.interests-dock-continue,
+.goals-dock-continue {
+  background: #5c3cd6;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.75rem 2rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 4px 14px rgba(92, 60, 214, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interests-dock-continue:hover,
+.goals-dock-continue:hover {
+  background: #4b2cc2;
+  box-shadow: 0 6px 18px rgba(92, 60, 214, 0.45);
+  transform: translateY(-1px);
+}
+
+.interests-dock-continue:active,
+.goals-dock-continue:active {
+  transform: translateY(0);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .interests-grid,
+  .goals-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.15rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .interests-stage,
+  .goals-stage {
+    padding: 2rem 1rem 7.5rem;
+  }
+
+  .navbar-step-text {
+    display: none;
+  }
+
+  .navbar-step-segments .step-bar {
+    width: 20px;
+    height: 5px;
+  }
+
+  .interests-grid,
+  .goals-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .interests-title,
+  .goals-title {
+    font-size: 1.95rem;
+  }
+
+  .interests-subtitle,
+  .goals-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .interest-card,
+  .goal-card {
+    padding: 1.35rem 1.25rem;
+    border-radius: 18px;
+  }
+
+  .interests-hint-pill,
+  .goals-hint-pill {
+    font-size: 0.84rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .interests-bottom-dock,
+  .goals-bottom-dock {
+    width: calc(100% - 1.5rem);
+    padding: 0.75rem 1rem;
+    border-radius: 16px;
+  }
+
+  .interests-dock-continue,
+  .goals-dock-continue {
+    padding: 0.7rem 1.4rem;
+    font-size: 0.92rem;
+  }
+}
+
+/* ==========================================================================
+   ONBOARDING STEP 06/07: PERSONALISED LEARNING PATH (Matches 06 - Personalise My Learning.png)
+   ========================================================================== */
+
+.personalise-stage {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 12rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.personalise-heading {
+  margin-bottom: 2.75rem;
+  max-width: 680px;
+}
+
+.personalise-title {
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: #1e1b2e;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.85rem;
+}
+
+.personalise-subtitle {
+  font-size: 1.08rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* 3-Column Learning Path Grid */
+.personalise-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  width: 100%;
+  margin-bottom: 2.25rem;
+}
+
+/* Learning Path Card */
+.learning-path-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  position: relative;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.learning-path-card:hover {
+  transform: translateY(-3px);
+  border-color: #c4b5fd;
+  box-shadow: 0 10px 28px rgba(92, 60, 214, 0.08);
+}
+
+.learning-path-card.selected {
+  border: 2px solid #5c3cd6;
+  box-shadow: 0 10px 30px rgba(92, 60, 214, 0.12);
+}
+
+/* Hero Course Image with Top-Right XP Badge */
+.path-card-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.path-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.learning-path-card:hover .path-card-image {
+  transform: scale(1.03);
+}
+
+.path-card-xp-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #4338ca;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.32rem 0.75rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  letter-spacing: 0.01em;
+}
+
+/* Card Content Body */
+.path-card-content {
+  padding: 1.4rem 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Metadata Row: Category Tag, Level, Duration */
+.path-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.path-category-pill {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.24rem 0.65rem;
+  border-radius: 8px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  letter-spacing: 0.01em;
+}
+
+.path-level-pill {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Typography */
+.path-card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1e1b2e;
+  line-height: 1.25;
+  margin: 0 0 0.6rem;
+  letter-spacing: -0.015em;
+}
+
+.path-card-desc {
+  font-size: 0.88rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+}
+
+/* Explore Link below grid */
+.personalise-explore-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #5c3cd6;
+  text-decoration: none;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.personalise-explore-link:hover {
+  color: #4338ca;
+  text-decoration: underline;
+}
+
+/* Floating Bottom Dock */
+.personalise-bottom-dock {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(640px, calc(100% - 2.5rem));
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 20px;
+  padding: 0.85rem 1.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  z-index: 50;
+  box-sizing: border-box;
+}
+
+.personalise-dock-back {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+
+.personalise-dock-back:hover {
+  color: #1e293b;
+  background: #f1f5f9;
+}
+
+.personalise-dock-continue {
+  background: #4338ca;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.8rem 2.2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 16px rgba(67, 56, 202, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.personalise-dock-continue:hover {
+  background: #3730a3;
+  box-shadow: 0 6px 20px rgba(67, 56, 202, 0.45);
+  transform: translateY(-1px);
+}
+
+.personalise-dock-continue:active {
+  transform: translateY(0);
+}
+
+/* Responsive Breakpoints for Personalise */
+@media (max-width: 1024px) {
+  .personalise-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.35rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .personalise-stage {
+    padding: 2rem 1rem 7.5rem;
+  }
+
+  .personalise-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .personalise-title {
+    font-size: 1.95rem;
+  }
+
+  .personalise-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .personalise-bottom-dock {
+    width: calc(100% - 1.5rem);
+    padding: 0.75rem 1rem;
+    border-radius: 16px;
+  }
+
+  .personalise-dock-continue {
+    padding: 0.7rem 1.4rem;
+    font-size: 0.92rem;
+  }
+}
+
+/* ==========================================================================
+   ONBOARDING STEP 07/07: "YOU'RE READY, [USERNAME]!" (Desktop Layout & Mobile Responsive)
+   ========================================================================== */
+
+.ready-stage {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Top Progress Bar matching 07 - You're Ready.png */
+.ready-top-status-bar {
+  width: 100%;
+  max-width: 680px;
+  margin-bottom: 2rem;
+}
+
+.ready-top-status-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #5c3cd6;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+.ready-setup-complete-text {
+  color: #5c3cd6;
+}
+
+.ready-setup-step-count {
+  color: #5c3cd6;
+}
+
+.ready-progress-track {
+  width: 100%;
+  height: 6px;
+  background: #ede9fe;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.ready-progress-fill {
+  width: 100%;
+  height: 100%;
+  background: #5c3cd6;
+  border-radius: 9999px;
+}
+
+/* Celebration Header */
+.ready-heading {
+  text-align: center;
+  margin-bottom: 2.25rem;
+  max-width: 680px;
+}
+
+.ready-title {
+  font-size: clamp(2.2rem, 5vw, 2.9rem);
+  font-weight: 800;
+  color: #1e1b2e;
+  line-height: 1.18;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.ready-party-popper {
+  font-size: 2.4rem;
+  margin: 0.25rem 0 0.75rem;
+  line-height: 1;
+}
+
+.ready-subtitle {
+  font-size: 1.05rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+  font-weight: 400;
+}
+
+.ready-purple-text {
+  color: #5c3cd6;
+  font-weight: 700;
+}
+
+/* 3 Quick Stat Cards Row */
+.ready-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 840px;
+  margin-bottom: 2.5rem;
+}
+
+.ready-stat-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.ready-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(92, 60, 214, 0.08);
+  border-color: #c4b5fd;
+}
+
+.ready-stat-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.85rem;
+}
+
+.ready-stat-icon-circle.stat-purple {
+  background: #ede9fe;
+  color: #5c3cd6;
+}
+
+.ready-stat-icon-circle.stat-orange {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.ready-stat-icon-circle.stat-green {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.ready-stat-number {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #1e1b2e;
+  line-height: 1.1;
+  margin-bottom: 0.25rem;
+}
+
+.ready-stat-number.level-text {
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.ready-stat-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Desktop 2-Column Grid Layout */
+.ready-desktop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 2rem;
+  width: 100%;
+  max-width: 980px;
+  margin-bottom: 2.75rem;
+  align-items: stretch;
+}
+
+/* Left Column: Summary Cards */
+.ready-summary-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ready-summary-box {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 1.5rem 1.6rem;
+  text-align: left;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.ready-box-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.15rem;
+}
+
+.ready-box-icon {
+  color: #5c3cd6;
+  flex-shrink: 0;
+}
+
+.ready-box-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e1b2e;
+  margin: 0;
+}
+
+.ready-pills-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.ready-interest-pill {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 0.95rem;
+  border-radius: 9999px;
+  background: #ede9fe;
+  color: #4338ca;
+  border: 1px solid #ddd6fe;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ready-goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ready-goal-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.ready-goal-check-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #15803d;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.ready-goal-text {
+  flex: 1;
+}
+
+/* Right Column: Up Next Featured Course Card */
+.ready-upnext-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.ready-upnext-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
+  height: 100%;
+  transition: all 0.22s ease;
+  box-sizing: border-box;
+}
+
+.ready-upnext-card:hover {
+  transform: translateY(-2px);
+  border-color: #c4b5fd;
+  box-shadow: 0 12px 30px rgba(92, 60, 214, 0.1);
+}
+
+.ready-upnext-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 210px;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.ready-upnext-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.ready-upnext-card:hover .ready-upnext-image {
+  transform: scale(1.03);
+}
+
+.ready-upnext-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #5c3cd6;
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 0.32rem 0.75rem;
+  border-radius: 8px;
+  letter-spacing: 0.06em;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ready-upnext-body {
+  padding: 1.5rem 1.6rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.ready-upnext-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.ready-upnext-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1e1b2e;
+  margin: 0 0 0.6rem;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.ready-upnext-desc {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+  flex: 1;
+}
+
+.ready-begin-course-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #5c3cd6;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: gap 0.2s ease, color 0.2s ease;
+  margin-top: auto;
+}
+
+.ready-begin-course-btn:hover {
+  color: #4338ca;
+  gap: 0.75rem;
+}
+
+/* Bottom Motivational Quote & Action Buttons */
+.ready-bottom-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 0.5rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.ready-quote {
+  font-style: italic;
+  font-size: 0.98rem;
+  color: #64748b;
+  margin: 0 0 1.75rem;
+  font-weight: 500;
+}
+
+.ready-action-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.ready-dashboard-btn {
+  width: 100%;
+  max-width: 420px;
+  background: #5c3cd6;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  padding: 1.05rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 6px 24px rgba(92, 60, 214, 0.35);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ready-dashboard-btn:hover {
+  background: #4c2dbd;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(92, 60, 214, 0.45);
+}
+
+.ready-dashboard-btn:active {
+  transform: translateY(0);
+}
+
+.ready-explore-btn {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #5c3cd6;
+  cursor: pointer;
+  transition: color 0.15s ease;
+  padding: 0.5rem 1rem;
+}
+
+.ready-explore-btn:hover {
+  color: #4338ca;
+  text-decoration: underline;
+}
+
+/* Floating Back Dock */
+.ready-bottom-dock {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 1.5rem;
+  z-index: 50;
+}
+
+.ready-dock-back {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ready-dock-back:hover {
+  background: #f8fafc;
+  color: #1e293b;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+/* Skill Academy Curated Badge */
+.curated-badge-pill {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #5c3cd6;
+  background: #ede9fe;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid #ddd6fe;
+  letter-spacing: 0.01em;
+}
+
+/* Responsive Breakpoints for Ready Page */
+@media (max-width: 900px) {
+  .ready-desktop-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .ready-stats-row {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .ready-stage {
+    padding: 2rem 1rem 5rem;
+  }
+
+  .ready-title {
+    font-size: 1.9rem;
+  }
+
+  .ready-stats-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+
+  .ready-stat-card {
+    padding: 1rem 0.5rem;
+    border-radius: 16px;
+  }
+
+  .ready-stat-number {
+    font-size: 1.45rem;
+  }
+
+  .ready-stat-number.level-text {
+    font-size: 1.05rem;
+  }
+
+  .ready-stat-label {
+    font-size: 0.72rem;
+  }
+
+  .ready-dashboard-btn {
+    font-size: 0.95rem;
+    padding: 0.9rem 1.4rem;
+  }
+
+  .ready-bottom-dock {
+    position: static;
+    margin-top: 1.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .ready-hide-mobile {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Responsive Adaptations for About You Desktop Grid
+   ========================================================================== */
+@media (max-width: 860px) {
+  .about-you-desktop-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about-you-avatar-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .about-you-details-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .about-you-age-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }

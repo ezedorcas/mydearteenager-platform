@@ -753,6 +753,422 @@ const academyCourses = [
         tags: ["Sales", "Launch", "Customers"]
       }
     ]
+  },
+  {
+    id: "coding-basics",
+    category: "Tech",
+    title: "Coding Basics",
+    module: "Frontend Coding Essentials",
+    meta: "4 Lessons • Beginner",
+    lessonsCount: 4,
+    level: "Beginner",
+    description: "Dive into HTML, CSS, and JavaScript. Understand the logic behind the web and build your very first interactive site.",
+    status: "enroll",
+    btnLabel: "Enroll Now",
+    btnStyle: "solid",
+    thumbnail: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
+    instructor: "Elena Rivera",
+    instructorRole: "Software Engineer",
+    instructorAvatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&q=80",
+    videoUrl: "https://www.youtube.com/embed/mU6anWqZJcc",
+    duration: "32 mins",
+    curriculum: [
+      {
+        title: "How the Web Works: HTML Structure",
+        duration: "10 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Understand the fundamentals of HTML, document hierarchies, and semantic page structure.",
+        tags: ["HTML", "Web", "Fundamentals"]
+      },
+      {
+        title: "Styling with CSS & Modern Flexbox",
+        duration: "12 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Bring pages to life with color palettes, typography, and responsive 1D flexbox layouts.",
+        tags: ["CSS", "Layout", "Styling"]
+      },
+      {
+        title: "Interactive JavaScript Basics",
+        duration: "15 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Add user interactions, button events, and dynamic DOM manipulation.",
+        tags: ["JavaScript", "Logic", "Interaction"]
+      },
+      {
+        title: "Deploying Your First Project Live",
+        duration: "10 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Publish your interactive site to the web with a free public URL on GitHub Pages.",
+        tags: ["Deployment", "Projects", "Portfolio"]
+      }
+    ]
+  },
+  {
+    id: "ai-prompt-engineering",
+    category: "AI & Tech",
+    title: "AI & Prompt Engineering",
+    module: "Generative AI & Smart Workflows",
+    meta: "4 Lessons • Intermediate",
+    lessonsCount: 4,
+    level: "Intermediate",
+    description: "Explore modern AI models, smart workflows, and build practical AI tools that supercharge your study and creativity.",
+    status: "enroll",
+    btnLabel: "Enroll Now",
+    btnStyle: "solid",
+    thumbnail: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+    instructor: "Dr. Aris Thorne",
+    instructorRole: "AI Researcher",
+    instructorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80",
+    videoUrl: "https://www.youtube.com/embed/jC4v5AS4RIM",
+    duration: "26 mins",
+    curriculum: [
+      {
+        title: "Understanding Large Language Models",
+        duration: "7 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Learn how modern transformer models process context, tokens, and generate human-like reasoning.",
+        tags: ["AI Fundamentals", "LLMs", "Concepts"]
+      },
+      {
+        title: "Prompt Engineering Frameworks",
+        duration: "11 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Master zero-shot, few-shot, and chain-of-thought prompt patterns for high-precision outputs.",
+        tags: ["Prompting", "Techniques", "Workflows"]
+      },
+      {
+        title: "Building Custom AI Assistants & Tools",
+        duration: "18 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Create personalized study bots, code generators, and creative writing companions.",
+        tags: ["AI Tools", "Automation", "Hands-on"]
+      },
+      {
+        title: "AI Safety, Ethics & Future Horizons",
+        duration: "8 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Navigate bias, hallucination detection, intellectual property, and responsible usage.",
+        tags: ["Ethics", "Safety", "Future"]
+      }
+    ]
+  },
+  {
+    id: "financial-smarts",
+    category: "Finance",
+    title: "Financial Smarts & Wealth",
+    module: "Money Management for Teens",
+    meta: "4 Lessons • Beginner",
+    lessonsCount: 4,
+    level: "Beginner",
+    description: "Master budgeting, smart investing basics, credit knowledge, and compound interest to build early financial freedom.",
+    status: "enroll",
+    btnLabel: "Enroll Now",
+    btnStyle: "solid",
+    thumbnail: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80",
+    instructor: "Chloe Zhang",
+    instructorRole: "Wealth Educator",
+    instructorAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80",
+    videoUrl: "https://www.youtube.com/embed/bixR-KIJKYM",
+    duration: "20 mins",
+    curriculum: [
+      {
+        title: "The Power of Compound Growth Early On",
+        duration: "6 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Discover the exponential math of saving and investing in your teens versus your thirties.",
+        tags: ["Compound Interest", "Growth", "Foundations"]
+      },
+      {
+        title: "Budgeting That Fits Your Real Life",
+        duration: "8 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Set up the 50/30/20 rule, track spending without stress, and automate emergency savings.",
+        tags: ["Budgeting", "Cash Flow", "Habits"]
+      },
+      {
+        title: "Introduction to Index Funds & Investing",
+        duration: "12 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Understand stocks, ETFs, mutual funds, risk diversification, and long-term holding.",
+        tags: ["Investing", "Stocks", "ETFs"]
+      },
+      {
+        title: "Avoiding Debt Traps & Building Credit",
+        duration: "9 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Learn how credit scores work and how to leverage smart financial habits safely.",
+        tags: ["Credit", "Debt", "Security"]
+      }
+    ]
+  },
+  {
+    id: "habit-mastery",
+    category: "Growth",
+    title: "High Performance Habits",
+    module: "Productivity & Routine Design",
+    meta: "3 Lessons • Beginner",
+    lessonsCount: 3,
+    level: "Beginner",
+    description: "Build unstoppable focus, overcome procrastination, and design daily study routines that keep you ahead without burnout.",
+    status: "enroll",
+    btnLabel: "Enroll Now",
+    btnStyle: "solid",
+    thumbnail: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80",
+    instructor: "David Miller",
+    instructorRole: "Mindset Coach",
+    instructorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=80",
+    videoUrl: "https://www.youtube.com/embed/G6Y_oEw8Poc",
+    duration: "18 mins",
+    curriculum: [
+      {
+        title: "The Anatomy of a Habit Loop",
+        duration: "6 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Deconstruct cue, craving, response, and reward to replace friction with effortless action.",
+        tags: ["Habit Loop", "Psychology", "Behavior"]
+      },
+      {
+        title: "Designing Frictionless Focus Environments",
+        duration: "8 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Eliminate phone distractions, curate deep work zones, and leverage 90-minute ultradian cycles.",
+        tags: ["Deep Work", "Focus", "Environment"]
+      },
+      {
+        title: "Weekly Review & Overcoming Slumps",
+        duration: "7 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Establish Sunday resets and bounce back immediately when daily routines get off track.",
+        tags: ["Review", "Resilience", "Mindset"]
+      }
+    ]
+  },
+  {
+    id: "teen-leadership",
+    category: "Leadership",
+    title: "Public Speaking & Leadership",
+    module: "Executive Communication & Influence",
+    meta: "4 Lessons • Beginner",
+    lessonsCount: 4,
+    level: "Beginner",
+    description: "Command attention on stage, communicate ideas persuasively, and lead project teams with empathy and authority.",
+    status: "enroll",
+    btnLabel: "Enroll Now",
+    btnStyle: "solid",
+    thumbnail: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80",
+    instructor: "Maya Fox",
+    instructorRole: "Leadership Coach",
+    instructorAvatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80",
+    videoUrl: "https://www.youtube.com/embed/nLRL_NcnK-4",
+    duration: "22 mins",
+    curriculum: [
+      {
+        title: "Conquering Stage Fright & Body Language",
+        duration: "7 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Techniques to calm adrenaline, project vocal power, and stand with natural authority.",
+        tags: ["Public Speaking", "Confidence", "Delivery"]
+      },
+      {
+        title: "Structuring Persuasive Presentations",
+        duration: "9 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Craft presentations with memorable 3-point narratives, hook openings, and emotional call-to-actions.",
+        tags: ["Storytelling", "Slides", "Persuasion"]
+      },
+      {
+        title: "Leading Teams & Effective Collaboration",
+        duration: "12 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Delegate tasks clearly, run constructive feedback sessions, and resolve team tensions.",
+        tags: ["Teamwork", "Management", "Empathy"]
+      },
+      {
+        title: "Everyday Influence & Networking",
+        duration: "8 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Pitch ideas to mentors, teachers, and partners with clarity and poise.",
+        tags: ["Networking", "Influence", "Pitching"]
+      }
+    ]
+  },
+  {
+    id: "uiux-design",
+    category: "Design",
+    title: "UI/UX Design",
+    module: "Designing User Interfaces",
+    meta: "5 Lessons • Beginner",
+    lessonsCount: 5,
+    level: "Beginner",
+    description: "Learn the fundamentals of user interface and experience design. Create stunning digital products that people love to use.",
+    status: "enroll",
+    btnLabel: "Enroll Now",
+    btnStyle: "solid",
+    thumbnail: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80",
+    instructor: "Joseph Joestar",
+    instructorRole: "Product Designer, Tutor",
+    instructorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+    videoUrl: "https://www.youtube.com/embed/c9Wg6Cb_YlU",
+    duration: "18 mins",
+    curriculum: [
+      {
+        title: "What is Typography & Visual Hierarchy",
+        duration: "3 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Explore core building blocks of digital typography and font weights.",
+        tags: ["Typography", "Hierarchy", "Fundamentals"]
+      },
+      {
+        title: "Layouts, Spacing & Responsive Grids",
+        duration: "4 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Deep dive into 8pt grid systems, padding, and UI component spacing.",
+        tags: ["Grids", "Layout", "Spacing"]
+      },
+      {
+        title: "Choosing Color Schemes for Accessibility",
+        duration: "5 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Pick color palettes that pass WCAG contrast and express brand emotion.",
+        tags: ["Colors", "Contrast", "Accessibility"]
+      },
+      {
+        title: "Interactive Wireframes to High-Fidelity",
+        duration: "6 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Translate paper sketches into clickable prototypes with Figma.",
+        tags: ["Figma", "Prototypes", "UI"]
+      }
+    ]
+  },
+  {
+    id: "digital-content-creation",
+    category: "Media",
+    title: "Digital Content Creation",
+    module: "Video Production & Storytelling",
+    meta: "4 Lessons • Intermediate",
+    lessonsCount: 4,
+    level: "Intermediate",
+    description: "Master the art of storytelling across video, audio, and social media. Build an audience and brand your voice.",
+    status: "enroll",
+    btnLabel: "Enroll Now",
+    btnStyle: "solid",
+    thumbnail: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=800&q=80",
+    instructor: "Marcus Reed",
+    instructorRole: "Filmmaker & YouTube Creator",
+    instructorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80",
+    videoUrl: "https://www.youtube.com/embed/nLRL_NcnK-4",
+    duration: "25 mins",
+    curriculum: [
+      {
+        title: "Camera Angles, Lighting & Phone Setups",
+        duration: "8 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Set up cinematic 3-point lighting and frame compelling video shots using your smartphone camera.",
+        tags: ["Lighting", "Framing", "Mobile Production"]
+      },
+      {
+        title: "Storyboarding & Hooking the Audience in 3s",
+        duration: "10 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Learn psychological hooks, narrative arcs, and pacing techniques to maintain high retention.",
+        tags: ["Hook", "Storyboarding", "Retention"]
+      },
+      {
+        title: "Premiere & CapCut Editing Masterclass",
+        duration: "25 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Pacing cuts, seamless transitions, dynamic sound effects, and color grading for YouTube and TikTok.",
+        tags: ["Editing", "CapCut", "Premiere"]
+      },
+      {
+        title: "Sound Design, Music & Publishing Strategy",
+        duration: "15 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Select copyright-free music tracks, EQ voiceovers, and optimize video thumbnails.",
+        tags: ["Audio", "Thumbnails", "Publishing"]
+      }
+    ]
+  },
+  {
+    id: "teen-entrepreneurship",
+    category: "Business",
+    title: "Teen Entrepreneurship 101",
+    module: "Idea Validation & Launch",
+    meta: "4 Lessons • Beginner",
+    lessonsCount: 4,
+    level: "Beginner",
+    description: "Transform your innovative ideas into a real venture. Learn customer discovery, rapid prototyping, and pitching.",
+    status: "enroll",
+    btnLabel: "Enroll Now",
+    btnStyle: "solid",
+    thumbnail: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+    instructor: "Alex Vance",
+    instructorRole: "Startup Mentor",
+    instructorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80",
+    videoUrl: "https://www.youtube.com/embed/1vRz2aG1O9s",
+    duration: "28 mins",
+    curriculum: [
+      {
+        title: "Finding Problems Worth Solving as a Teen",
+        duration: "12 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Spot everyday frictions and unmet needs that people are willing to pay for.",
+        tags: ["Ideation", "Market Research", "Opportunities"]
+      },
+      {
+        title: "The 1-Page Business Model Canvas",
+        duration: "15 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Map out value propositions, customer segments, channels, and revenue streams quickly on 1 page.",
+        tags: ["Business Model", "Strategy", "Lean"]
+      },
+      {
+        title: "Creating Your First Minimum Viable Product",
+        duration: "28 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Build a prototype or pilot service in under 48 hours to validate demand with real users.",
+        tags: ["MVP", "Validation", "Prototyping"]
+      },
+      {
+        title: "Getting Your First 10 Customers",
+        duration: "14 min",
+        done: false,
+        savedTimestamp: 0,
+        description: "Reach your first buyers through direct outreach, localized word-of-mouth, and early bird perks.",
+        tags: ["Sales", "Launch", "Customers"]
+      }
+    ]
   }
 ];
 
@@ -968,6 +1384,431 @@ function saveUserData(email, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
+// 12 High-Value Interests & Skills matching 04 - Choose Your Interests.png + additional skills
+const INTEREST_SKILLS = [
+  {
+    id: "design-creativity",
+    title: "Design & Creativity",
+    desc: "Create, design and bring ideas to life"
+  },
+  {
+    id: "technology-coding",
+    title: "Technology & Coding",
+    desc: "Build software and understand systems"
+  },
+  {
+    id: "content-creation",
+    title: "Content Creation",
+    desc: "Make videos, write, and share stories"
+  },
+  {
+    id: "communication",
+    title: "Communication",
+    desc: "Public speaking and clear messaging"
+  },
+  {
+    id: "entrepreneurship",
+    title: "Entrepreneurship",
+    desc: "Start ventures and innovate"
+  },
+  {
+    id: "personal-development",
+    title: "Personal Development",
+    desc: "Grow habits and manage time"
+  },
+  {
+    id: "ai-machine-learning",
+    title: "AI & Machine Learning",
+    desc: "Explore generative AI, smart tools, and prompts"
+  },
+  {
+    id: "financial-literacy",
+    title: "Financial Literacy",
+    desc: "Master money, budgeting, and investing basics"
+  },
+  {
+    id: "leadership-teamwork",
+    title: "Leadership & Teamwork",
+    desc: "Lead projects, collaborate, and inspire others"
+  },
+  {
+    id: "science-engineering",
+    title: "Science & Engineering",
+    desc: "STEM discovery, mechanics, and experiments"
+  },
+  {
+    id: "health-wellness",
+    title: "Health & Wellness",
+    desc: "Physical vitality, nutrition, and mental balance"
+  },
+  {
+    id: "career-college",
+    title: "Career & College Prep",
+    desc: "Explore future pathways, portfolios, and goals"
+  }
+];
+
+function renderInterestIcon(id) {
+  switch (id) {
+    case "design-creativity":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/>
+          <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/>
+          <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/>
+          <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/>
+          <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.992 6.012 17.488 2 12 2z"/>
+        </svg>
+      );
+    case "technology-coding":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="16 18 22 12 16 6"/>
+          <polyline points="8 6 2 12 8 18"/>
+        </svg>
+      );
+    case "content-creation":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m22 8-6 4 6 4V8Z"/>
+          <rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>
+        </svg>
+      );
+    case "communication":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      );
+    case "entrepreneurship":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9 18h6"/>
+          <path d="M10 22h4"/>
+          <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+        </svg>
+      );
+    case "personal-development":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+          <polyline points="17 6 23 6 23 12"/>
+        </svg>
+      );
+    case "ai-machine-learning":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      );
+    case "financial-literacy":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect width="20" height="14" x="2" y="5" rx="2"/>
+          <line x1="2" x2="22" y1="10" y2="10"/>
+          <circle cx="16" cy="14" r="1.5"/>
+        </svg>
+      );
+    case "leadership-teamwork":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      );
+    case "science-engineering":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="2"/>
+          <path d="M16.24 7.76a6 6 0 1 0-8.49 8.49"/>
+          <path d="M7.76 7.76a6 6 0 1 1 8.49 8.49"/>
+        </svg>
+      );
+    case "health-wellness":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+        </svg>
+      );
+    case "career-college":
+      return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+          <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
+// 12 High-Value Goals matching 05 - Choose Your Goals.png + additional goals
+const GOAL_OPTIONS = [
+  { id: "learn-skill", title: "Learn a new skill" },
+  { id: "build-projects", title: "Build useful projects" },
+  { id: "improve-confidence", title: "Improve my confidence" },
+  { id: "career-future", title: "Prepare for my future career" },
+  { id: "build-portfolio", title: "Build a portfolio" },
+  { id: "discover-opportunities", title: "Discover opportunities" },
+  { id: "better-habits", title: "Develop better learning habits" },
+  { id: "explore-strengths", title: "Explore what I'm good at" },
+  { id: "connect-mentors", title: "Connect with mentors & peers" },
+  { id: "verified-certificates", title: "Earn verified certificates" },
+  { id: "start-venture", title: "Start a project or venture" },
+  { id: "master-focus", title: "Master focus & time habits" }
+];
+
+function renderGoalIcon(id) {
+  switch (id) {
+    case "learn-skill":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+      );
+    case "build-projects":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+      );
+    case "improve-confidence":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+          <path d="M4 22h16"/>
+          <path d="M10 14.66V17c0 .55-.45 1-1 1H8v4h8v-4h-1c-.55 0-1-.45-1-1v-2.34"/>
+          <path d="M6 2h12v7a6 6 0 0 1-12 0V2z"/>
+        </svg>
+      );
+    case "career-future":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/>
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        </svg>
+      );
+    case "build-portfolio":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>
+          <polygon points="12 10 13.2 12.5 16 12.8 14 14.7 14.5 17.5 12 16.1 9.5 17.5 10 14.7 8 12.8 10.8 12.5 12 10" fill="currentColor" stroke="none"/>
+        </svg>
+      );
+    case "discover-opportunities":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor"/>
+        </svg>
+      );
+    case "better-habits":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/>
+          <path d="M9 21h6"/>
+          <circle cx="12" cy="9" r="2"/>
+        </svg>
+      );
+    case "explore-strengths":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <circle cx="12" cy="12" r="3"/>
+          <line x1="12" y1="3" x2="12" y2="9"/>
+          <line x1="12" y1="15" x2="12" y2="21"/>
+          <line x1="3" y1="12" x2="9" y2="12"/>
+          <line x1="15" y1="12" x2="21" y2="12"/>
+        </svg>
+      );
+    case "connect-mentors":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      );
+    case "verified-certificates":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="8" r="6"/>
+          <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+        </svg>
+      );
+    case "start-venture":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+          <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+          <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+          <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+        </svg>
+      );
+    case "master-focus":
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="6"/>
+          <circle cx="12" cy="12" r="2" fill="currentColor"/>
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
+// Catalog of learning paths matching 06 - Personalise My Learning.png + personalized pathways
+const RECOMMENDED_PATHS_CATALOG = [
+  {
+    id: "uiux-design",
+    title: "UI/UX Design",
+    category: "Design",
+    level: "Beginner",
+    duration: "4 wks",
+    xp: 500,
+    desc: "Learn the fundamentals of user interface and experience design. Create stunning digital products that people love to use.",
+    instructorName: "Sarah J.",
+    instructorRole: "Design Lead",
+    instructorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+    image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80",
+    matchingSkills: ["design-creativity", "technology-coding"],
+    matchingGoals: ["build-portfolio", "learn-skill", "build-projects", "explore-strengths"]
+  },
+  {
+    id: "digital-content",
+    title: "Digital Content Creation",
+    category: "Media",
+    level: "Intermediate",
+    duration: "6 wks",
+    xp: 500,
+    desc: "Master the art of storytelling across video, audio, and social media. Build an audience and brand your voice.",
+    instructorName: "Marcus T.",
+    instructorRole: "Content Creator",
+    instructorAvatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80",
+    image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80",
+    matchingSkills: ["content-creation", "communication"],
+    matchingGoals: ["discover-opportunities", "explore-strengths", "build-projects", "connect-mentors"]
+  },
+  {
+    id: "coding-basics",
+    title: "Coding Basics",
+    category: "Tech",
+    level: "Beginner",
+    duration: "8 wks",
+    xp: 500,
+    desc: "Dive into HTML, CSS, and JavaScript. Understand the logic behind the web and build your very first interactive site.",
+    instructorName: "Elena R.",
+    instructorRole: "Software Eng",
+    instructorAvatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&q=80",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80",
+    matchingSkills: ["technology-coding", "ai-machine-learning", "science-engineering"],
+    matchingGoals: ["build-projects", "learn-skill", "career-future", "start-venture"]
+  },
+  {
+    id: "teen-entrepreneurship",
+    title: "Teen Entrepreneurship 101",
+    category: "Business",
+    level: "Beginner",
+    duration: "5 wks",
+    xp: 500,
+    desc: "Transform your innovative ideas into a real venture. Learn customer discovery, rapid prototyping, and pitching.",
+    instructorName: "Alex Vance",
+    instructorRole: "Startup Mentor",
+    instructorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80",
+    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80",
+    matchingSkills: ["entrepreneurship", "communication", "financial-literacy"],
+    matchingGoals: ["start-venture", "career-future", "build-projects"]
+  },
+  {
+    id: "ai-prompt-engineering",
+    title: "AI & Prompt Engineering",
+    category: "AI & Tech",
+    level: "Intermediate",
+    duration: "4 wks",
+    xp: 500,
+    desc: "Explore modern AI models, smart workflows, and build practical AI tools that supercharge your study and creativity.",
+    instructorName: "Dr. Aris Thorne",
+    instructorRole: "AI Researcher",
+    instructorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+    matchingSkills: ["ai-machine-learning", "technology-coding", "science-engineering"],
+    matchingGoals: ["learn-skill", "discover-opportunities", "better-habits"]
+  },
+  {
+    id: "financial-smarts",
+    title: "Financial Smarts & Wealth",
+    category: "Finance",
+    level: "Beginner",
+    duration: "4 wks",
+    xp: 500,
+    desc: "Master budgeting, smart investing basics, credit knowledge, and compound interest to build early financial freedom.",
+    instructorName: "Chloe Zhang",
+    instructorRole: "Wealth Educator",
+    instructorAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80",
+    image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=600&q=80",
+    matchingSkills: ["financial-literacy", "entrepreneurship"],
+    matchingGoals: ["career-future", "better-habits"]
+  },
+  {
+    id: "habit-mastery",
+    title: "High Performance Habits",
+    category: "Growth",
+    level: "Beginner",
+    duration: "3 wks",
+    xp: 500,
+    desc: "Build unstoppable focus, overcome procrastination, and design daily study routines that keep you ahead without burnout.",
+    instructorName: "David Miller",
+    instructorRole: "Mindset Coach",
+    instructorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&q=80",
+    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=600&q=80",
+    matchingSkills: ["personal-development", "health-wellness"],
+    matchingGoals: ["better-habits", "master-focus", "improve-confidence"]
+  },
+  {
+    id: "teen-leadership",
+    title: "Public Speaking & Leadership",
+    category: "Leadership",
+    level: "Beginner",
+    duration: "4 wks",
+    xp: 500,
+    desc: "Command attention on stage, communicate ideas persuasively, and lead project teams with empathy and authority.",
+    instructorName: "Maya Fox",
+    instructorRole: "Leadership Coach",
+    instructorAvatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80",
+    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=600&q=80",
+    matchingSkills: ["leadership-teamwork", "communication"],
+    matchingGoals: ["improve-confidence", "connect-mentors", "explore-strengths"]
+  }
+];
+
+function getPersonalizedRecommendations(selectedInterests = [], selectedGoals = []) {
+  const scored = RECOMMENDED_PATHS_CATALOG.map((course, idx) => {
+    let score = 0;
+    (course.matchingSkills || []).forEach((skill) => {
+      if (selectedInterests.includes(skill)) score += 2.5;
+    });
+    (course.matchingGoals || []).forEach((goal) => {
+      if (selectedGoals.includes(goal)) score += 1.5;
+    });
+    return { ...course, score, originalIndex: idx };
+  });
+
+  // Sort by score descending; if score tied, preserve catalog order
+  scored.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return a.originalIndex - b.originalIndex;
+  });
+
+  return scored.slice(0, 3);
+}
+
 function AuthPage() {
   const [account, setAccount] = useState(() => readStorage(ACCOUNT_KEY, null));
   const [view, setView] = useState(() => {
@@ -1035,6 +1876,46 @@ function AuthPage() {
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
   const [countrySearch, setCountrySearch] = useState("");
 
+  // Onboarding "What are you interested in learning?" state (starts with 0 selected)
+  const [selectedInterests, setSelectedInterests] = useState([]);
+
+  function toggleInterest(interestId) {
+    setSelectedInterests((prev) =>
+      prev.includes(interestId)
+        ? prev.filter((id) => id !== interestId)
+        : [...prev, interestId]
+    );
+  }
+
+  // Onboarding "What do you want to achieve?" state (starts with 0 selected matching 05 - Choose Your Goals.png)
+  const [selectedGoals, setSelectedGoals] = useState([]);
+
+  function toggleGoal(goalId) {
+    setSelectedGoals((prev) =>
+      prev.includes(goalId)
+        ? prev.filter((id) => id !== goalId)
+        : [...prev, goalId]
+    );
+  }
+
+  // Personalized learning path recommendations (adapts dynamically to selectedInterests & selectedGoals)
+  const recommendedPaths = getPersonalizedRecommendations(selectedInterests, selectedGoals);
+  const topRecommendedCourse = recommendedPaths[0] || RECOMMENDED_PATHS_CATALOG[0];
+  const [selectedPathCourses, setSelectedPathCourses] = useState([]);
+
+  const effectiveSelectedPathCourses = selectedPathCourses.length > 0
+    ? selectedPathCourses
+    : recommendedPaths.map((p) => p.id);
+
+  function togglePathCourse(courseId) {
+    setSelectedPathCourses((prev) => {
+      const current = prev.length > 0 ? prev : recommendedPaths.map((p) => p.id);
+      return current.includes(courseId)
+        ? current.filter((id) => id !== courseId)
+        : [...current, courseId];
+    });
+  }
+
   useEffect(() => {
     if (!isCountryDropdownOpen) return;
     const handleClickOutside = (e) => {
@@ -1075,8 +1956,8 @@ function AuthPage() {
     reader.readAsDataURL(file);
   }
 
-  function handleOnboardingComplete() {
-    const preferredName = (onboardingName || "").trim() || (pendingAccount?.name ? pendingAccount.name.split(" ")[0] : "Learner");
+  function handleOnboardingComplete(options = {}) {
+    const preferredName = (onboardingName || "").trim() || (pendingAccount?.name ? pendingAccount.name.split(" ")[0] : (form.name ? form.name.split(" ")[0] : "Learner"));
     const originalFullName = pendingAccount?.fullName || pendingAccount?.name || form.name || preferredName;
 
     const usersDb = readStorage(USERS_DB_KEY, [defaultAccount]);
@@ -1087,6 +1968,9 @@ function AuthPage() {
       avatar: onboardingAvatar || pendingAccount?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
       age: onboardingAge,
       country: onboardingCountry || "United States",
+      interests: selectedInterests,
+      goals: selectedGoals,
+      personalizedPaths: effectiveSelectedPathCourses,
       email: (pendingAccount?.email || form.email || "teen@mydearteenager.com").trim().toLowerCase()
     };
 
@@ -1111,7 +1995,17 @@ function AuthPage() {
     } catch (e) {}
 
     transitionToView("dashboard", "forward");
-    setDashboardView("home");
+    if (options && options.targetView) {
+      setDashboardView(options.targetView);
+    } else {
+      setDashboardView("home");
+    }
+    if (options && options.openCourse) {
+      setTimeout(() => {
+        const found = freshData.coursesList.find((c) => c.id === options.openCourse.id) || options.openCourse;
+        openCourseVideo(found);
+      }, 300);
+    }
     try { history.replaceState(null, "", window.location.pathname); } catch (e) {}
   }
 
@@ -1189,6 +2083,26 @@ function AuthPage() {
 
   // Current calendar day (YYYY-MM-DD) for 1-click-per-day streak enforcement
   const todayDateStr = new Date().toISOString().slice(0, 10);
+
+  const preferredUsername =
+    (onboardingName || "").trim() ||
+    (pendingAccount?.name ? pendingAccount.name.split(" ")[0] : (form?.name ? form.name.split(" ")[0] : (account?.name ? account.name.split(" ")[0] : "Learner")));
+
+  const userInterestTitles =
+    selectedInterests.length > 0
+      ? selectedInterests.map((id) => {
+          const opt = INTEREST_SKILLS.find((o) => o.id === id);
+          return opt ? opt.title : id;
+        })
+      : ["Coding", "Digital Art", "Financial Lit"];
+
+  const userGoalTitles =
+    selectedGoals.length > 0
+      ? selectedGoals.map((id) => {
+          const opt = GOAL_OPTIONS.find((o) => o.id === id);
+          return opt ? opt.title : id;
+        })
+      : ["Build a personal portfolio website", "Understand basic budgeting"];
   const isStreakClaimedToday = lastStreakDate === todayDateStr;
 
   // Helper to persist saved playback timestamp for a course lesson into localStorage
@@ -1760,8 +2674,15 @@ function AuthPage() {
   }
 
   // Filter courses by category and search query
+  const userPersonalizedIds = (account && account.personalizedPaths) || [];
+  const isPersonalizedTab = academyCategory === "Personalized for You";
   const filteredCourses = coursesList.filter((course) => {
-    const matchesCategory = academyCategory === "All" || course.category.toLowerCase() === academyCategory.toLowerCase();
+    const matchesCategory =
+      academyCategory === "All"
+        ? true
+        : isPersonalizedTab
+        ? userPersonalizedIds.includes(course.id) || (userPersonalizedIds.length === 0 && ["coding-basics", "ai-prompt-engineering", "uiux-design", "uiux-1"].includes(course.id))
+        : course.category.toLowerCase() === academyCategory.toLowerCase();
     const matchesSearch =
       searchQuery.trim() === "" ||
       course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1770,7 +2691,7 @@ function AuthPage() {
     return matchesCategory && matchesSearch;
   });
 
-  const categoriesList = ["All", "Design", "Marketing", "Web Development", "Media", "Business"];
+  const categoriesList = ["All", "Personalized for You", "Design", "Tech", "AI & Tech", "Media", "Business", "Finance", "Growth", "Leadership", "Marketing", "Web Development"];
 
   // Filter courses that are strictly ongoing (user enrolled or started watching, and not 100% completed)
   const ongoingCourses = coursesList.filter((course) => {
@@ -2334,6 +3255,9 @@ function AuthPage() {
                           <div className="card-meta">
                             <Icon name="lessons" size={16} className="meta-icon" />
                             <span>{course.meta}</span>
+                            {userPersonalizedIds.includes(course.id) && (
+                              <span className="curated-badge-pill">★ Recommended</span>
+                            )}
                           </div>
 
                           <h3 className="card-title">{course.title}</h3>
@@ -3035,7 +3959,85 @@ function AuthPage() {
             />
           </a>
           <div className="welcome-nav-user">
-            {view === "otp" ? (
+            {view === "signup" ? (
+              <div className="navbar-stepper">
+                <span className="navbar-step-text">Step 02 of 07</span>
+                <div className="navbar-step-segments">
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-active"></span>
+                  <span className="step-bar step-pending"></span>
+                  <span className="step-bar step-pending"></span>
+                  <span className="step-bar step-pending"></span>
+                  <span className="step-bar step-pending"></span>
+                  <span className="step-bar step-pending"></span>
+                </div>
+              </div>
+            ) : view === "about-you" ? (
+              <div className="navbar-stepper">
+                <span className="navbar-step-text">Step 03 of 07</span>
+                <div className="navbar-step-segments">
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-active"></span>
+                  <span className="step-bar step-pending"></span>
+                  <span className="step-bar step-pending"></span>
+                  <span className="step-bar step-pending"></span>
+                  <span className="step-bar step-pending"></span>
+                </div>
+              </div>
+            ) : view === "interests" ? (
+              <div className="navbar-stepper">
+                <span className="navbar-step-text">Step 04 of 07</span>
+                <div className="navbar-step-segments">
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-active"></span>
+                  <span className="step-bar step-pending"></span>
+                  <span className="step-bar step-pending"></span>
+                  <span className="step-bar step-pending"></span>
+                </div>
+              </div>
+            ) : view === "goals" ? (
+              <div className="navbar-stepper">
+                <span className="navbar-step-text">Step 05 of 07</span>
+                <div className="navbar-step-segments">
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-active"></span>
+                  <span className="step-bar step-pending"></span>
+                  <span className="step-bar step-pending"></span>
+                </div>
+              </div>
+            ) : view === "personalise" ? (
+              <div className="navbar-stepper">
+                <span className="navbar-step-text">Step 06 of 07</span>
+                <div className="navbar-step-segments">
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-active"></span>
+                  <span className="step-bar step-pending"></span>
+                </div>
+              </div>
+            ) : view === "ready" ? (
+              <div className="navbar-stepper">
+                <span className="navbar-step-text">Step 07 of 07</span>
+                <div className="navbar-step-segments">
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-done"></span>
+                  <span className="step-bar step-active"></span>
+                </div>
+              </div>
+            ) : view === "otp" ? (
               <div className="otp-header-badge-group">
                 <span className="otp-safe-badge">
                   <span className="otp-green-dot"></span>
@@ -3130,20 +4132,6 @@ function AuthPage() {
       ) : view === "signup" ? (
         /* Sign Up Form View - EXACT match to sign-up-form.png */
         <main className={`signup-flow-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
-          {/* Progress Stepper Bar matching sign-up-form.png */}
-          <div className="signup-stepper-header">
-            <span className="stepper-counter">02 / 07</span>
-            <div className="stepper-segments">
-              <span className="step-bar step-done"></span>
-              <span className="step-bar step-done"></span>
-              <span className="step-bar step-pending"></span>
-              <span className="step-bar step-pending"></span>
-              <span className="step-bar step-pending"></span>
-              <span className="step-bar step-pending"></span>
-              <span className="step-bar step-pending"></span>
-            </div>
-          </div>
-
           {/* Heading & Subtitle matching sign-up-form.png */}
           <div className="signup-heading-block">
             <h1 className="signup-title">Let's get you started</h1>
@@ -3543,20 +4531,6 @@ function AuthPage() {
       ) : view === "about-you" ? (
         /* "First, let's get to know you" - EXACT match to Images/tell-us-about-you.png */
         <main className={`about-you-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
-          {/* Progress Stepper Bar 03/07 matching tell-us-about-you.png */}
-          <div className="about-you-stepper">
-            <span className="stepper-counter">03/07</span>
-            <div className="stepper-segments">
-              <span className="step-bar step-done"></span>
-              <span className="step-bar step-done"></span>
-              <span className="step-bar step-done"></span>
-              <span className="step-bar step-pending"></span>
-              <span className="step-bar step-pending"></span>
-              <span className="step-bar step-pending"></span>
-              <span className="step-bar step-pending"></span>
-            </div>
-          </div>
-
           {/* Title & Subtitle */}
           <div className="about-you-heading">
             <h1 className="about-you-title">First, let's get to know you</h1>
@@ -3565,270 +4539,287 @@ function AuthPage() {
             </p>
           </div>
 
-          {/* Photo Upload Card */}
-          <div className="about-you-avatar-card">
-            <div
-              className={`about-you-avatar-circle ${onboardingAvatar ? "has-image" : ""}`}
-              onClick={() => {
-                const fileIn = document.getElementById("onboarding-avatar-file-input");
-                if (fileIn) fileIn.click();
-              }}
-              title="Click to select a profile picture"
-            >
-              {onboardingAvatar ? (
-                <img
-                  src={onboardingAvatar}
-                  alt="Profile Preview"
-                  className="about-you-avatar-preview"
-                />
-              ) : (
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="about-you-camera-svg">
-                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                  <circle cx="12" cy="13" r="4" />
-                  <line x1="19" y1="10" x2="19" y2="14" />
-                  <line x1="17" y1="12" x2="21" y2="12" />
-                </svg>
-              )}
-            </div>
+          {/* Desktop 2-Column Grid */}
+          <div className="about-you-desktop-grid">
+            {/* Left Column: Photo Upload Card */}
+            <div className="about-you-avatar-card">
+              <h3 className="about-you-card-section-title">Profile Picture</h3>
+              <p className="about-you-card-section-sub">Add a photo or avatar so mentors and peers recognize you.</p>
 
-            <input
-              id="onboarding-avatar-file-input"
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handlePhotoUpload}
-            />
-
-            <div className="about-you-photo-actions">
-              <button
-                type="button"
-                className="about-you-add-photo-btn"
+              <div
+                className={`about-you-avatar-circle ${onboardingAvatar ? "has-image" : ""}`}
                 onClick={() => {
                   const fileIn = document.getElementById("onboarding-avatar-file-input");
                   if (fileIn) fileIn.click();
                 }}
+                title="Click to select a profile picture"
               >
-                {onboardingAvatar ? "Change photo" : "Add a photo"}
-              </button>
-              {onboardingAvatar ? (
+                {onboardingAvatar ? (
+                  <img
+                    src={onboardingAvatar}
+                    alt="Profile Preview"
+                    className="about-you-avatar-preview"
+                  />
+                ) : (
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="about-you-camera-svg">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                    <circle cx="12" cy="13" r="4" />
+                    <line x1="19" y1="10" x2="19" y2="14" />
+                    <line x1="17" y1="12" x2="21" y2="12" />
+                  </svg>
+                )}
+              </div>
+
+              <input
+                id="onboarding-avatar-file-input"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handlePhotoUpload}
+              />
+
+              <div className="about-you-photo-actions">
                 <button
                   type="button"
-                  className="about-you-skip-link"
-                  onClick={() => setOnboardingAvatar(null)}
+                  className="about-you-add-photo-btn"
+                  onClick={() => {
+                    const fileIn = document.getElementById("onboarding-avatar-file-input");
+                    if (fileIn) fileIn.click();
+                  }}
                 >
-                  Remove photo
+                  {onboardingAvatar ? "Change photo" : "Add a photo"}
                 </button>
-              ) : (
-                <button
-                  type="button"
-                  className="about-you-skip-link"
-                  onClick={() => setOnboardingNotice("")}
-                >
-                  Skip for now
-                </button>
+                {onboardingAvatar ? (
+                  <button
+                    type="button"
+                    className="about-you-skip-link"
+                    onClick={() => setOnboardingAvatar(null)}
+                  >
+                    Remove photo
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="about-you-skip-link"
+                    onClick={() => setOnboardingNotice("")}
+                  >
+                    Skip for now
+                  </button>
+                )}
+              </div>
+
+              <div className="about-you-privacy-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <polyline points="9 12 11 14 15 10"/>
+                </svg>
+                <span>Only visible within your teen community</span>
+              </div>
+
+              {onboardingNotice && (
+                <p className="about-you-notice" role="alert">{onboardingNotice}</p>
               )}
             </div>
 
-            {onboardingNotice && (
-              <p className="about-you-notice" role="alert">{onboardingNotice}</p>
-            )}
-          </div>
-
-          {/* Form Fields Container */}
-          <div className="about-you-fields-form">
-            {/* Field 1: Your Name */}
-            <div className="about-you-field">
-              <label className="about-you-label" htmlFor="onboarding-name-input">
-                Username
-              </label>
-              <input
-                id="onboarding-name-input"
-                type="text"
-                className="about-you-text-input"
-                value={onboardingName}
-                onChange={(e) => setOnboardingName(e.target.value)}
-                placeholder="David"
-              />
-            </div>
-
-            {/* Field 2: How old are you? */}
-            <div className="about-you-field">
-              <label className="about-you-label">
-                How old are you?
-              </label>
-              <div className="about-you-age-grid">
-                {[13, 14, 15, 16, 17, 18].map((age) => (
-                  <button
-                    key={age}
-                    type="button"
-                    className={`about-you-age-btn ${onboardingAge === age ? "active" : ""}`}
-                    onClick={() => setOnboardingAge(age)}
-                  >
-                    {age}
-                  </button>
-                ))}
+            {/* Right Column: Form Fields Container */}
+            <div className="about-you-details-card">
+              {/* Field 1: Your Name */}
+              <div className="about-you-field">
+                <label className="about-you-label" htmlFor="onboarding-name-input">
+                  Username
+                </label>
+                <input
+                  id="onboarding-name-input"
+                  type="text"
+                  className="about-you-text-input"
+                  value={onboardingName}
+                  onChange={(e) => setOnboardingName(e.target.value)}
+                  placeholder="David"
+                />
               </div>
-            </div>
 
-            {/* Field 3: Where do you live? (Comprehensive Alphabetical Countries with Flags & Modern Typography) */}
-            <div className="about-you-field">
-              <label className="about-you-label" htmlFor="onboarding-country-select">
-                Where do you live?
-              </label>
-              <div className="about-you-country-custom-select">
-                {/* Hidden native select keeps state synced for accessibility and direct interactions */}
-                <select
-                  id="onboarding-country-select"
-                  className="about-you-native-select-hidden"
-                  value={onboardingCountry}
-                  onChange={(e) => setOnboardingCountry(e.target.value)}
-                  tabIndex={-1}
-                  aria-hidden="true"
-                >
-                  <option value="" disabled>Select a country</option>
-                  {ALL_COUNTRIES.map((c) => (
-                    <option key={c.code} value={c.name}>{c.name}</option>
-                  ))}
-                </select>
-
-                {/* Custom Trigger Button */}
-                {(() => {
-                  const currentCountryObj = ALL_COUNTRIES.find((c) => c.name === onboardingCountry);
-                  return (
-                    <div
-                      className={`about-you-country-trigger ${isCountryDropdownOpen ? "open" : ""}`}
-                      onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
-                      role="combobox"
-                      aria-expanded={isCountryDropdownOpen}
-                      aria-haspopup="listbox"
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
-                          e.preventDefault();
-                          setIsCountryDropdownOpen(true);
-                        }
-                      }}
+              {/* Field 2: How old are you? */}
+              <div className="about-you-field">
+                <div className="about-you-field-header-row">
+                  <label className="about-you-label">
+                    How old are you?
+                  </label>
+                  <span className="about-you-field-hint">Tailors course difficulty</span>
+                </div>
+                <div className="about-you-age-grid">
+                  {[13, 14, 15, 16, 17, 18].map((age) => (
+                    <button
+                      key={age}
+                      type="button"
+                      className={`about-you-age-btn ${onboardingAge === age ? "active" : ""}`}
+                      onClick={() => setOnboardingAge(age)}
                     >
-                      <div className="country-trigger-content">
-                        {currentCountryObj ? (
-                          <>
-                            <img
-                              src={`https://flagcdn.com/w40/${currentCountryObj.code.toLowerCase()}.png`}
-                              alt=""
-                              className="country-flag-icon"
-                              loading="lazy"
-                              onError={(e) => {
-                                e.currentTarget.style.display = "none";
-                                const next = e.currentTarget.nextElementSibling;
-                                if (next) next.style.display = "inline-block";
-                              }}
-                            />
-                            <span className="country-flag-emoji-fallback" style={{ display: "none" }}>
-                              {currentCountryObj.flag}
-                            </span>
-                            <span className="country-trigger-name">{currentCountryObj.name}</span>
-                          </>
-                        ) : (
-                          <span className="country-trigger-placeholder">Select a country</span>
+                      {age}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Field 3: Where do you live? (Comprehensive Alphabetical Countries with Flags & Modern Typography) */}
+              <div className="about-you-field">
+                <label className="about-you-label" htmlFor="onboarding-country-select">
+                  Where do you live?
+                </label>
+                <div className="about-you-country-custom-select">
+                  {/* Hidden native select keeps state synced for accessibility and direct interactions */}
+                  <select
+                    id="onboarding-country-select"
+                    className="about-you-native-select-hidden"
+                    value={onboardingCountry}
+                    onChange={(e) => setOnboardingCountry(e.target.value)}
+                    tabIndex={-1}
+                    aria-hidden="true"
+                  >
+                    <option value="" disabled>Select a country</option>
+                    {ALL_COUNTRIES.map((c) => (
+                      <option key={c.code} value={c.name}>{c.name}</option>
+                    ))}
+                  </select>
+
+                  {/* Custom Trigger Button */}
+                  {(() => {
+                    const currentCountryObj = ALL_COUNTRIES.find((c) => c.name === onboardingCountry);
+                    return (
+                      <div
+                        className={`about-you-country-trigger ${isCountryDropdownOpen ? "open" : ""}`}
+                        onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
+                        role="combobox"
+                        aria-expanded={isCountryDropdownOpen}
+                        aria-haspopup="listbox"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+                            e.preventDefault();
+                            setIsCountryDropdownOpen(true);
+                          }
+                        }}
+                      >
+                        <div className="country-trigger-content">
+                          {currentCountryObj ? (
+                            <>
+                              <img
+                                src={`https://flagcdn.com/w40/${currentCountryObj.code.toLowerCase()}.png`}
+                                alt=""
+                                className="country-flag-icon"
+                                loading="lazy"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = "none";
+                                  const next = e.currentTarget.nextElementSibling;
+                                  if (next) next.style.display = "inline-block";
+                                }}
+                              />
+                              <span className="country-flag-emoji-fallback" style={{ display: "none" }}>
+                                {currentCountryObj.flag}
+                              </span>
+                              <span className="country-trigger-name">{currentCountryObj.name}</span>
+                            </>
+                          ) : (
+                            <span className="country-trigger-placeholder">Select a country</span>
+                          )}
+                        </div>
+                        <span className={`about-you-select-chevron ${isCountryDropdownOpen ? "rotated" : ""}`} aria-hidden="true">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                        </span>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Dropdown Menu */}
+                  {isCountryDropdownOpen && (
+                    <div className="about-you-country-menu" role="listbox">
+                      <div className="country-search-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="country-search-icon">
+                          <circle cx="11" cy="11" r="8"></circle>
+                          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input
+                          type="text"
+                          className="country-search-input"
+                          placeholder="Search country..."
+                          value={countrySearch}
+                          onChange={(e) => setCountrySearch(e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                          autoFocus
+                        />
+                        {countrySearch && (
+                          <button
+                            type="button"
+                            className="country-search-clear"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCountrySearch("");
+                            }}
+                            aria-label="Clear search"
+                          >
+                            &times;
+                          </button>
                         )}
                       </div>
-                      <span className={`about-you-select-chevron ${isCountryDropdownOpen ? "rotated" : ""}`} aria-hidden="true">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                      </span>
-                    </div>
-                  );
-                })()}
 
-                {/* Dropdown Menu */}
-                {isCountryDropdownOpen && (
-                  <div className="about-you-country-menu" role="listbox">
-                    <div className="country-search-wrap">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="country-search-icon">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                      </svg>
-                      <input
-                        type="text"
-                        className="country-search-input"
-                        placeholder="Search country..."
-                        value={countrySearch}
-                        onChange={(e) => setCountrySearch(e.target.value)}
-                        onClick={(e) => e.stopPropagation()}
-                        autoFocus
-                      />
-                      {countrySearch && (
-                        <button
-                          type="button"
-                          className="country-search-clear"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCountrySearch("");
-                          }}
-                          aria-label="Clear search"
-                        >
-                          &times;
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="country-options-list">
-                      {(() => {
-                        const filtered = ALL_COUNTRIES.filter((c) =>
-                          c.name.toLowerCase().includes(countrySearch.toLowerCase().trim())
-                        );
-                        if (filtered.length === 0) {
-                          return (
-                            <div className="country-no-results">
-                              No countries matching "{countrySearch}"
-                            </div>
+                      <div className="country-options-list">
+                        {(() => {
+                          const filtered = ALL_COUNTRIES.filter((c) =>
+                            c.name.toLowerCase().includes(countrySearch.toLowerCase().trim())
                           );
-                        }
-                        return filtered.map((c) => {
-                          const isSelected = onboardingCountry === c.name;
-                          return (
-                            <div
-                              key={c.code}
-                              className={`country-option-item ${isSelected ? "selected" : ""}`}
-                              role="option"
-                              aria-selected={isSelected}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setOnboardingCountry(c.name);
-                                setIsCountryDropdownOpen(false);
-                                setCountrySearch("");
-                              }}
-                            >
-                              <div className="country-option-info">
-                                <img
-                                  src={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png`}
-                                  alt=""
-                                  className="country-flag-icon"
-                                  loading="lazy"
-                                  onError={(e) => {
-                                    e.currentTarget.style.display = "none";
-                                    const next = e.currentTarget.nextElementSibling;
-                                    if (next) next.style.display = "inline-block";
-                                  }}
-                                />
-                                <span className="country-flag-emoji-fallback" style={{ display: "none" }}>
-                                  {c.flag}
-                                </span>
-                                <span className="country-option-name">{c.name}</span>
+                          if (filtered.length === 0) {
+                            return (
+                              <div className="country-no-results">
+                                No countries matching "{countrySearch}"
                               </div>
-                              {isSelected && (
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5b21b6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="country-check-icon">
-                                  <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                              )}
-                            </div>
-                          );
-                        });
-                      })()}
+                            );
+                          }
+                          return filtered.map((c) => {
+                            const isSelected = onboardingCountry === c.name;
+                            return (
+                              <div
+                                key={c.code}
+                                className={`country-option-item ${isSelected ? "selected" : ""}`}
+                                role="option"
+                                aria-selected={isSelected}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setOnboardingCountry(c.name);
+                                  setIsCountryDropdownOpen(false);
+                                  setCountrySearch("");
+                                }}
+                              >
+                                <div className="country-option-info">
+                                  <img
+                                    src={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png`}
+                                    alt=""
+                                    className="country-flag-icon"
+                                    loading="lazy"
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = "none";
+                                      const next = e.currentTarget.nextElementSibling;
+                                      if (next) next.style.display = "inline-block";
+                                    }}
+                                  />
+                                  <span className="country-flag-emoji-fallback" style={{ display: "none" }}>
+                                    {c.flag}
+                                  </span>
+                                  <span className="country-option-name">{c.name}</span>
+                                </div>
+                                {isSelected && (
+                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5b21b6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="country-check-icon">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                  </svg>
+                                )}
+                              </div>
+                            );
+                          });
+                        })()}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -3845,9 +4836,416 @@ function AuthPage() {
             <button
               type="button"
               className="about-you-dock-continue"
-              onClick={handleOnboardingComplete}
+              onClick={() => transitionToView("interests", "forward")}
             >
               Continue →
+            </button>
+          </div>
+        </main>
+      ) : view === "interests" ? (
+        /* "What are you interested in learning?" - Unified 4-Column Layout matching 05 - Choose Your Goals.png */
+        <main className={`interests-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
+          {/* Title & Subtitle */}
+          <div className="interests-heading">
+            <h1 className="interests-title">
+              What are you<br />
+              interested in learning?
+            </h1>
+            <p className="interests-subtitle">
+              Pick the skills that excite you. You can always change these later.
+            </p>
+          </div>
+
+          {/* Skills 4-Column Grid */}
+          <div className="interests-grid">
+            {INTEREST_SKILLS.map((skill) => {
+              const isSelected = selectedInterests.includes(skill.id);
+              return (
+                <div
+                  key={skill.id}
+                  className={`interest-card ${isSelected ? "selected" : ""}`}
+                  onClick={() => toggleInterest(skill.id)}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isSelected}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      toggleInterest(skill.id);
+                    }
+                  }}
+                >
+                  <div className="interest-icon-circle">
+                    {renderInterestIcon(skill.id)}
+                  </div>
+                  <h3 className="interest-card-title">{skill.title}</h3>
+                  <p className="interest-card-desc">{skill.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Helper Hint Pill matching layout */}
+          <div className="interests-hint-pill">
+            <span>💡</span>
+            <span>Your skills help us recommend the best courses and projects.</span>
+          </div>
+
+          {/* Floating Bottom Dock matching 05 - Choose Your Goals.png */}
+          <div className="interests-bottom-dock">
+            <button
+              type="button"
+              className="interests-dock-back"
+              onClick={() => transitionToView("about-you", "backward")}
+            >
+              ← Back
+            </button>
+            <button
+              type="button"
+              className="interests-dock-continue"
+              onClick={() => transitionToView("goals", "forward")}
+            >
+              Continue →
+            </button>
+          </div>
+        </main>
+      ) : view === "goals" ? (
+        /* "What do you want to achieve?" - EXACT match to Images/05 - Choose Your Goals.png */
+        <main className={`goals-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
+          {/* Title & Subtitle matching 05 - Choose Your Goals.png */}
+          <div className="goals-heading">
+            <h1 className="goals-title">
+              What do you want to achieve?
+            </h1>
+            <p className="goals-subtitle">
+              There is no wrong answer. Choose what matters most to you.
+            </p>
+          </div>
+
+          {/* 4-Column Goals Grid matching 05 - Choose Your Goals.png */}
+          <div className="goals-grid">
+            {GOAL_OPTIONS.map((goal) => {
+              const isSelected = selectedGoals.includes(goal.id);
+              return (
+                <div
+                  key={goal.id}
+                  className={`goal-card ${isSelected ? "selected" : ""}`}
+                  onClick={() => toggleGoal(goal.id)}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isSelected}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      toggleGoal(goal.id);
+                    }
+                  }}
+                >
+                  <div className="goal-icon-circle">
+                    {renderGoalIcon(goal.id)}
+                  </div>
+                  <h3 className="goal-card-title">{goal.title}</h3>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Helper Hint Pill matching 05 - Choose Your Goals.png */}
+          <div className="goals-hint-pill">
+            <span>💡</span>
+            <span>Your goals help us shape your learning journey.</span>
+          </div>
+
+          {/* Floating Bottom Dock matching 05 - Choose Your Goals.png */}
+          <div className="goals-bottom-dock">
+            <button
+              type="button"
+              className="goals-dock-back"
+              onClick={() => transitionToView("interests", "backward")}
+            >
+              ← Back
+            </button>
+            <button
+              type="button"
+              className="goals-dock-continue"
+              onClick={() => transitionToView("personalise", "forward")}
+            >
+              Continue →
+            </button>
+          </div>
+        </main>
+      ) : view === "personalise" ? (
+        /* "Let's build your learning path" - EXACT match to Images/06 - Personalise My Learning.png */
+        <main className={`personalise-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
+          {/* Heading */}
+          <div className="personalise-heading">
+            <h1 className="personalise-title">
+              Let's build your<br />
+              learning path
+            </h1>
+            <p className="personalise-subtitle">
+              Based on what you've told us, here are some great places to start.
+            </p>
+          </div>
+
+          {/* 3-Column Learning Path Grid */}
+          <div className="personalise-grid">
+            {recommendedPaths.map((course) => {
+              return (
+                <article
+                  key={course.id}
+                  className="learning-path-card"
+                >
+                  <div className="path-card-image-wrap">
+                    <img
+                      src={course.image}
+                      alt={course.title}
+                      className="path-card-image"
+                      loading="lazy"
+                    />
+                    <div className="path-card-xp-badge">
+                      <span>★</span>
+                      <span>+{course.xp || 500} XP</span>
+                    </div>
+                  </div>
+
+                  <div className="path-card-content">
+                    <div className="path-meta-row">
+                      <span className="path-category-pill">{course.category}</span>
+                      <span className="path-level-pill">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="18" y1="20" x2="18" y2="10"/>
+                          <line x1="12" y1="20" x2="12" y2="4"/>
+                          <line x1="6" y1="20" x2="6" y2="14"/>
+                        </svg>
+                        <span>{course.level}</span>
+                      </span>
+                    </div>
+
+                    <h2 className="path-card-title">{course.title}</h2>
+                    <p className="path-card-desc">{course.desc}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          {/* Secondary Explore Link */}
+          <a
+            href="#explore-skills"
+            className="personalise-explore-link"
+            onClick={(e) => {
+              e.preventDefault();
+              transitionToView("interests", "backward");
+            }}
+          >
+            <span>Not sure yet? Explore all skills</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor"/>
+            </svg>
+          </a>
+
+          {/* Floating Bottom Dock */}
+          <div className="personalise-bottom-dock">
+            <button
+              type="button"
+              className="personalise-dock-back"
+              onClick={() => transitionToView("goals", "backward")}
+            >
+              ← Back
+            </button>
+            <button
+              type="button"
+              className="personalise-dock-continue"
+              onClick={() => transitionToView("ready", "forward")}
+            >
+              Build My Learning Journey →
+            </button>
+          </div>
+        </main>
+      ) : view === "ready" ? (
+        /* "You're ready, [Username]!" - Step 07 of 07 matching Images/07 - You're Ready.png with Desktop Layout */
+        <main className={`ready-stage ${isViewTransitioning ? (transitionDirection === "forward" ? "view-exit-forward" : "view-exit-backward") : (transitionDirection === "forward" ? "view-enter-forward" : "view-enter-backward")}`}>
+          {/* Top Progress Bar matching 07 - You're Ready.png */}
+          <div className="ready-top-status-bar">
+            <div className="ready-top-status-labels">
+              <span className="ready-setup-complete-text">Setup Complete</span>
+              <span className="ready-setup-step-count">07 / 07</span>
+            </div>
+            <div className="ready-progress-track">
+              <div className="ready-progress-fill"></div>
+            </div>
+          </div>
+
+          {/* Celebration Header */}
+          <div className="ready-heading">
+            <h1 className="ready-title">You're ready, {preferredUsername}!</h1>
+            <div className="ready-party-popper" aria-hidden="true">🎉</div>
+            <p className="ready-subtitle">
+              Your <span className="ready-purple-text">MyDear</span> Teenager journey starts now.<br className="ready-hide-mobile" />
+              We've tailored your experience based on your goals.
+            </p>
+          </div>
+
+          {/* 3 Quick Stat Cards Row */}
+          <div className="ready-stats-row">
+            <div className="ready-stat-card">
+              <div className="ready-stat-icon-circle stat-purple">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="6"/>
+                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+                </svg>
+              </div>
+              <strong className="ready-stat-number">0</strong>
+              <span className="ready-stat-label">XP</span>
+            </div>
+
+            <div className="ready-stat-card">
+              <div className="ready-stat-icon-circle stat-orange">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                </svg>
+              </div>
+              <strong className="ready-stat-number">0</strong>
+              <span className="ready-stat-label">Days Streak</span>
+            </div>
+
+            <div className="ready-stat-card">
+              <div className="ready-stat-icon-circle stat-green">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                  <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                  <path d="M4 22h16"/>
+                  <path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1h8c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"/>
+                  <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+                </svg>
+              </div>
+              <strong className="ready-stat-number level-text">Beginner</strong>
+              <span className="ready-stat-label">Level</span>
+            </div>
+          </div>
+
+          {/* Desktop 2-Column Grid */}
+          <div className="ready-desktop-grid">
+            {/* Left Column: Selected Interests & Learning Goals */}
+            <div className="ready-summary-col">
+              {/* Selected Interests Box */}
+              <div className="ready-summary-box">
+                <div className="ready-box-header">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ready-box-icon">
+                    <line x1="4" x2="20" y1="12" y2="12"/>
+                    <line x1="4" x2="20" y1="6" y2="6"/>
+                    <line x1="4" x2="20" y1="18" y2="18"/>
+                  </svg>
+                  <h3 className="ready-box-title">Selected Interests</h3>
+                </div>
+                <div className="ready-pills-wrap">
+                  {userInterestTitles.map((title, i) => (
+                    <span key={i} className="ready-interest-pill">{title}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Learning Goals Box */}
+              <div className="ready-summary-box">
+                <div className="ready-box-header">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ready-box-icon">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="6"/>
+                    <circle cx="12" cy="12" r="2"/>
+                  </svg>
+                  <h3 className="ready-box-title">Learning Goals</h3>
+                </div>
+                <div className="ready-goals-list">
+                  {userGoalTitles.map((title, i) => (
+                    <div key={i} className="ready-goal-item">
+                      <span className="ready-goal-check-circle">✓</span>
+                      <span className="ready-goal-text">{title}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Up Next Featured Course Card */}
+            <div className="ready-upnext-col">
+              <div className="ready-upnext-card">
+                <div className="ready-upnext-image-wrap">
+                  <img
+                    src={topRecommendedCourse.image}
+                    alt={topRecommendedCourse.title}
+                    className="ready-upnext-image"
+                    loading="lazy"
+                  />
+                  <div className="ready-upnext-badge">
+                    <span>UP NEXT</span>
+                  </div>
+                </div>
+
+                <div className="ready-upnext-body">
+                  <div className="ready-upnext-meta">
+                    <span className="path-category-pill">{topRecommendedCourse.category}</span>
+                    <span className="path-level-pill">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"/>
+                        <line x1="12" y1="20" x2="12" y2="4"/>
+                        <line x1="6" y1="20" x2="6" y2="14"/>
+                      </svg>
+                      <span>{topRecommendedCourse.level}</span>
+                    </span>
+                  </div>
+
+                  <h2 className="ready-upnext-title">{topRecommendedCourse.title}</h2>
+                  <p className="ready-upnext-desc">{topRecommendedCourse.desc}</p>
+
+                  <button
+                    type="button"
+                    className="ready-begin-course-btn"
+                    onClick={() => handleOnboardingComplete({ targetView: "course", openCourse: topRecommendedCourse })}
+                  >
+                    <span>Begin Course</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Motivational Quote & Action Buttons */}
+          <div className="ready-bottom-section">
+            <p className="ready-quote">
+              "Small steps today can become big skills tomorrow."
+            </p>
+
+            <div className="ready-action-buttons">
+              <button
+                type="button"
+                className="ready-dashboard-btn"
+                onClick={() => handleOnboardingComplete({ targetView: "home" })}
+              >
+                <span>Take Me to My Dashboard</span>
+                <span>→</span>
+              </button>
+
+              <button
+                type="button"
+                className="ready-explore-btn"
+                onClick={() => handleOnboardingComplete({ targetView: "academy" })}
+              >
+                Explore Skills
+              </button>
+            </div>
+          </div>
+
+          {/* Floating Back Dock */}
+          <div className="ready-bottom-dock">
+            <button
+              type="button"
+              className="ready-dock-back"
+              onClick={() => transitionToView("personalise", "backward")}
+            >
+              ← Back
             </button>
           </div>
         </main>
