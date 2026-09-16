@@ -332,6 +332,13 @@ function Icon({ name, size = 20, className = "" }) {
           <polygon points="5 3 19 12 5 21 5 3" />
         </svg>
       );
+    case "lock":
+      return (
+        <svg {...iconProps}>
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+      );
     case "lessons":
       return (
         <svg {...iconProps}>
@@ -433,23 +440,24 @@ const academyCourses = [
     category: "Design",
     title: "UI/UX Design Fundamentals",
     module: "Designing User Interfaces",
-    meta: "5 Lessons • Beginner",
-    lessonsCount: 5,
+    meta: "3 Lessons • Beginner",
+    lessonsCount: 3,
     level: "Beginner",
     description: "Design clean, usable interfaces from wireframe to prototype. Learn type hierarchy, layouts, and responsive design.",
     status: "in-progress",
     btnLabel: "Continue Learning",
     btnStyle: "light",
-    thumbnail: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80",
+    thumbnail: "Images/course-uiux.png",
+    heroThumbnail: "Images/home-hero-uiux.png",
     instructor: "Joseph Joestar",
-    instructorRole: "Product Designer, Tutor",
-    instructorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+    instructorRole: "Product Designer. Tutor",
+    instructorAvatar: "Images/tutor-joseph.png",
     videoUrl: "https://www.youtube.com/embed/c9Wg6Cb_YlU",
-    duration: "18 mins",
+    duration: "22 mins",
     curriculum: [
       {
         title: "What is Typography",
-        duration: "3 min",
+        duration: "6 min",
         done: true,
         savedTimestamp: 0,
         description: "Explore the core building blocks of digital typography, font weights, and how text shapes user experiences across devices.",
@@ -457,7 +465,7 @@ const academyCourses = [
       },
       {
         title: "Type Anatomy",
-        duration: "4 min",
+        duration: "9 min",
         done: true,
         savedTimestamp: 0,
         description: "Deep dive into x-height, ascenders, descenders, kerning, and baseline grids to build balanced interfaces.",
@@ -465,27 +473,11 @@ const academyCourses = [
       },
       {
         title: "Choosing Typefaces",
-        duration: "5 min",
+        duration: "7 min",
         done: false,
         savedTimestamp: 120,
         description: "A typeface sets the tone before a single word is read. Learn how to choose typefaces that match a product's personality, judge readability at different sizes, and pair a display face with a body face without clashing.",
         tags: ["Readability", "Type Pairing", "Hierarchy"]
-      },
-      {
-        title: "Pairing Fonts",
-        duration: "4 min",
-        done: false,
-        savedTimestamp: 0,
-        description: "Master proven formulas for combining serif, sans-serif, and display typefaces harmoniously across websites and mobile apps.",
-        tags: ["Font Pairing", "Styling", "Contrast"]
-      },
-      {
-        title: "Quiz: Typography Basics",
-        duration: "5 min",
-        done: false,
-        savedTimestamp: 0,
-        description: "Review and test your knowledge of typographic hierarchy, readability guidelines, and practical pairing rules.",
-        tags: ["Quiz", "Knowledge Check", "Review"]
       }
     ]
   },
@@ -494,51 +486,43 @@ const academyCourses = [
     category: "Marketing",
     title: "Digital Marketing",
     module: "Audience Growth & Analytics",
-    meta: "4 Lessons • Beginner",
-    lessonsCount: 4,
+    meta: "3 Lessons • Beginner",
+    lessonsCount: 3,
     level: "Beginner",
     description: "Grow an audience with content, social media channels, and actionable analytics.",
     status: "in-progress",
     btnLabel: "Continue Learning",
     btnStyle: "light",
-    thumbnail: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=800&q=80",
-    instructor: "Elena Rostova",
-    instructorRole: "Growth Strategist",
-    instructorAvatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&q=80",
+    thumbnail: "Images/course-marketing.png",
+    instructor: "Leo Martins",
+    instructorRole: "Growth Marketer. Tutor",
+    instructorAvatar: "Images/tutor-leo.png",
     videoUrl: "https://www.youtube.com/embed/bixR-KIJKYM",
-    duration: "22 mins",
+    duration: "21 mins",
     curriculum: [
       {
         title: "Digital Marketing Landscape for Creators",
-        duration: "7 min",
+        duration: "10 min",
         done: true,
         savedTimestamp: 0,
         description: "Understand inbound channels, creator ecosystems, and identifying where your target audience hangs out online.",
         tags: ["Strategy", "Ecosystem", "Foundations"]
       },
       {
-        title: "Content Strategy & Audience Segmentation",
-        duration: "9 min",
+        title: "Building a Content Calendar",
+        duration: "6 min",
         done: false,
         savedTimestamp: 0,
-        description: "Build content pillars that attract and retain loyal followers while speaking directly to different customer personas.",
-        tags: ["Content Strategy", "Segmentation", "Personas"]
+        description: "Build content pillars and scheduling frameworks that attract and retain loyal followers.",
+        tags: ["Content Strategy", "Calendar", "Personas"]
       },
       {
         title: "Search & Social Analytics Mastery",
-        duration: "14 min",
+        duration: "5 min",
         done: false,
         savedTimestamp: 0,
         description: "Interpret impressions, engagement rates, click-throughs, and convert data insights into higher performing posts.",
         tags: ["Analytics", "Metrics", "Optimization"]
-      },
-      {
-        title: "Running Impactful Campaigns on a Budget",
-        duration: "11 min",
-        done: false,
-        savedTimestamp: 0,
-        description: "Maximize ROI on organic distribution and low-cost paid campaigns to test ideas quickly.",
-        tags: ["Campaigns", "Budgeting", "Execution"]
       }
     ]
   },
@@ -547,31 +531,31 @@ const academyCourses = [
     category: "Media",
     title: "Content Creation",
     module: "Video Production & Storytelling",
-    meta: "4 Lessons • Beginner",
-    lessonsCount: 4,
+    meta: "3 Lessons • Beginner",
+    lessonsCount: 3,
     level: "Beginner",
     description: "Shoot, edit, and publish video content that engages audiences from the very first second.",
     status: "in-progress",
     btnLabel: "Continue Learning",
     btnStyle: "light",
-    thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=800&q=80",
-    instructor: "Marcus Reed",
-    instructorRole: "Filmmaker & YouTube Creator",
-    instructorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80",
+    thumbnail: "Images/course-content.png",
+    instructor: "Priya Shah",
+    instructorRole: "Creator. Tutor",
+    instructorAvatar: "Images/tutor-priya.png",
     videoUrl: "https://www.youtube.com/embed/nLRL_NcnK-4",
-    duration: "25 mins",
+    duration: "21 mins",
     curriculum: [
       {
         title: "Camera Angles, Lighting & Phone Setups",
-        duration: "8 min",
+        duration: "10 min",
         done: true,
         savedTimestamp: 0,
         description: "Set up cinematic 3-point lighting and frame compelling video shots using your smartphone camera.",
         tags: ["Lighting", "Framing", "Mobile Production"]
       },
       {
-        title: "Storyboarding & Hooking the Audience in 3s",
-        duration: "10 min",
+        title: "Building a Content Calendar",
+        duration: "6 min",
         done: false,
         savedTimestamp: 0,
         description: "Learn psychological hooks, narrative arcs, and pacing techniques to maintain high retention on short-form video.",
@@ -579,22 +563,68 @@ const academyCourses = [
       },
       {
         title: "Premiere & CapCut Editing Masterclass",
-        duration: "25 min",
+        duration: "5 min",
         done: false,
         savedTimestamp: 0,
         description: "Pacing cuts, seamless transitions, dynamic sound effects, and color grading for YouTube and TikTok.",
         tags: ["Editing", "CapCut", "Premiere"]
-      },
-      {
-        title: "Sound Design, Music & Publishing Strategy",
-        duration: "15 min",
-        done: false,
-        savedTimestamp: 0,
-        description: "Select copyright-free music tracks, EQ voiceovers for crystal-clear audio, and optimize video thumbnails.",
-        tags: ["Audio", "Thumbnails", "Publishing"]
       }
     ]
   },
+  {
+    id: "creative-1",
+    category: "Design",
+    title: "Into to Creative Thinking",
+    module: "Creative Problem Solving",
+    meta: "4 Lessons • Beginner",
+    lessonsCount: 4,
+    level: "Beginner",
+    description: "Unlock breakthrough ideas, overcome creative blocks, and build strong thinking habits.",
+    status: "completed",
+    btnLabel: "Review Course",
+    btnStyle: "light",
+    thumbnail: "Images/course-thinking.png",
+    instructor: "Leo Martins",
+    instructorRole: "Growth Marketer. Tutor",
+    instructorAvatar: "Images/tutor-leo.png",
+    videoUrl: "https://www.youtube.com/embed/bixR-KIJKYM",
+    duration: "24 mins",
+    curriculum: [
+      {
+        title: "Foundations of Divergent Thinking",
+        duration: "6 min",
+        done: true,
+        savedTimestamp: 360,
+        description: "Learn how to expand options before narrowing down to solutions.",
+        tags: ["Creativity", "Thinking", "Ideation"]
+      },
+      {
+        title: "Overcoming Creative Blocks & Fear",
+        duration: "7 min",
+        done: true,
+        savedTimestamp: 420,
+        description: "Actionable frameworks to jumpstart creative flow when you feel stuck.",
+        tags: ["Mindset", "Productivity", "Focus"]
+      },
+      {
+        title: "Analogies, Lateral Jumps & Mind Maps",
+        duration: "6 min",
+        done: true,
+        savedTimestamp: 360,
+        description: "Connect unrelated concepts to create novel ideas and innovative solutions.",
+        tags: ["Mind Mapping", "Innovation", "Brainstorming"]
+      },
+      {
+        title: "Complete",
+        duration: "5 min",
+        done: true,
+        savedTimestamp: 300,
+        description: "Synthesize your learnings into daily habits for lifelong creative thinking.",
+        tags: ["Review", "Summary", "Mastery"]
+      }
+    ]
+  },
+
   {
     id: "web-1",
     category: "Web Development",
@@ -1249,25 +1279,35 @@ function mergeWithCatalog(savedCourses) {
   return academyCourses.map((catalogCourse) => {
     const saved = savedCourses.find((c) => c && c.id === catalogCourse.id);
     if (!saved) return catalogCourse;
+    const isShowcaseCourse = ["uiux-1", "mkt-1", "media-1", "creative-1"].includes(catalogCourse.id);
     return {
+      ...saved,
       ...catalogCourse,
       ...saved,
       module: catalogCourse.module || saved.module || "General Module",
       instructor: catalogCourse.instructor || saved.instructor || "Instructor",
       instructorRole: catalogCourse.instructorRole || saved.instructorRole || "Tutor",
       instructorAvatar: catalogCourse.instructorAvatar || saved.instructorAvatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80",
+      thumbnail: catalogCourse.thumbnail || saved.thumbnail,
+      heroThumbnail: catalogCourse.heroThumbnail || saved.heroThumbnail,
+      instructor: catalogCourse.instructor || saved.instructor,
+      instructorRole: catalogCourse.instructorRole || saved.instructorRole,
+      instructorAvatar: catalogCourse.instructorAvatar || saved.instructorAvatar,
+      module: catalogCourse.module || saved.module,
       videoUrl: catalogCourse.videoUrl || saved.videoUrl,
-      curriculum: catalogCourse.curriculum.map((catalogLesson, idx) => {
-        const savedLesson = saved.curriculum && saved.curriculum[idx];
-        return savedLesson
-          ? {
-              ...catalogLesson,
-              ...savedLesson,
-              description: catalogLesson.description || (savedLesson && savedLesson.description) || "Lesson overview",
-              tags: catalogLesson.tags || (savedLesson && savedLesson.tags) || ["Fundamentals"]
-            }
-          : catalogLesson;
-      })
+      curriculum: isShowcaseCourse
+        ? catalogCourse.curriculum
+        : catalogCourse.curriculum.map((catalogLesson, idx) => {
+            const savedLesson = saved.curriculum && saved.curriculum[idx];
+            return savedLesson
+              ? {
+                  ...catalogLesson,
+                  ...savedLesson,
+                  description: catalogLesson.description || (savedLesson && savedLesson.description) || "Lesson overview",
+                  tags: catalogLesson.tags || (savedLesson && savedLesson.tags) || ["Fundamentals"]
+                }
+              : catalogLesson;
+          })
     };
   });
 }
@@ -1304,15 +1344,15 @@ const defaultAccount = {
   name: "Daniel",
   email: "daniel@mydearteenager.com",
   password: "password123",
-  avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+  avatar: "Images/avatar-daniel.png",
   country: "United States"
 };
 
-// Default Daniel demo starter progress (starts with UI/UX course ongoing at Choosing Typefaces)
+// Default Daniel demo starter progress (starts with UI/UX course ongoing at Choosing Typefaces, Level 4)
 const defaultDemoData = {
   email: "daniel@mydearteenager.com",
-  userLevel: 1,
-  userXp: 0,
+  userLevel: 4,
+  userXp: 2400,
   streak: 1,
   lastStreakDate: null,
   coursesList: academyCourses,
@@ -1810,14 +1850,27 @@ function getPersonalizedRecommendations(selectedInterests = [], selectedGoals = 
 }
 
 function AuthPage() {
-  const [account, setAccount] = useState(() => readStorage(ACCOUNT_KEY, null));
-  const [view, setView] = useState(() => {
+  const [account, setAccount] = useState(() => {
+    const stored = readStorage(ACCOUNT_KEY, null);
+    if (stored) return stored;
     const hash = (window.location.hash || "").replace("#", "").toLowerCase();
+    if (["dashboard", "learning", "academy", "home", "course"].includes(hash)) {
+      return defaultAccount;
+    }
+    return null;
+  });
+  const [view, setView] = useState(() => {
+    const storedAccount = readStorage(ACCOUNT_KEY, null);
+    const hash = (window.location.hash || "").replace("#", "").toLowerCase();
+    if (storedAccount || ["dashboard", "learning", "academy", "home", "course"].includes(hash)) {
+      return "dashboard";
+    }
     // Only OTP page continues across reload so the countdown timer continues from where it stopped
     if (hash === "otp" || hash === "verify") {
       return "otp";
     }
     // Every other page starts again from the beginning (welcome)
+    // Every other unauthenticated page starts again from the beginning (welcome)
     if (hash && hash !== "welcome") {
       try {
         history.replaceState(null, "", window.location.pathname);
@@ -2051,9 +2104,11 @@ function AuthPage() {
     if (hash === "academy" || hash === "learning" || hash === "course") return hash;
     return "home";
   }); // "home" | "academy" | "learning" | "course"
+  const [learningTab, setLearningTab] = useState("in-progress"); // "in-progress" | "completed"
   const [academyCategory, setAcademyCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [enrollmentModalCourse, setEnrollmentModalCourse] = useState(null);
 
   // Ongoing Course page view state
   const [activeCourseId, setActiveCourseId] = useState("uiux-1");
@@ -2570,21 +2625,71 @@ function AuthPage() {
   }
 
  
+  function enrollCourse(courseId, shouldOpen = false) {
+    const target = coursesList.find((c) => c.id === courseId) || academyCourses.find((c) => c.id === courseId);
+    if (!target) return;
+    const updatedCourses = coursesList.map((c) => {
+      if (c.id === target.id) {
+        return { ...c, enrolled: true, status: "in-progress" };
+      }
+      return c;
+    });
+    setCoursesList(updatedCourses);
+    persistUserProgress({ coursesList: updatedCourses });
+    setNotice(`Enrolled in "${target.title}"!`);
+    setTimeout(() => setNotice(""), 3500);
+    setEnrollmentModalCourse(null);
+    if (shouldOpen) {
+      setActiveCourseId(target.id);
+      let targetIdx = 0;
+      if (target.curriculum && Array.isArray(target.curriculum)) {
+        const firstUndone = target.curriculum.findIndex((l) => !l.done);
+        targetIdx = firstUndone !== -1 ? firstUndone : 0;
+      }
+      setActiveLessonIndex(targetIdx);
+      const initialTime =
+        target.curriculum && target.curriculum[targetIdx]
+          ? Math.floor(target.curriculum[targetIdx].savedTimestamp || 0)
+          : 0;
+      setLessonInitialStartTime(initialTime);
+      setLessonWatchTimestamp(initialTime);
+      setDashboardView("course");
+    }
+  }
+
+  function unenrollCourse(courseId) {
+    const target = coursesList.find((c) => c.id === courseId);
+    const title = target ? target.title : "Course";
+    const updatedCourses = coursesList.map((c) => {
+      if (c.id === courseId) {
+        return {
+          ...c,
+          enrolled: false,
+          status: "not-started",
+          curriculum: (c.curriculum || []).map((l) => ({ ...l, done: false, savedTimestamp: 0 }))
+        };
+      }
+      return c;
+    });
+    setCoursesList(updatedCourses);
+    persistUserProgress({ coursesList: updatedCourses });
+    setNotice(`Unenrolled from "${title}".`);
+    setTimeout(() => setNotice(""), 3500);
+    if (dashboardView === "course" && activeCourseId === courseId) {
+      setDashboardView("academy");
+    }
+  }
+
   function openCourseVideo(course, lessonIndex = null) {
     const targetCourse = (course && coursesList.find((c) => c.id === course.id)) || course || coursesList[0] || academyCourses[0];
-    setActiveCourseId(targetCourse.id);
+    const isEnrolled = Boolean(targetCourse.enrolled || getCourseProgress(targetCourse) > 0);
 
-    
-    if (!targetCourse.enrolled) {
-      const updatedCourses = coursesList.map((c) => {
-        if (c.id === targetCourse.id) {
-          return { ...c, enrolled: true, status: "in-progress" };
-        }
-        return c;
-      });
-      setCoursesList(updatedCourses);
-      persistUserProgress({ coursesList: updatedCourses });
+    if (!isEnrolled) {
+      setEnrollmentModalCourse(targetCourse);
+      return;
     }
+
+    setActiveCourseId(targetCourse.id);
 
     let targetIdx = 0;
     if (typeof lessonIndex === "number") {
@@ -2899,295 +3004,579 @@ function AuthPage() {
           </header>
 
           {/* VIEW 1: ONGOING COURSE PAGE (Matching Ongoing course.jpeg exactly) */}
-          {dashboardView === "course" && (
-            <section className="dashboard-content ongoing-course-view-content">
-              <div className="ongoing-layout-grid">
-                {/* Left/Center Column: Breadcrumb, Lesson Title, Video, About Card */}
-                <div className="ongoing-main-col">
-                  <div className="ongoing-breadcrumb-row">
-                    <button className="ongoing-back-btn" onClick={() => setDashboardView("academy")}>
-                      ←
-                    </button>
-                    <span className="ongoing-breadcrumb-title">
-                      {currentOngoingCourse.title} · {currentOngoingCourse.module || "Designing User Interfaces"}
-                    </span>
+          {dashboardView === "course" && (() => {
+            const isCurrentCourseEnrolled = Boolean(currentOngoingCourse.enrolled || getCourseProgress(currentOngoingCourse) > 0);
+            return (
+              <section className="dashboard-content ongoing-course-view-content">
+                {!isCurrentCourseEnrolled ? (
+                  <div className="course-locked-barrier">
+                    <div className="locked-barrier-card">
+                      <div className="locked-badge-icon">
+                        <Icon name="lock" size={28} />
+                      </div>
+                      <span className="locked-category-pill">{currentOngoingCourse.category || "Skill Track"}</span>
+                      <h2 className="locked-barrier-title">{currentOngoingCourse.title}</h2>
+                      <p className="locked-barrier-desc">
+                        {currentOngoingCourse.description ||
+                          "Enroll in this course to access full video lessons, track your progress, earn XP, and build practical skills."}
+                      </p>
+                      <div className="locked-meta-details">
+                        <span>⏱ {currentOngoingCourse.duration || "4 modules"}</span>
+                        <span>📚 {currentCurriculum.length} lessons</span>
+                        <span>⭐ +{currentCurriculum.length * 60} XP total</span>
+                      </div>
+                      <div className="locked-actions-row">
+                        <button
+                          type="button"
+                          className="enroll-primary-btn"
+                          onClick={() => enrollCourse(currentOngoingCourse.id, true)}
+                        >
+                          Enroll Now & Start Course →
+                        </button>
+                        <button
+                          type="button"
+                          className="locked-back-btn"
+                          onClick={() => setDashboardView("academy")}
+                        >
+                          Back to Academy
+                        </button>
+                      </div>
+                    </div>
                   </div>
+                ) : (
+                  <div className="ongoing-layout-grid">
+                    {/* Left/Center Column: Breadcrumb, Lesson Title, Video, About Card */}
+                    <div className="ongoing-main-col">
+                      <div className="ongoing-breadcrumb-row">
+                        <button className="ongoing-back-btn" onClick={() => setDashboardView("academy")}>
+                          ←
+                        </button>
+                        <span className="ongoing-breadcrumb-title">
+                          {currentOngoingCourse.title} · {currentOngoingCourse.module || "Designing User Interfaces"}
+                        </span>
+                        <button
+                          type="button"
+                          className="ongoing-unenroll-btn"
+                          onClick={() => unenrollCourse(currentOngoingCourse.id)}
+                          title="Unenroll from this course"
+                        >
+                          ✕ Unenroll
+                        </button>
+                      </div>
 
-                  <h1 className="ongoing-lesson-title">{currentOngoingLesson.title}</h1>
+                      <h1 className="ongoing-lesson-title">{currentOngoingLesson.title}</h1>
 
-                  {/* Polished Video Playback Tracker & Restart Controls */}
-                  <div className="video-playback-tracker-bar">
-                    <div className="playback-info">
-                      <span className={`live-dot ${isVideoPlaying ? "is-playing" : "is-paused"}`}></span>
-                      <div>
-                        {!isVideoPlaying ? (
-                          <span>
-                            <span className="playback-paused-text">⏸ Paused at {formatSeconds(lessonWatchTimestamp)}</span>{" "}
-                            <span className="playback-duration">· {liveVideoDuration || currentOngoingLesson.duration} total</span>
-                          </span>
-                        ) : lessonInitialStartTime > 4 ? (
-                          <span>
-                            <span className="playback-resuming-text">Resuming from {formatSeconds(lessonWatchTimestamp)}</span>{" "}
-                            <span className="playback-duration">· {liveVideoDuration || currentOngoingLesson.duration} total</span>
-                          </span>
-                        ) : (
-                          <span>
-                            <span>Playing: {formatSeconds(lessonWatchTimestamp)}</span>{" "}
-                            <span className="playback-duration">· {liveVideoDuration || currentOngoingLesson.duration} total</span>
-                          </span>
+                      {/* Polished Video Playback Tracker & Restart Controls */}
+                      <div className="video-playback-tracker-bar">
+                        <div className="playback-info">
+                          <span className={`live-dot ${isVideoPlaying ? "is-playing" : "is-paused"}`}></span>
+                          <div>
+                            {!isVideoPlaying ? (
+                              <span>
+                                <span className="playback-paused-text">⏸ Paused at {formatSeconds(lessonWatchTimestamp)}</span>{" "}
+                                <span className="playback-duration">· {liveVideoDuration || currentOngoingLesson.duration} total</span>
+                              </span>
+                            ) : lessonInitialStartTime > 4 ? (
+                              <span>
+                                <span className="playback-resuming-text">Resuming from {formatSeconds(lessonWatchTimestamp)}</span>{" "}
+                                <span className="playback-duration">· {liveVideoDuration || currentOngoingLesson.duration} total</span>
+                              </span>
+                            ) : (
+                              <span>
+                                <span>Playing: {formatSeconds(lessonWatchTimestamp)}</span>{" "}
+                                <span className="playback-duration">· {liveVideoDuration || currentOngoingLesson.duration} total</span>
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {lessonWatchTimestamp > 4 && (
+                          <button
+                            className="restart-video-link"
+                            onClick={() => {
+                              setLessonInitialStartTime(0);
+                              setLessonWatchTimestamp(0);
+                              updateLessonSavedTimestamp(activeCourseId, safeActiveLessonIndex, 0);
+                            }}
+                            title="Restart this lesson from the beginning"
+                          >
+                            <span>↺</span>
+                            <span>Restart from 0:00</span>
+                          </button>
                         )}
                       </div>
-                    </div>
 
-                    {lessonWatchTimestamp > 4 && (
-                      <button
-                        className="restart-video-link"
-                        onClick={() => {
-                          setLessonInitialStartTime(0);
-                          setLessonWatchTimestamp(0);
-                          updateLessonSavedTimestamp(activeCourseId, safeActiveLessonIndex, 0);
-                        }}
-                        title="Restart this lesson from the beginning"
-                      >
-                        <span>↺</span>
-                        <span>Restart from 0:00</span>
-                      </button>
-                    )}
-                  </div>
+                      <div className="ongoing-video-container">
+                        <iframe
+                          key={`${currentOngoingCourse.id}-${safeActiveLessonIndex}-${lessonInitialStartTime}`}
+                          src={`${(currentOngoingLesson.videoUrl || currentOngoingCourse.videoUrl)}?enablejsapi=1&autoplay=1&rel=0${
+                            lessonInitialStartTime > 4 ? `&start=${lessonInitialStartTime}` : ""
+                          }`}
+                          title={currentOngoingLesson.title}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
 
-                  <div className="ongoing-video-container">
-                    <iframe
-                      key={`${currentOngoingCourse.id}-${safeActiveLessonIndex}-${lessonInitialStartTime}`}
-                      src={`${(currentOngoingLesson.videoUrl || currentOngoingCourse.videoUrl)}?enablejsapi=1&autoplay=1&rel=0${
-                        lessonInitialStartTime > 4 ? `&start=${lessonInitialStartTime}` : ""
-                      }`}
-                      title={currentOngoingLesson.title}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-
-                  {/* About This Lesson Card */}
-                  <div className="about-lesson-card">
-                    <h3>About this lesson</h3>
-                    <p>
-                      {currentOngoingLesson.description ||
-                        "A typeface sets the tone before a single word is read. Learn how to choose typefaces that match a product's personality, judge readability at different sizes, and pair a display face with a body face without clashing."}
-                    </p>
-                    <div className="lesson-tags-row">
-                      {(currentOngoingLesson.tags || ["Readability", "Type Pairing", "Hierarchy"]).map((tag) => (
-                        <span key={tag} className="lesson-tag-pill">
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Column: Module Progress, Lessons Curriculum, Action Button */}
-                <div className="ongoing-side-col">
-                  {/* Module Progress Card */}
-                  <div className="module-progress-card">
-                    <div className="module-progress-header">
-                      <strong>Module Progress</strong>
-                      <span>
-                        {currentCourseDoneCount}/{currentCourseTotalCount}
-                      </span>
-                    </div>
-
-                    <div className="meter purple-meter" style={{ marginBottom: ".5rem" }}>
-                      <span style={{ width: `${currentCourseModulePct}%` }}></span>
-                    </div>
-
-                    <div className="module-meta-row">
-                      <span className="ongoing-meta-pill">
-                        ⏱ {currentOngoingLesson.done ? "Completed" : `${formatSeconds(currentLessonRemainingSec)} left`}
-                      </span>
-                      <span className="ongoing-meta-pill xp-pill">⭐ +60 XP</span>
-                    </div>
-
-                    <div className="module-instructor-box">
-                      <img
-                        src={
-                          currentOngoingCourse.instructorAvatar ||
-                          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
-                        }
-                        alt={currentOngoingCourse.instructor}
-                      />
-                      <div>
-                        <strong>{currentOngoingCourse.instructor}</strong>
-                        <small>{currentOngoingCourse.instructorRole}</small>
+                      {/* About This Lesson Card */}
+                      <div className="about-lesson-card">
+                        <h3>About this lesson</h3>
+                        <p>
+                          {currentOngoingLesson.description ||
+                            "A typeface sets the tone before a single word is read. Learn how to choose typefaces that match a product's personality, judge readability at different sizes, and pair a display face with a body face without clashing."}
+                        </p>
+                        <div className="lesson-tags-row">
+                          {(currentOngoingLesson.tags || ["Readability", "Type Pairing", "Hierarchy"]).map((tag) => (
+                            <span key={tag} className="lesson-tag-pill">
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Lessons List Card */}
-                  <div className="ongoing-curriculum-card">
-                    <h3>Lessons</h3>
-                    <div className="ongoing-lessons-list">
-                      {currentCurriculum.map((lesson, idx) => {
-                        const isActive = idx === safeActiveLessonIndex;
-                        const isDone = lesson.done;
-                        const lessonSavedTime = Math.floor(lesson.savedTimestamp || 0);
+                    {/* Right Column: Module Progress, Lessons Curriculum, Action Button */}
+                    <div className="ongoing-side-col">
+                      {/* Module Progress Card */}
+                      <div className="module-progress-card">
+                        <div className="module-progress-header">
+                          <strong>Module Progress</strong>
+                          <span>
+                            {currentCourseDoneCount}/{currentCourseTotalCount}
+                          </span>
+                        </div>
 
-                        let subtitleText = lesson.duration;
-                        if (isDone) {
-                          subtitleText = `Completed ✓ · ${lesson.duration}`;
-                        } else if (isActive) {
-                          const displayTotal = liveVideoDuration || lesson.duration;
-                          subtitleText = !isVideoPlaying
-                            ? `⏸ Paused at ${formatSeconds(lessonWatchTimestamp)} / ${displayTotal}`
-                            : `▶ ${formatSeconds(lessonWatchTimestamp)} / ${displayTotal}`;
-                        } else if (lessonSavedTime > 4) {
-                          subtitleText = `Resumes at ${formatSeconds(lessonSavedTime)} / ${lesson.duration}`;
-                        }
+                        <div className="meter purple-meter" style={{ marginBottom: ".5rem" }}>
+                          <span style={{ width: `${currentCourseModulePct}%` }}></span>
+                        </div>
 
-                        return (
-                          <div
-                            key={idx}
-                            className={`ongoing-lesson-row ${isActive ? "is-active" : ""}`}
-                            onClick={() => {
-                              setActiveLessonIndex(idx);
-                              const initialTime = Math.floor((lesson && lesson.savedTimestamp) || 0);
-                              setLessonInitialStartTime(initialTime);
-                              setLessonWatchTimestamp(initialTime);
-                              setLiveVideoDurationSec(0);
-                              setIsVideoPlaying(true);
-                            }}
-                          >
-                            <div className="ongoing-lesson-row-left">
-                              <span
-                                className={`lesson-state-icon ${
-                                  isDone ? "done" : isActive ? "active" : "upcoming"
-                                }`}
-                              >
-                                {isDone ? "✓" : isActive ? "▶" : idx + 1}
-                              </span>
-                              <div className="lesson-row-info">
-                                <h4>{lesson.title}</h4>
-                                <small>{subtitleText}</small>
-                              </div>
-                            </div>
+                        <div className="module-meta-row">
+                          <span className="ongoing-meta-pill">
+                            ⏱ {currentOngoingLesson.done ? "Completed" : `${formatSeconds(currentLessonRemainingSec)} left`}
+                          </span>
+                          <span className="ongoing-meta-pill xp-pill">⭐ +60 XP</span>
+                        </div>
+
+                        <div className="module-instructor-box">
+                          <img
+                            src={
+                              currentOngoingCourse.instructorAvatar ||
+                              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                            }
+                            alt={currentOngoingCourse.instructor}
+                          />
+                          <div>
+                            <strong>{currentOngoingCourse.instructor}</strong>
+                            <small>{currentOngoingCourse.instructorRole}</small>
                           </div>
-                        );
-                      })}
+                        </div>
+                      </div>
+
+                      {/* Lessons List Card */}
+                      <div className="ongoing-curriculum-card">
+                        <h3>Lessons</h3>
+                        <div className="ongoing-lessons-list">
+                          {currentCurriculum.map((lesson, idx) => {
+                            const isActive = idx === safeActiveLessonIndex;
+                            const isDone = lesson.done;
+                            const lessonSavedTime = Math.floor(lesson.savedTimestamp || 0);
+
+                            let subtitleText = lesson.duration;
+                            if (isDone) {
+                              subtitleText = `Completed ✓ · ${lesson.duration}`;
+                            } else if (isActive) {
+                              const displayTotal = liveVideoDuration || lesson.duration;
+                              subtitleText = !isVideoPlaying
+                                ? `⏸ Paused at ${formatSeconds(lessonWatchTimestamp)} / ${displayTotal}`
+                                : `▶ ${formatSeconds(lessonWatchTimestamp)} / ${displayTotal}`;
+                            } else if (lessonSavedTime > 4) {
+                              subtitleText = `Resumes at ${formatSeconds(lessonSavedTime)} / ${lesson.duration}`;
+                            }
+
+                            return (
+                              <div
+                                key={idx}
+                                className={`ongoing-lesson-row ${isActive ? "is-active" : ""}`}
+                                onClick={() => {
+                                  setActiveLessonIndex(idx);
+                                  const initialTime = Math.floor((lesson && lesson.savedTimestamp) || 0);
+                                  setLessonInitialStartTime(initialTime);
+                                  setLessonWatchTimestamp(initialTime);
+                                  setLiveVideoDurationSec(0);
+                                  setIsVideoPlaying(true);
+                                }}
+                              >
+                                <div className="ongoing-lesson-row-left">
+                                  <span
+                                    className={`lesson-state-icon ${
+                                      isDone ? "done" : isActive ? "active" : "upcoming"
+                                    }`}
+                                  >
+                                    {isDone ? "✓" : isActive ? "▶" : idx + 1}
+                                  </span>
+                                  <div className="lesson-row-info">
+                                    <h4>{lesson.title}</h4>
+                                    <small>{subtitleText}</small>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Mark As Complete Button */}
+                      <button
+                        className={`ongoing-mark-complete-btn ${currentOngoingLesson.done ? "is-completed" : ""}`}
+                        onClick={completeCurrentOngoingLesson}
+                      >
+                        {currentOngoingLesson.done ? "Lesson Completed ✓ (+60 XP)" : "Mark as complete →"}
+                      </button>
                     </div>
                   </div>
+                )}
 
-                  {/* Mark As Complete Button */}
-                  <button
-                    className={`ongoing-mark-complete-btn ${currentOngoingLesson.done ? "is-completed" : ""}`}
-                    onClick={completeCurrentOngoingLesson}
-                  >
-                    {currentOngoingLesson.done ? "Lesson Completed ✓ (+60 XP)" : "Mark as complete →"}
-                  </button>
+                {/* Bottom motivational status banner */}
+                <div className="dashboard-status-footer" style={{ marginTop: "3rem" }}>
+                  <p>
+                    You're on track for Level {userLevel + 1} — keep showing up, {account.name || "Daniel"}.
+                    <Icon name="pencil" size={16} className="footer-pencil-icon" />
+                  </p>
                 </div>
-              </div>
+              </section>
+            );
+          })()}
 
-              {/* Bottom motivational status banner */}
-              <div className="dashboard-status-footer" style={{ marginTop: "3rem" }}>
-                <p>
-                  You're on track for Level {userLevel + 1} — keep showing up, {account.name || "Daniel"}.
-                  <Icon name="pencil" size={16} className="footer-pencil-icon" />
-                </p>
-              </div>
-            </section>
-          )}
+          {/* VIEW 2: MY LEARNING (Matching Images/Home.png & Home-completed.png) */}
+          {dashboardView === "learning" && (() => {
+            const inProgressCourses = ongoingCourses;
+            const completedCourses = coursesList.filter((c) => getCourseProgress(c) >= 100);
+            const resumingCourse = inProgressCourses.find((c) => c.id === "uiux-1") || inProgressCourses[0] || null;
+            const resumingProgressPct = resumingCourse ? getCourseProgress(resumingCourse) : 0;
+            const resumingActiveLesson =
+              resumingCourse &&
+              ((resumingCourse.curriculum && resumingCourse.curriculum.find((l) => !l.done)) ||
+                (resumingCourse.curriculum && resumingCourse.curriculum[0]));
+            const resumingActiveLessonIdx =
+              resumingCourse && resumingCourse.curriculum
+                ? resumingCourse.curriculum.findIndex((l) => !l.done)
+                : 0;
 
-          {/* VIEW 2: MY LEARNING (Matching dashboard-my learning.jpeg) */}
-          {dashboardView === "learning" && (
-            <section className="dashboard-content my-learning-view-content">
-              <div className="my-learning-header-block">
-                <span className="my-learning-breadcrumb-label">My Learning</span>
-                <h1 className="my-learning-main-title">Pick up where you left off</h1>
-                <p className="my-learning-main-subtitle">
-                  All the skills you're building, with your progress saved lesson by lesson.
-                </p>
-              </div>
+            return (
+              <section className="dashboard-content my-learning-view-content">
+                {/* Header Block */}
+                <div className="my-learning-header-block">
+                  <span className="my-learning-breadcrumb-label">My Learning</span>
+                  <h1 className="my-learning-main-title">Pick up where you left off</h1>
+                  <p className="my-learning-main-subtitle">
+                    All the skills you're building, with your progress saved lesson by lesson.
+                  </p>
+                </div>
 
-              {ongoingCourses.length > 0 ? (
-                <div className="my-learning-cards-list">
-                  {ongoingCourses.map((course) => {
-                    const progressPct = getCourseProgress(course);
-                    const activeLesson =
-                      (course.curriculum && course.curriculum.find((l) => !l.done)) ||
-                      (course.curriculum && course.curriculum[0]) || { title: "Creating Effective Layouts" };
-                    const activeLessonIdx =
-                      course.curriculum ? course.curriculum.findIndex((l) => !l.done) : 0;
+                {/* Hero Resuming Banner matching Home.png & Home-completed.png */}
+                {resumingCourse && (
+                  <div
+                    className="my-learning-hero-banner"
+                    onClick={() => openCourseVideo(resumingCourse, resumingActiveLessonIdx !== -1 ? resumingActiveLessonIdx : 0)}
+                  >
+                    <div className="hero-banner-thumb-wrap">
+                      <img
+                        src={resumingCourse.heroThumbnail || resumingCourse.thumbnail || "Images/home-hero-uiux.png"}
+                        alt={resumingCourse.title}
+                        className="hero-banner-thumb"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "Images/home-hero-uiux.png";
+                        }}
+                      />
+                    </div>
 
-                    return (
-                      <article
-                        key={course.id}
-                        className="ongoing-banner-card"
-                        onClick={() => openCourseVideo(course, activeLessonIdx !== -1 ? activeLessonIdx : 0)}
-                      >
-                        <div className="ongoing-banner-thumb-box">
-                          <img
-                            src={course.thumbnail}
-                            alt={course.title}
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src =
-                                "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80";
-                            }}
-                          />
-                        </div>
-
-                        <div className="ongoing-banner-info">
-                          <span className="ongoing-resuming-pill">Resuming</span>
-                          <h2 className="ongoing-banner-title">{course.title}</h2>
-                          <p className="ongoing-banner-module">
-                            Module: {course.module || "Designing User Interfaces"} · Lesson:{" "}
-                            {activeLesson ? activeLesson.title : "Creating Effective Layouts"}
+                    <div className="hero-banner-body">
+                      <div className="hero-banner-header-row">
+                        <div className="hero-banner-info-left">
+                          <span className="hero-resuming-badge">Resuming</span>
+                          <h2 className="hero-course-title">{resumingCourse.title}</h2>
+                          <p className="hero-course-subtitle">
+                            Module: {resumingCourse.module || "Designing User Interfaces"} · Lesson:{" "}
+                            {resumingActiveLesson ? resumingActiveLesson.title : "Creating Effective Layouts"}
                           </p>
-                          <div className="ongoing-banner-progress-bar">
-                            <div
-                              className="ongoing-banner-progress-fill"
-                              style={{ width: `${progressPct}%` }}
-                            ></div>
-                          </div>
                         </div>
-
                         <button
-                          className="ongoing-banner-btn"
+                          type="button"
+                          className="hero-continue-btn"
                           onClick={(e) => {
                             e.stopPropagation();
-                            openCourseVideo(course, activeLessonIdx !== -1 ? activeLessonIdx : 0);
+                            openCourseVideo(resumingCourse, resumingActiveLessonIdx !== -1 ? resumingActiveLessonIdx : 0);
                           }}
                         >
                           <span>Continue</span>
-                          <span>▶</span>
+                          <span className="hero-play-icon">▶</span>
                         </button>
-                      </article>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="no-learning-courses">
-                  <h3>No ongoing courses right now!</h3>
-                  <p>
-                    Explore our courses in the Skill Academy, start learning, and your ongoing progress will automatically appear here.
-                  </p>
+                      </div>
+
+                      <div className="hero-progress-track">
+                        <div
+                          className="hero-progress-fill"
+                          style={{ width: `${resumingProgressPct}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Tab Switcher: In Progress / Completed */}
+                <div className="learning-tabs-switcher">
                   <button
-                    className="primary-button inline-purple-btn"
-                    style={{ display: "inline-flex", margin: "0 auto" }}
-                    onClick={() => setDashboardView("academy")}
+                    type="button"
+                    className={`learning-tab-btn ${learningTab === "in-progress" ? "active" : ""}`}
+                    onClick={() => setLearningTab("in-progress")}
                   >
-                    Explore Skill Academy →
+                    In Progress
+                  </button>
+                  <button
+                    type="button"
+                    className={`learning-tab-btn ${learningTab === "completed" ? "active" : ""}`}
+                    onClick={() => setLearningTab("completed")}
+                  >
+                    Completed
                   </button>
                 </div>
-              )}
 
-              {/* Bottom motivational status banner */}
-              <div className="dashboard-status-footer" style={{ marginTop: "3.5rem" }}>
-                <p>
-                  You're on track for Level {userLevel + 1} — keep showing up, {account.name || "Daniel"}.
-                  <Icon name="pencil" size={16} className="footer-pencil-icon" />
-                </p>
-              </div>
-            </section>
-          )}
+                {/* Tab Content */}
+                {learningTab === "in-progress" ? (
+                  inProgressCourses.length > 0 ? (
+                    <div className="my-learning-grid">
+                      {inProgressCourses.map((course) => {
+                        const progressPct = getCourseProgress(course);
+                        const activeLesson =
+                          (course.curriculum && course.curriculum.find((l) => !l.done)) ||
+                          (course.curriculum && course.curriculum[0]) || { title: "Getting Started" };
+                        const activeLessonIdx =
+                          course.curriculum ? course.curriculum.findIndex((l) => !l.done) : 0;
+
+                        // Distinct accent colors matching Home.png
+                        const themeColor =
+                          course.id === "uiux-1" || course.category === "Design"
+                            ? "#5c3cd6"
+                            : course.id === "mkt-1" || course.category === "Marketing"
+                            ? "#2563eb"
+                            : course.id === "media-1" || course.category === "Media"
+                            ? "#ea580c"
+                            : "#5c3cd6";
+
+                        return (
+                          <article
+                            key={course.id}
+                            className="my-learning-card"
+                            onClick={() => openCourseVideo(course, activeLessonIdx !== -1 ? activeLessonIdx : 0)}
+                          >
+                            <div className="card-thumb-wrap">
+                              <img
+                                src={course.thumbnail}
+                                alt={course.title}
+                                className="card-thumb-img"
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.src = "Images/course-uiux.png";
+                                }}
+                              />
+                            </div>
+
+                            <div className="card-body">
+                              <div className="card-top-info">
+                                <h3 className="card-title">{course.title}</h3>
+                                <p className="card-next-lesson">
+                                  Next: {activeLesson.title}
+                                </p>
+                              </div>
+
+                              <div className="card-progress-section">
+                                <div className="card-progress-row">
+                                  <span className="card-progress-label">Progress</span>
+                                  <span className="card-progress-pct" style={{ color: themeColor }}>
+                                    {progressPct}%
+                                  </span>
+                                </div>
+                                <div className="card-progress-track">
+                                  <div
+                                    className="card-progress-fill"
+                                    style={{ width: `${progressPct}%`, backgroundColor: themeColor }}
+                                  ></div>
+                                </div>
+                              </div>
+
+                              <div className="card-footer-row">
+                                <div className="card-instructor-info">
+                                  <img
+                                    src={course.instructorAvatar || "Images/tutor-joseph.png"}
+                                    alt={course.instructor || "Instructor"}
+                                    className="card-instructor-avatar"
+                                    onError={(e) => {
+                                      e.target.onerror = null;
+                                      e.target.src = "Images/tutor-joseph.png";
+                                    }}
+                                  />
+                                  <div className="card-instructor-text">
+                                    <h4 className="card-instructor-name">{course.instructor || "Instructor"}</h4>
+                                    <p className="card-instructor-role">{course.instructorRole || "Tutor"}</p>
+                                  </div>
+                                </div>
+
+                                <div className="card-learning-actions">
+                                  <button
+                                    type="button"
+                                    className="card-continue-btn"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      openCourseVideo(course, activeLessonIdx !== -1 ? activeLessonIdx : 0);
+                                    }}
+                                  >
+                                    <span>Continue</span>
+                                    <span className="card-arrow-icon">--→</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="learning-unenroll-btn"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      unenrollCourse(course.id);
+                                    }}
+                                    title="Unenroll from this course"
+                                  >
+                                    Drop
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="no-learning-courses">
+                      <h3>No ongoing courses right now!</h3>
+                      <p>
+                        Explore our courses in the Skill Academy, start learning, and your ongoing progress will automatically appear here.
+                      </p>
+                      <button
+                        className="primary-button inline-purple-btn"
+                        style={{ display: "inline-flex", margin: "0 auto" }}
+                        onClick={() => setDashboardView("academy")}
+                      >
+                        Explore Skill Academy →
+                      </button>
+                    </div>
+                  )
+                ) : (
+                  /* Completed Tab Content matching Home-completed.png */
+                  completedCourses.length > 0 ? (
+                    <div className="my-learning-grid">
+                      {completedCourses.map((course) => {
+                        return (
+                          <article
+                            key={course.id}
+                            className="my-learning-card"
+                            onClick={() => openCourseVideo(course, 0)}
+                          >
+                            <div className="card-thumb-wrap">
+                              <img
+                                src={course.thumbnail}
+                                alt={course.title}
+                                className="card-thumb-img"
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.src = "Images/course-thinking.png";
+                                }}
+                              />
+                            </div>
+
+                            <div className="card-body">
+                              <div className="card-top-info">
+                                <h3 className="card-title">{course.title}</h3>
+                                <p className="card-next-lesson">
+                                  Next: Complete
+                                </p>
+                              </div>
+
+                              <div className="card-progress-section">
+                                <div className="card-progress-row">
+                                  <span className="card-progress-label">Progress</span>
+                                  <span className="card-progress-pct" style={{ color: "#22c55e" }}>
+                                    100%
+                                  </span>
+                                </div>
+                                <div className="card-progress-track">
+                                  <div
+                                    className="card-progress-fill"
+                                    style={{ width: "100%", backgroundColor: "#22c55e" }}
+                                  ></div>
+                                </div>
+                              </div>
+
+                              <div className="card-footer-row">
+                                <div className="card-instructor-info">
+                                  <img
+                                    src={course.instructorAvatar || "Images/tutor-leo.png"}
+                                    alt={course.instructor || "Instructor"}
+                                    className="card-instructor-avatar"
+                                    onError={(e) => {
+                                      e.target.onerror = null;
+                                      e.target.src = "Images/tutor-leo.png";
+                                    }}
+                                  />
+                                  <div className="card-instructor-text">
+                                    <h4 className="card-instructor-name">{course.instructor || "Instructor"}</h4>
+                                    <p className="card-instructor-role">{course.instructorRole || "Tutor"}</p>
+                                  </div>
+                                </div>
+
+                                <button
+                                  type="button"
+                                  className="card-continue-btn"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    openCourseVideo(course, 0);
+                                  }}
+                                >
+                                  <span>Review</span>
+                                  <span className="card-arrow-icon">--→</span>
+                                </button>
+                              </div>
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="completed-tab-placeholder">
+                      <div className="completed-placeholder-icon">🏆</div>
+                      <h3>No completed courses yet</h3>
+                      <p>
+                        Courses you finish will appear here along with your certificates of completion. Keep showing up and learning!
+                      </p>
+                      <button
+                        type="button"
+                        className="completed-browse-btn"
+                        onClick={() => setLearningTab("in-progress")}
+                      >
+                        View In Progress Courses →
+                      </button>
+                    </div>
+                  )
+                )}
+
+                {/* Bottom motivational status banner matching Home.png */}
+                <div className="dashboard-status-footer" style={{ marginTop: "4rem" }}>
+                  <p>
+                    You're on track for Level {userLevel + 1} — keep showing up, {account.name || "Daniel"}.{" "}
+                    <span className="footer-pencil-emoji" role="img" aria-label="pencil">🖌️</span>
+                  </p>
+                </div>
+              </section>
+            );
+          })()}
+
 
           {/* VIEW 3: SKILL ACADEMY (Matching dashdord-skill academy.jpeg) */}
           {dashboardView === "academy" && (
@@ -3218,22 +3607,32 @@ function AuthPage() {
                 {filteredCourses.length > 0 ? (
                   filteredCourses.map((course) => {
                     const progress = getCourseProgress(course);
-                    const isEnrolled = progress > 0;
+                    const isEnrolled = Boolean(course.enrolled || progress > 0);
                     const isCompleted = progress === 100;
 
-                    let btnText = "Enroll Now";
-                    let btnTheme = "btn-solid-purple";
+                    let btnText = "Start Learning";
+                    let btnTheme = "btn-light-purple";
 
                     if (isCompleted) {
                       btnText = "Completed (100%) ✓";
                       btnTheme = "btn-light-purple";
-                    } else if (isEnrolled) {
+                    } else if (progress > 0) {
                       btnText = `Continue (${progress}%)`;
                       btnTheme = "btn-light-purple";
                     }
 
                     return (
-                      <article key={course.id} className="academy-course-card" onClick={() => openCourseVideo(course)}>
+                      <article
+                        key={course.id}
+                        className={`academy-course-card ${isEnrolled ? "card-is-enrolled" : ""}`}
+                        onClick={() => {
+                          if (isEnrolled) {
+                            openCourseVideo(course);
+                          } else {
+                            setEnrollmentModalCourse(course);
+                          }
+                        }}
+                      >
                         <div className="card-thumbnail-container">
                           <img
                             src={course.thumbnail}
@@ -3246,7 +3645,7 @@ function AuthPage() {
                           />
                           <div className="thumbnail-play-overlay">
                             <span className="play-circle">
-                              <Icon name="play" size={20} />
+                              <Icon name={isEnrolled ? "play" : "lock"} size={20} />
                             </span>
                           </div>
                         </div>
@@ -3258,22 +3657,51 @@ function AuthPage() {
                             {userPersonalizedIds.includes(course.id) && (
                               <span className="curated-badge-pill">★ Recommended</span>
                             )}
+                            {isEnrolled && (
+                              <span className="enrolled-badge-pill">✓ Enrolled</span>
+                            )}
                           </div>
 
                           <h3 className="card-title">{course.title}</h3>
                           <p className="card-desc">{course.description}</p>
 
                           <div className="card-footer-action">
-                            <button
-                              className={`card-action-btn ${btnTheme}`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                openCourseVideo(course);
-                              }}
-                            >
-                              <span>{btnText}</span>
-                              <span className="action-arrow">→</span>
-                            </button>
+                            {!isEnrolled ? (
+                              <button
+                                className="card-action-btn btn-solid-purple"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  enrollCourse(course.id, false);
+                                }}
+                              >
+                                <span>Enroll Now</span>
+                                <span className="action-arrow">+</span>
+                              </button>
+                            ) : (
+                              <div className="card-enrolled-actions-row">
+                                <button
+                                  className={`card-action-btn ${btnTheme}`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    openCourseVideo(course);
+                                  }}
+                                >
+                                  <span>{btnText}</span>
+                                  <span className="action-arrow">→</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  className="card-unenroll-btn"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    unenrollCourse(course.id);
+                                  }}
+                                  title="Unenroll from this course"
+                                >
+                                  Unenroll
+                                </button>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </article>
@@ -3941,6 +4369,92 @@ function AuthPage() {
             </section>
           )}
         </main>
+
+        {/* Enrollment Preview Modal */}
+        {enrollmentModalCourse && (
+          <div className="enrollment-modal-backdrop" onClick={() => setEnrollmentModalCourse(null)}>
+            <div className="enrollment-modal-card" onClick={(e) => e.stopPropagation()}>
+              <button
+                type="button"
+                className="modal-close-btn"
+                onClick={() => setEnrollmentModalCourse(null)}
+                aria-label="Close modal"
+              >
+                ✕
+              </button>
+              <div className="enrollment-modal-media">
+                <img
+                  src={enrollmentModalCourse.thumbnail}
+                  alt={enrollmentModalCourse.title}
+                  className="enrollment-modal-thumb"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80";
+                  }}
+                />
+                <span className="enrollment-modal-category">
+                  {enrollmentModalCourse.category || "Skill Track"}
+                </span>
+              </div>
+              <div className="enrollment-modal-body">
+                <div className="enrollment-meta-row">
+                  <span>⏱ {enrollmentModalCourse.duration || "4 modules"}</span>
+                  <span>📚 {(enrollmentModalCourse.curriculum && enrollmentModalCourse.curriculum.length) || 3} Lessons</span>
+                  <span>⭐ +{((enrollmentModalCourse.curriculum && enrollmentModalCourse.curriculum.length) || 3) * 60} XP</span>
+                </div>
+                <h2 className="enrollment-modal-title">{enrollmentModalCourse.title}</h2>
+                <p className="enrollment-modal-desc">{enrollmentModalCourse.description}</p>
+
+                {enrollmentModalCourse.instructor && (
+                  <div className="enrollment-modal-instructor">
+                    <img
+                      src={enrollmentModalCourse.instructorAvatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"}
+                      alt={enrollmentModalCourse.instructor}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80";
+                      }}
+                    />
+                    <div>
+                      <strong>{enrollmentModalCourse.instructor}</strong>
+                      <small>{enrollmentModalCourse.instructorRole || "Skill Tutor"}</small>
+                    </div>
+                  </div>
+                )}
+
+                <div className="enrollment-modal-curriculum">
+                  <h4>Curriculum Overview</h4>
+                  <div className="enrollment-lessons-preview">
+                    {(enrollmentModalCourse.curriculum || []).map((lesson, idx) => (
+                      <div key={idx} className="preview-lesson-item">
+                        <span className="preview-lesson-num">{idx + 1}</span>
+                        <span className="preview-lesson-title">{lesson.title}</span>
+                        <span className="preview-lesson-duration">{lesson.duration}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="enrollment-modal-actions">
+                  <button
+                    type="button"
+                    className="enroll-primary-btn"
+                    onClick={() => enrollCourse(enrollmentModalCourse.id, true)}
+                  >
+                    Enroll Now & Start Course →
+                  </button>
+                  <button
+                    type="button"
+                    className="enroll-secondary-btn"
+                    onClick={() => enrollCourse(enrollmentModalCourse.id, false)}
+                  >
+                    Enroll (Keep Browsing)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

@@ -4025,172 +4025,1052 @@ h1, h2 { font-family: "Inter", sans-serif; }
 
 /* =========================================================
    MY LEARNING TAB (Matching dashboard-my learning.jpeg)
+   MY LEARNING TAB (Matching Images/Home.png & Home-completed.png)
 ========================================================= */
 .my-learning-view-content {
   padding: 1.25rem 2rem 3.5rem;
+  padding: 1.5rem 2.5rem 4rem;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 .my-learning-header-block {
   margin-bottom: 1.65rem;
+  margin-bottom: 1.75rem;
+}
+/* =========================================================
+   MY LEARNING DASHBOARD (Matching Images/Home.png & Home-completed.png)
+========================================================= */
+
+.my-learning-view-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 0.5rem 4rem;
+}
+
+.my-learning-header-block {
+  margin-bottom: 1.5rem;
 }
 
 .my-learning-breadcrumb-label {
-  display: inline-block;
-  color: var(--violet);
-  font-size: .84rem;
-  font-weight: 700;
-  margin-bottom: .3rem;
+  display: block;
+  color: #5c3cd6;
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
 }
 
 .my-learning-main-title {
-  font: 700 1.75rem "Inter", sans-serif;
-  color: var(--ink);
-  margin: 0 0 .35rem;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.4rem;
 }
 
 .my-learning-main-subtitle {
-  color: #68627a;
-  font-size: .88rem;
-  margin: 0 0 1.5rem;
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0;
 }
 
-.my-learning-cards-list {
+/* 1. Hero Resuming Banner */
+.my-learning-hero-banner {
+  background: #5c3cd6;
+  border-radius: 20px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 10px 25px rgba(92, 60, 214, 0.22);
+  margin-bottom: 2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: #ffffff;
+}
+
+.my-learning-hero-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(92, 60, 214, 0.28);
+}
+
+.hero-banner-thumb-wrap {
+  flex-shrink: 0;
+  width: 220px;
+  height: 135px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  background: #1e1b4b;
+}
+
+.hero-banner-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-banner-body {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-/* Featured Royal Purple Ongoing Banner Card */
-.ongoing-banner-card {
-  background: linear-gradient(135deg, #5b21b6, #6d28d9);
-  border-radius: 1.15rem;
-  padding: 1.4rem 1.6rem;
-  display: grid;
-  grid-template-columns: 11.5rem minmax(0, 1fr) auto;
-  gap: 1.5rem;
+.hero-banner-header-row {
+  display: flex;
   align-items: center;
-  box-shadow: 0 12px 32px rgba(91, 33, 182, 0.22);
-  cursor: pointer;
-  transition: transform .2s, box-shadow .2s;
-  color: #ffffff;
+  justify-content: space-between;
+  gap: 1.5rem;
 }
 
-.ongoing-banner-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 38px rgba(91, 33, 182, 0.32);
-}
-
-.ongoing-banner-thumb-box {
-  width: 100%;
-  height: 7.2rem;
-  border-radius: .85rem;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-  background: #000000;
-}
-
-.ongoing-banner-thumb-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ongoing-banner-info {
+.hero-banner-info-left {
   display: flex;
   flex-direction: column;
-  gap: .4rem;
+  gap: 0.35rem;
   min-width: 0;
 }
 
-.ongoing-resuming-pill {
+.hero-resuming-badge {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(4px);
   color: #ffffff;
-  font-size: .68rem;
-  font-weight: 700;
-  padding: .2rem .65rem;
-  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.2rem 0.75rem;
+  border-radius: 9999px;
   width: fit-content;
-  margin-bottom: .15rem;
+  margin-bottom: 0.15rem;
 }
 
-.ongoing-banner-title {
-  font: 700 1.25rem "Inter", sans-serif;
+.hero-course-title {
+  font-size: 1.35rem;
+  font-weight: 700;
   color: #ffffff;
   margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.25;
 }
 
-.ongoing-banner-module {
-  font-size: .82rem;
-  color: #e5deff;
+.hero-course-subtitle {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.ongoing-banner-progress-bar {
-  height: .55rem;
-  background: rgba(0, 0, 0, 0.28);
-  border-radius: 999px;
+.hero-continue-btn {
+  flex-shrink: 0;
+  background: #ffffff;
+  color: #5c3cd6;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.hero-continue-btn:hover {
+  background: #f8fafc;
+  transform: translateY(-1px);
+}
+
+.hero-play-icon {
+  font-size: 0.75rem;
+}
+
+.hero-progress-track {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 9999px;
   overflow: hidden;
-  margin-top: .4rem;
+}
+
+.hero-progress-fill {
+  height: 100%;
+  background: #ff6b00;
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
+
+/* 2. Tabs Switcher: In Progress / Completed */
+.learning-tabs-switcher {
+  display: inline-flex;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 5px;
+  gap: 6px;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.learning-tab-btn {
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1.4rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.learning-tab-btn:hover {
+  color: #111827;
+}
+
+.learning-tab-btn.active {
+  background: #5c3cd6;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(92, 60, 214, 0.35);
+}
+
+/* 3. My Learning 2-Column Grid */
+.my-learning-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem;
+}
+
+.my-learning-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.my-learning-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.card-thumb-wrap {
+  width: 100%;
+  height: 190px;
+  background: #0f172a;
+  overflow: hidden;
   position: relative;
 }
 
-.ongoing-banner-progress-fill {
+.card-thumb-img {
+  width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #f97316, #ea580c);
-  border-radius: 999px;
-  transition: width .4s cubic-bezier(0.16, 1, 0.3, 1);
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
 }
 
-.ongoing-banner-btn {
-  background: #ffffff;
-  color: #5b21b6;
-  border: 0;
-  border-radius: .65rem;
-  padding: .6rem 1.25rem;
+.my-learning-card:hover .card-thumb-img {
+  transform: scale(1.02);
+}
+
+.card-body {
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  flex: 1;
+}
+
+.card-top-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.card-title {
+  font-size: 1.15rem;
   font-weight: 700;
-  font-size: .82rem;
+  color: #111827;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.card-next-lesson {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0;
+  font-weight: 400;
+}
+
+.card-progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.card-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-progress-label {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.card-progress-pct {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.card-progress-track {
+  width: 100%;
+  height: 7px;
+  background: #f1f5f9;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.card-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
+
+.card-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  margin-top: auto;
+  gap: 1rem;
+}
+
+.card-instructor-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.card-instructor-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #f1f5f9;
+}
+
+.card-instructor-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.card-instructor-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-instructor-role {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-continue-btn {
+  background: #ede9fe;
+  color: #5c3cd6;
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.card-continue-btn:hover {
+  background: #ddd6fe;
+  transform: translateX(2px);
+}
+
+.card-arrow-icon {
+  font-weight: 700;
+}
+
+.card-learning-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.learning-unenroll-btn {
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  color: #94a3b8;
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.learning-unenroll-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+/* 4. Completed Tab Placeholder */
+.completed-tab-placeholder {
+  text-align: center;
+  padding: 3.5rem 2rem;
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+}
+
+.completed-placeholder-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.completed-tab-placeholder h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem;
+}
+
+.completed-tab-placeholder p {
+  font-size: 0.9rem;
+  color: #64748b;
+  max-width: 420px;
+  margin: 0 auto 1.5rem;
+}
+
+.completed-browse-btn {
+  background: #5c3cd6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: .4rem;
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-  transition: all .2s;
+  gap: 0.4rem;
+  box-shadow: 0 4px 14px rgba(92, 60, 214, 0.25);
+  transition: background 0.2s ease;
 }
 
-.ongoing-banner-btn:hover {
-  background: #f8f6ff;
-  transform: scale(1.03);
+.completed-browse-btn:hover {
+  background: #4f46e5;
 }
 
-/* Empty ongoing state card */
+/* Empty Ongoing Courses */
 .no-learning-courses {
   padding: 3rem 2rem;
   text-align: center;
   background: #ffffff;
   border: 1px dashed #dcd6ee;
-  border-radius: 1.15rem;
+  border-radius: 16px;
 }
 
 .no-learning-courses h3 {
-  color: var(--violet);
-  margin: 0 0 .5rem;
+  color: #5c3cd6;
+  margin: 0 0 0.5rem;
   font-size: 1.1rem;
 }
 
 .no-learning-courses p {
   color: #726c85;
-  font-size: .84rem;
+  font-size: 0.88rem;
   margin: 0 0 1.5rem;
+}
+
+/* Status footer matching Home.png */
+.dashboard-status-footer {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-top: 3.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.dashboard-status-footer p {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .my-learning-view-content {
+    padding: 1rem 1rem 3rem;
+  }
+
+  .my-learning-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .my-learning-hero-banner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.5rem;
+  }
+
+  .hero-banner-thumb-wrap {
+    width: 100%;
+    height: 180px;
+  }
+
+  .hero-banner-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .hero-continue-btn {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .my-learning-hero-banner {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 1.25rem 1rem;
+    overflow: hidden;
+  }
+
+  .hero-banner-thumb-wrap {
+    height: 150px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .hero-banner-body {
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .hero-banner-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .hero-banner-info-left {
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .hero-course-title {
+    font-size: 1.15rem;
+    word-break: break-word;
+  }
+
+  .hero-course-subtitle {
+    white-space: normal;
+    word-break: break-word;
+    font-size: 0.82rem;
+  }
+
+  .hero-continue-btn {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    align-self: stretch;
+    margin-top: 0.25rem;
+  }
+
+  .card-thumb-wrap {
+    height: 160px;
+  }
+
+  .card-body {
+    padding: 1.25rem;
+  }
+
+  .card-footer-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .card-learning-actions {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .card-continue-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .learning-unenroll-btn {
+    flex-shrink: 0;
+  }
+
+  .card-enrolled-actions-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .card-enrolled-actions-row .card-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .card-unenroll-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .locked-actions-row {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+}
+
+/* =========================================================
+   ENROLLMENT, GATING & UNENROLL STYLES
+========================================================= */
+.card-enrolled-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.card-enrolled-actions-row .card-action-btn {
+  flex: 1;
+}
+
+.card-unenroll-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.card-unenroll-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+.ongoing-unenroll-btn {
+  margin-left: auto;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.ongoing-unenroll-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+.enrolled-badge-pill {
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+}
+
+/* Course Locked Barrier (When viewing course player without enrolling) */
+.course-locked-barrier {
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+}
+
+.locked-barrier-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  max-width: 540px;
+  width: 100%;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.locked-badge-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ede9fe;
+  color: #5c3cd6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.locked-category-pill {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.locked-barrier-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0;
+}
+
+.locked-barrier-desc {
+  font-size: 0.92rem;
+  color: #64748b;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.locked-meta-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+  background: #f8fafc;
+  padding: 0.65rem 1.25rem;
+  border-radius: 12px;
+}
+
+.locked-actions-row {
+  display: flex;
+  gap: 0.85rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.enroll-primary-btn {
+  flex: 1;
+  background: #5c3cd6;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(92, 60, 214, 0.35);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enroll-primary-btn:hover {
+  background: #4f32b8;
+  transform: translateY(-1px);
+}
+
+.locked-back-btn {
+  background: #f1f5f9;
+  color: #334155;
+  border: none;
+  border-radius: 10px;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.locked-back-btn:hover {
+  background: #e2e8f0;
+}
+
+/* Enrollment Preview Modal */
+.enrollment-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.enrollment-modal-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 20px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.enrollment-modal-card .modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+.enrollment-modal-card .modal-close-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.enrollment-modal-media {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  background: #0f172a;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  flex-shrink: 0;
+}
+
+.enrollment-modal-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.enrollment-modal-category {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 1rem;
+  background: rgba(15, 23, 42, 0.85);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.enrollment-modal-body {
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.enrollment-meta-row {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.enrollment-modal-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.enrollment-modal-desc {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.enrollment-modal-instructor {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #f8fafc;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+}
+
+.enrollment-modal-instructor img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.enrollment-modal-instructor div {
+  display: flex;
+  flex-direction: column;
+}
+
+.enrollment-modal-instructor strong {
+  font-size: 0.88rem;
+  color: #0f172a;
+}
+
+.enrollment-modal-instructor small {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.enrollment-modal-curriculum h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.5rem;
+}
+
+.enrollment-lessons-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.preview-lesson-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #f8fafc;
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+}
+
+.preview-lesson-num {
+  width: 20px;
+  height: 20px;
+  background: #ede9fe;
+  color: #5c3cd6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.preview-lesson-title {
+  flex: 1;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-lesson-duration {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.enrollment-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.enroll-secondary-btn {
+  background: #ede9fe;
+  color: #5c3cd6;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.enroll-secondary-btn:hover {
+  background: #ddd6fe;
 }
 
 /* =========================================================
