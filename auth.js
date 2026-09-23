@@ -428,6 +428,41 @@ function Icon({ name, size = 20, className = "" }) {
           <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
         </svg>
       );
+    case "check-square":
+      return (
+        <svg {...iconProps}>
+          <polyline points="9 11 12 14 22 4" />
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+        </svg>
+      );
+    case "in-progress-book":
+      return (
+        <svg {...iconProps}>
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+          <circle cx="12" cy="12" r="3" />
+          <polyline points="12 10 12 12 13.5 12" />
+        </svg>
+      );
+    case "award-ribbon":
+      return (
+        <svg {...iconProps}>
+          <circle cx="12" cy="8" r="6" />
+          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+        </svg>
+      );
+    case "folder":
+      return (
+        <svg {...iconProps}>
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+        </svg>
+      );
+    case "plus":
+      return (
+        <svg {...iconProps}>
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+      );
     default:
       return null;
   }
@@ -1231,6 +1266,101 @@ function getCourseProgress(course) {
   return totalSeconds > 0 ? Math.round((doneSeconds / totalSeconds) * 100) : 0;
 }
 
+// 6 Showcase Projects matching Images/project-tab.png
+const SHOWCASE_PROJECTS_TEMPLATES = [
+  {
+    id: "proj-social-growth",
+    category: "Marketing",
+    title: "Social Media Growth Campaign",
+    description: "A 30-day content calendar for a fictional streetwear brand, including platform strategy, post formats, and engagement hooks.",
+    status: "in-progress",
+    statusLabel: "In Progress",
+    xp: 80,
+    updatedDate: "Updated Sept 1",
+    image: "Images/course-marketing.png",
+    tags: ["Content Strategy", "Copywriting", "Analytics"],
+    featured: true
+  },
+  {
+    id: "proj-portfolio-site",
+    category: "Design",
+    title: "Personal Portfolio Website",
+    description: "A responsive portfolio site built from scratch using Figma designs and HTML/CSS, showcasing my projects and bio.",
+    status: "completed",
+    statusLabel: "Completed",
+    xp: 50,
+    updatedDate: "Updated Aug 12",
+    image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+    tags: ["UI/UX", "Typography", "Layout"],
+    featured: false
+  },
+  {
+    id: "proj-poster-series",
+    category: "Design",
+    title: "Young Creators Poster Series",
+    description: "A set of three motivational posters designed for the Young Creators Challenge. Focused on bold typography and color harmony.",
+    status: "draft",
+    statusLabel: "Draft",
+    xp: 40,
+    updatedDate: "Updated Aug 12",
+    image: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=600&q=80",
+    tags: ["Graphic Design", "Color Theory", "Branding"],
+    featured: false
+  },
+  {
+    id: "proj-social-campaign-grid",
+    category: "Marketing",
+    title: "Social Media Growth Campaign",
+    description: "A 30-day content calendar for a fictional streetwear brand, including platform strategy, post formats, and engagement hooks.",
+    status: "in-progress",
+    statusLabel: "In Progress",
+    xp: 80,
+    updatedDate: "Updated Sept 1",
+    image: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=600&q=80",
+    tags: ["Content Strategy", "Copywriting", "Analytics"],
+    featured: false
+  },
+  {
+    id: "proj-mini-documentary",
+    category: "Media",
+    title: "Mini Documentary: My Neighbourhood",
+    description: "A 3-minute short film shot on a phone, exploring stories from my local area. Practice in framing, pacing, and sound design.",
+    status: "completed",
+    statusLabel: "Completed",
+    xp: 70,
+    updatedDate: "Updated Aug 30",
+    image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=600&q=80",
+    tags: ["Filming", "Editing", "Storytelling"],
+    featured: false
+  },
+  {
+    id: "proj-local-cafe",
+    category: "Design",
+    title: "Landing Page for a Local Café",
+    description: "A clean, mobile-first landing page for a family friend's café. This is a real client project building responsive layout skills.",
+    status: "in-progress",
+    statusLabel: "In Progress",
+    xp: 60,
+    updatedDate: "Updated Sep 2",
+    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=600&q=80",
+    tags: ["UI/UX", "Responsive Design", "Copywriting"],
+    featured: false
+  },
+  {
+    id: "proj-podcast-identity",
+    category: "Design",
+    title: "Brand Identity for a Podcast",
+    description: "Logo, color palette, and typography guide for a teen-run podcast called 'Unfiltered.' Built brand guidelines from scratch.",
+    status: "draft",
+    statusLabel: "Draft",
+    xp: 45,
+    updatedDate: "Updated Sep 3",
+    image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=600&q=80",
+    tags: ["Branding", "Logo Design", "Typography"],
+    featured: false
+  }
+];
+
 // Calculate level progression where XP requirement increases as levels go higher
 // Level 1: 500 XP, Level 2: 750 XP, Level 3: 1,000 XP, Level 4: 1,250 XP, Level 5: 1,500 XP...
 function getLevelInfo(totalXp) {
@@ -1422,6 +1552,11 @@ function saveUserData(email, data) {
   if (!email) return;
   const key = getUserDataKey(email);
   localStorage.setItem(key, JSON.stringify(data));
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (e) {
+    console.error("Failed to save user data to localStorage:", e);
+  }
 }
 
 // 12 High-Value Interests & Skills matching 04 - Choose Your Interests.png + additional skills
@@ -1854,7 +1989,7 @@ function AuthPage() {
     const stored = readStorage(ACCOUNT_KEY, null);
     if (stored) return stored;
     const hash = (window.location.hash || "").replace("#", "").toLowerCase();
-    if (["dashboard", "learning", "academy", "home", "course"].includes(hash)) {
+    if (["dashboard", "learning", "academy", "home", "course", "projects"].includes(hash)) {
       return defaultAccount;
     }
     return null;
@@ -1862,7 +1997,7 @@ function AuthPage() {
   const [view, setView] = useState(() => {
     const storedAccount = readStorage(ACCOUNT_KEY, null);
     const hash = (window.location.hash || "").replace("#", "").toLowerCase();
-    if (storedAccount || ["dashboard", "learning", "academy", "home", "course"].includes(hash)) {
+    if (storedAccount || ["dashboard", "learning", "academy", "home", "course", "projects"].includes(hash)) {
       return "dashboard";
     }
     // Only OTP page continues across reload so the countdown timer continues from where it stopped
@@ -1870,6 +2005,12 @@ function AuthPage() {
       return "otp";
     }
     // Every other page starts again from the beginning (welcome)
+    if (hash === "signup" || hash === "register") {
+      return "signup";
+    }
+    if (hash === "login") {
+      return "login";
+    }
     // Every other unauthenticated page starts again from the beginning (welcome)
     if (hash && hash !== "welcome") {
       try {
@@ -1997,14 +2138,46 @@ function AuthPage() {
       setOnboardingNotice("Please select a valid image (PNG, JPG, JPEG, WEBP).");
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      setOnboardingNotice("Image file should be smaller than 5MB.");
+    if (file.size > 10 * 1024 * 1024) {
+      setOnboardingNotice("Image file should be smaller than 10MB.");
       return;
     }
     const reader = new FileReader();
     reader.onload = (e) => {
-      setOnboardingAvatar(e.target.result);
-      setOnboardingNotice("");
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          const maxDim = 160;
+          let w = img.width;
+          let h = img.height;
+          if (w > h) {
+            if (w > maxDim) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            }
+          } else {
+            if (h > maxDim) {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.85);
+          setOnboardingAvatar(compressedDataUrl);
+          setOnboardingNotice("");
+        } catch (err) {
+          setOnboardingAvatar(e.target.result);
+          setOnboardingNotice("");
+        }
+      };
+      img.onerror = () => {
+        setOnboardingNotice("Failed to load image. Please select a valid image file.");
+      };
+      img.src = e.target.result;
     };
     reader.readAsDataURL(file);
   }
@@ -2030,6 +2203,22 @@ function AuthPage() {
     const updatedUsersDb = [...usersDb.filter((u) => u.email.toLowerCase() !== finalAccount.email.toLowerCase()), finalAccount];
     localStorage.setItem(USERS_DB_KEY, JSON.stringify(updatedUsersDb));
     localStorage.setItem(ACCOUNT_KEY, JSON.stringify(finalAccount));
+    try {
+      const updatedUsersDb = [...usersDb.filter((u) => u.email.toLowerCase() !== finalAccount.email.toLowerCase()), finalAccount];
+      localStorage.setItem(USERS_DB_KEY, JSON.stringify(updatedUsersDb));
+      localStorage.setItem(ACCOUNT_KEY, JSON.stringify(finalAccount));
+    } catch (storageErr) {
+      console.warn("Storage quota exceeded, retrying with fallback avatar", storageErr);
+      try {
+        const fallbackAvatar = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80";
+        finalAccount.avatar = fallbackAvatar;
+        const compactUsersDb = [...usersDb.filter((u) => u.email.toLowerCase() !== finalAccount.email.toLowerCase()), finalAccount];
+        localStorage.setItem(USERS_DB_KEY, JSON.stringify(compactUsersDb));
+        localStorage.setItem(ACCOUNT_KEY, JSON.stringify(finalAccount));
+      } catch (e) {
+        console.error("Critical storage error:", e);
+      }
+    }
 
     const freshData = createFreshUserData(finalAccount);
     saveUserData(finalAccount.email, freshData);
@@ -2048,6 +2237,7 @@ function AuthPage() {
     } catch (e) {}
 
     transitionToView("dashboard", "forward");
+    const targetHash = (options && options.targetView) || "home";
     if (options && options.targetView) {
       setDashboardView(options.targetView);
     } else {
@@ -2060,6 +2250,7 @@ function AuthPage() {
       }, 300);
     }
     try { history.replaceState(null, "", window.location.pathname); } catch (e) {}
+    try { history.replaceState(null, "", "#" + targetHash); } catch (e) {}
   }
 
   // OTP Countdown timer: syncs with persistent timestamp in localStorage across page refreshes
@@ -2101,9 +2292,22 @@ function AuthPage() {
   const [project, setProject] = useState({ title: "", skill: "", description: "" });
   const [dashboardView, setDashboardView] = useState(() => {
     const hash = (window.location.hash || "").replace("#", "").toLowerCase();
-    if (hash === "academy" || hash === "learning" || hash === "course") return hash;
+    if (hash === "academy" || hash === "learning" || hash === "course" || hash === "projects") return hash;
     return "home";
-  }); // "home" | "academy" | "learning" | "course"
+  }); // "home" | "academy" | "learning" | "course" | "projects"
+  const [projectFilterTab, setProjectFilterTab] = useState("all"); // "all" | "in-progress" | "drafts" | "completed" | "submitted"
+  const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [viewingProject, setViewingProject] = useState(null);
+  const [newProjectForm, setNewProjectForm] = useState({
+    title: "",
+    category: "",
+    description: "",
+    tags: "",
+    status: "in-progress",
+    xp: 50,
+    image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80"
+  });
   const [learningTab, setLearningTab] = useState("in-progress"); // "in-progress" | "completed"
   const [academyCategory, setAcademyCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
@@ -2316,9 +2520,27 @@ function AuthPage() {
   }, [dashboardView, isVideoPlaying, activeCourseId, activeLessonIndex]);
 
   // Hash routing listener: Only OTP retains page state on initial load/reload so the timer can continue from where it stopped
+  // Hash routing listener: Keeps authenticated users in the dashboard while supporting deep-links and back/forward browser navigation
   useEffect(() => {
     const handleHash = () => {
       const hash = (window.location.hash || "").replace("#", "").toLowerCase();
+      const currentAccount = account || readStorage(ACCOUNT_KEY, null);
+
+      if (currentAccount) {
+        if (view !== "dashboard") {
+          setView("dashboard");
+        }
+        if (["home", "academy", "learning", "course", "projects"].includes(hash)) {
+          setDashboardView(hash);
+        } else if (hash === "in-progress" || hash === "completed") {
+          setDashboardView("learning");
+          setLearningTab(hash);
+        } else if (!hash) {
+          setDashboardView("home");
+        }
+        return;
+      }
+
       if (hash === "otp" || hash === "verify") {
         setView("otp");
       } else if (hash === "welcome" || !hash) {
@@ -2331,7 +2553,20 @@ function AuthPage() {
     };
     window.addEventListener("hashchange", handleHash);
     return () => window.removeEventListener("hashchange", handleHash);
-  }, []);
+  }, [account, view]);
+
+  // Close profile dropdown when clicking outside
+  useEffect(() => {
+    if (!showUserDropdown) return;
+    const handleOutsideClick = (e) => {
+      const dropdownWrap = document.querySelector(".sidebar-profile-wrapper");
+      if (dropdownWrap && !dropdownWrap.contains(e.target)) {
+        setShowUserDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, [showUserDropdown]);
 
   function updateForm(event) {
     const { name, value, type, checked } = event.target;
@@ -2615,13 +2850,145 @@ function AuthPage() {
     setNotice("");
   }
 
-  function createProject(event) {
-    event.preventDefault();
-    if (!project.title.trim() || !project.skill.trim()) return;
-    const nextProjects = [{ ...project, id: Date.now() }, ...projects];
+  function handleCreateProjectSubmit(event) {
+    if (event && event.preventDefault) event.preventDefault();
+    const formEl = event && event.target;
+    const cleanTitle = (
+      newProjectForm.title ||
+      (formEl && formEl.querySelector && formEl.querySelector("input[type=text]")?.value) ||
+      ""
+    ).trim();
+
+    if (!cleanTitle) {
+      setNotice("Please enter a project title.");
+      return;
+    }
+
+    const catVal =
+      newProjectForm.category ||
+      (formEl && formEl.querySelector && formEl.querySelector("select")?.value) ||
+      "";
+
+    if (!catVal) {
+      setNotice("Please choose a category.");
+      return;
+    }
+
+    const descVal = (
+      newProjectForm.description ||
+      (formEl && formEl.querySelector && formEl.querySelector("textarea")?.value) ||
+      ""
+    ).trim() || "A creative project built to apply new skills, showcase my work, and build my portfolio.";
+
+
+    const rawTags =
+      newProjectForm.tags ||
+      (formEl && formEl.querySelectorAll && formEl.querySelectorAll("input[type=text]")[1]?.value) ||
+      "";
+
+    if (!rawTags.trim()) {
+      setNotice("Please enter your skills (e.g. UI/UX, Typography).");
+      return;
+    }
+
+    const tagsArray = rawTags.split(",").map((t) => t.trim()).filter(Boolean);
+
+
+    // Pick a high-quality cover photo based on the selected category
+    const categoryCoverImages = {
+      Design: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+      Marketing: "Images/course-marketing.png",
+      Media: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=600&q=80",
+      Business: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+      "Web-Development": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80",
+      Branding: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=600&q=80",
+      Copywriting: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=600&q=80",
+      "Cyber Security": "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80",
+      "Data Analysis": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+      "Forex Trading": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=600&q=80",
+      Other: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=600&q=80"
+    };
+
+    const chosenImage = categoryCoverImages[catVal] || categoryCoverImages.Design;
+
+    const created = {
+      id: "proj-" + Date.now(),
+      title: cleanTitle,
+      category: catVal,
+      description: descVal,
+      tags: tagsArray.length > 0 ? tagsArray : ["Creative", catVal],
+      status: "in-progress",
+      statusLabel: "In Progress",
+      xp: 60,
+      updatedDate: "Updated Just now",
+      image: chosenImage,
+      featured: projects.length === 0
+    };
+
+    const nextProjects = [created, ...projects];
     setProjects(nextProjects);
     persistUserProgress({ projects: nextProjects });
-    setProject({ title: "", skill: "", description: "" });
+    setIsCreateProjectOpen(false);
+    setNewProjectForm({
+      title: "",
+      category: "",
+      description: "",
+      tags: "",
+      status: "in-progress",
+      xp: 50,
+      image: ""
+    });
+    setNotice(`Project "${created.title}" created successfully!`);
+    setTimeout(() => setNotice(""), 3500);
+  }
+
+  function handleLoadShowcaseProjects() {
+    setProjects(SHOWCASE_PROJECTS_TEMPLATES);
+    persistUserProgress({ projects: SHOWCASE_PROJECTS_TEMPLATES });
+    setNotice("Showcase projects loaded! All project cards and featured banner are now visible.");
+    setTimeout(() => setNotice(""), 3500);
+  }
+
+  function handleClearProjectsToZero() {
+    setProjects([]);
+    persistUserProgress({ projects: [] });
+    setNotice("All projects reset to 0.");
+    setTimeout(() => setNotice(""), 3500);
+  }
+
+  function handleToggleProjectStatus(projectId) {
+    const updated = projects.map((p) => {
+      if (p.id === projectId) {
+        const nextStatus = p.status === "completed" ? "in-progress" : "completed";
+        return {
+          ...p,
+          status: nextStatus,
+          statusLabel: nextStatus === "completed" ? "Completed" : "In Progress",
+          updatedDate: "Updated Just now"
+        };
+      }
+      return p;
+    });
+    setProjects(updated);
+    persistUserProgress({ projects: updated });
+    if (viewingProject && viewingProject.id === projectId) {
+      setViewingProject((prev) => ({
+        ...prev,
+        status: prev.status === "completed" ? "in-progress" : "completed",
+        statusLabel: prev.status === "completed" ? "In Progress" : "Completed"
+      }));
+    }
+  }
+
+  function handleDeleteProject(projectId) {
+    const updated = projects.filter((p) => p.id !== projectId);
+    setProjects(updated);
+    persistUserProgress({ projects: updated });
+    if (viewingProject && viewingProject.id === projectId) {
+      setViewingProject(null);
+    }
+    setNotice("Project removed.");
+    setTimeout(() => setNotice(""), 3000);
   }
 
  
@@ -2846,13 +3213,47 @@ function AuthPage() {
 
   const currentLessonRemainingSec = Math.max(0, currentLessonTotalSec - lessonWatchTimestamp);
 
+  // Dynamic stats calculated from projects (all start at 0 when projects is empty)
+  const totalProjectsCount = projects.length;
+  const completedProjectsCount = projects.filter((p) => p.status === "completed").length;
+  const inProgressProjectsCount = projects.filter((p) => p.status === "in-progress").length;
+  const draftProjectsCount = projects.filter((p) => p.status === "draft").length;
+  const submittedProjectsCount = projects.filter((p) => p.status === "submitted").length;
+  const xpFromProjectsCount = projects.reduce((sum, p) => sum + (p.xp || 0), 0);
+
+  const filteredProjects = projects.filter((p) => {
+    if (projectFilterTab === "in-progress") return p.status === "in-progress";
+    if (projectFilterTab === "drafts") return p.status === "draft";
+    if (projectFilterTab === "completed") return p.status === "completed";
+    if (projectFilterTab === "submitted") return p.status === "submitted";
+    return true; // "all"
+  });
+
+  const featuredProject = projects.find((p) => p.featured) || projects.find((p) => p.status === "in-progress") || projects[0];
+
+  // Turns "Create New Project" button from light purple to sharp purple upon filling all required fields
+  const isCreateProjectFormReady = Boolean(
+    (newProjectForm.title || "").trim() &&
+    newProjectForm.category &&
+    (newProjectForm.tags || "").trim()
+  );
+
   // If user is logged in and on dashboard view, show Dashboard
   if (account && view === "dashboard") {
     return (
       <div className="dashboard-app">
         {/* Left Sidebar */}
         <aside className="dashboard-sidebar">
-          <a className="dashboard-logo" href="index.html">
+          <a
+            className="dashboard-logo"
+            href="#home"
+            onClick={(e) => {
+              e.preventDefault();
+              setDashboardView("home");
+              try { history.replaceState(null, "", "#home"); } catch (err) {}
+            }}
+            title="MyDearTeenager Dashboard"
+          >
             <span className="brand-logo-text">
               <span className="logo-purple">MyDear</span>
               <span className="logo-dark">Teenager</span>
@@ -2863,7 +3264,11 @@ function AuthPage() {
             <a
               className={dashboardView === "home" ? "selected" : ""}
               href="#home"
-              onClick={(e) => { e.preventDefault(); setDashboardView("home"); }}
+              onClick={(e) => {
+                e.preventDefault();
+                setDashboardView("home");
+                try { history.replaceState(null, "", "#home"); } catch (err) {}
+              }}
             >
               <Icon name="home" size={20} />
               <span>Home</span>
@@ -2872,7 +3277,11 @@ function AuthPage() {
             <a
               className={dashboardView === "academy" ? "selected" : ""}
               href="#academy"
-              onClick={(e) => { e.preventDefault(); setDashboardView("academy"); }}
+              onClick={(e) => {
+                e.preventDefault();
+                setDashboardView("academy");
+                try { history.replaceState(null, "", "#academy"); } catch (err) {}
+              }}
             >
               <Icon name="academy" size={20} />
               <span>Skill Academy</span>
@@ -2884,39 +3293,48 @@ function AuthPage() {
               onClick={(e) => {
                 e.preventDefault();
                 setDashboardView("learning");
+                try { history.replaceState(null, "", "#learning"); } catch (err) {}
               }}
             >
               <Icon name="learning" size={20} />
               <span>My Learning</span>
             </a>
 
-            <a href="#projects">
+            <a
+              className={dashboardView === "projects" ? "selected" : ""}
+              href="#projects"
+              onClick={(e) => {
+                e.preventDefault();
+                setDashboardView("projects");
+                try { history.replaceState(null, "", "#projects"); } catch (err) {}
+              }}
+            >
               <Icon name="projects" size={20} />
               <span>Projects</span>
             </a>
 
-            <a href="#portfolio">
+            <a href="#portfolio" onClick={(e) => e.preventDefault()}>
               <Icon name="portfolio" size={20} />
               <span>Portfolio</span>
             </a>
 
-            <a href="#community">
+            <a href="#community" onClick={(e) => e.preventDefault()}>
               <Icon name="community" size={20} />
               <span>Community</span>
             </a>
 
-            <a href="#opportunities">
+            <a href="#opportunities" onClick={(e) => e.preventDefault()}>
               <Icon name="opportunities" size={20} />
               <span>Opportunities</span>
             </a>
           </nav>
 
           <div className="sidebar-bottom">
-            <a href="#notifications">
+            <a href="#notifications" onClick={(e) => e.preventDefault()}>
               <Icon name="notifications" size={20} />
               <span>Notifications</span>
             </a>
-            <a href="#settings">
+            <a href="#settings" onClick={(e) => e.preventDefault()}>
               <Icon name="settings" size={20} />
               <span>Settings</span>
             </a>
@@ -4202,7 +4620,7 @@ function AuthPage() {
                     <h2>Recent Achievements</h2>
                     <p>Badges you've picked up on your journey</p>
                   </div>
-                  <a href="#portfolio" className="section-header-link">
+                  <a href="#portfolio" className="section-header-link" onClick={(e) => e.preventDefault()}>
                     View All →
                   </a>
                 </div>
@@ -4249,7 +4667,7 @@ function AuthPage() {
                     <h2>Opportunities for You</h2>
                     <p>Discover ways to put your skills to action</p>
                   </div>
-                  <a href="#opportunities" className="browse-all-link">Browse All →</a>
+                  <a href="#opportunities" className="browse-all-link" onClick={(e) => e.preventDefault()}>Browse All →</a>
                 </div>
 
                 <div className="opportunities-3-cards-grid">
@@ -4325,7 +4743,7 @@ function AuthPage() {
                     <div>
                       <h2>Recent Updates</h2>
                     </div>
-                    <a href="#updates" className="section-header-link">See all</a>
+                    <a href="#updates" className="section-header-link" onClick={(e) => e.preventDefault()}>See all</a>
                   </div>
                   <div className="updates-list">
                     <div className="update-list-item">
@@ -4364,6 +4782,232 @@ function AuthPage() {
               <div className="dashboard-status-footer" style={{ marginTop: "2.5rem" }}>
                 <p>
                   You're on track for Level {userLevel + 1} — keep showing up, {account.name || "Daniel"}. 🪄
+                </p>
+              </div>
+            </section>
+          )}
+
+          {/* VIEW 5: PROJECTS WORKSPACE (Matching Images/project-tab.png) */}
+          {dashboardView === "projects" && (
+            <section className="dashboard-content projects-view-content">
+              {/* Top Breadcrumb & Header Row */}
+              <div className="projects-top-header">
+                <div className="projects-header-left">
+                  <span className="projects-breadcrumb">Projects</span>
+                  <h1 className="projects-main-title">Build. Ship. Grow</h1>
+                  <p className="projects-main-subtitle">
+                    Your personal project workspace — from early ideas to portfolio-ready work.
+                  </p>
+                </div>
+                <div className="projects-header-actions">
+                  {projects.length > 0 && (
+                    <button
+                      type="button"
+                      className="projects-reset-btn"
+                      onClick={handleClearProjectsToZero}
+                      title="Reset all projects back to 0 count"
+                    >
+                      Reset to 0
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="new-project-primary-btn"
+                    onClick={() => setIsCreateProjectOpen(true)}
+                  >
+                    <Icon name="plus" size={18} />
+                    <span>New Project</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* 4 Stat Cards Row (Total Projects, Completed, In Progress, XP from projects) */}
+              <div className="projects-stats-grid">
+                {/* Stat 1: Total Projects */}
+                <div className="projects-stat-card">
+                  <div className="stat-icon-wrap stat-icon-purple">
+                    <Icon name="projects" size={24} />
+                  </div>
+                  <div className="stat-info-col">
+                    <span className="stat-label">Total Projects</span>
+                    <strong className="stat-value">{totalProjectsCount}</strong>
+                  </div>
+                </div>
+
+                {/* Stat 2: Completed */}
+                <div className="projects-stat-card">
+                  <div className="stat-icon-wrap stat-icon-green">
+                    <Icon name="check-square" size={24} />
+                  </div>
+                  <div className="stat-info-col">
+                    <span className="stat-label">Completed</span>
+                    <strong className="stat-value">{completedProjectsCount}</strong>
+                  </div>
+                </div>
+
+                {/* Stat 3: In Progress */}
+                <div className="projects-stat-card">
+                  <div className="stat-icon-wrap stat-icon-blue">
+                    <Icon name="in-progress-book" size={24} />
+                  </div>
+                  <div className="stat-info-col">
+                    <span className="stat-label">In Progress</span>
+                    <strong className="stat-value">{inProgressProjectsCount}</strong>
+                  </div>
+                </div>
+
+                {/* Stat 4: XP from projects */}
+                <div className="projects-stat-card">
+                  <div className="stat-icon-wrap stat-icon-orange">
+                    <Icon name="award-ribbon" size={24} />
+                  </div>
+                  <div className="stat-info-col">
+                    <span className="stat-label">XP from projects</span>
+                    <strong className="stat-value">{xpFromProjectsCount}</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* "Down Side": Empty state if 0 projects, or Featured Project + Filter Tabs + Grid */}
+              {projects.length === 0 ? (
+                /* Empty state when 0 projects exist (counts are 0) */
+                <div className="projects-empty-state-card">
+                  <div className="empty-state-icon-circle">
+                    <Icon name="projects" size={36} />
+                  </div>
+                  <h2 className="empty-state-title">Your Project Workspace is Ready</h2>
+                  <p className="empty-state-desc">
+                    You don't have any projects yet. All counts start at 0. Start building your first project to showcase your skills, earn XP, and populate your portfolio.
+                  </p>
+                </div>
+              ) : (
+                /* Down side when projects exist: Featured Banner + Filter Tabs + Cards Grid */
+                <div className="projects-populated-section">
+                  {/* Featured Project Banner (if available) */}
+                  {featuredProject && (
+                    <div className="featured-project-card">
+                      <div className="featured-content-col">
+                        <div className="featured-pill-badge">
+                          <span>✦ Featured Project</span>
+                        </div>
+                        <h2 className="featured-project-title">{featuredProject.title}</h2>
+                        <p className="featured-project-desc">{featuredProject.description}</p>
+                        <div className="featured-meta-row">
+                          <span className={`featured-status-pill ${featuredProject.status === "completed" ? "status-completed" : "status-inprogress"}`}>
+                            ● {featuredProject.statusLabel || (featuredProject.status === "completed" ? "Completed" : "In Progress")}
+                          </span>
+                          <span className="featured-xp-pill">
+                            ★ + {featuredProject.xp || 50} XP
+                          </span>
+                          <span className="featured-date-text">{featuredProject.updatedDate || "Updated recently"}</span>
+                        </div>
+                      </div>
+                      <div className="featured-media-col">
+                        <img
+                          src={featuredProject.image || "Images/course-marketing.png"}
+                          alt={featuredProject.title}
+                          className="featured-media-img"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=600&q=80";
+                          }}
+                        />
+                        <button
+                          type="button"
+                          className="open-project-overlay-btn"
+                          onClick={() => setViewingProject(featuredProject)}
+                        >
+                          <Icon name="folder" size={18} />
+                          <span>Open Project</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Filter Tabs Row */}
+                  <div className="project-filter-tabs-row">
+                    <button
+                      type="button"
+                      className={`project-tab-btn ${projectFilterTab === "all" ? "active" : ""}`}
+                      onClick={() => setProjectFilterTab("all")}
+                    >
+                      All <span className="tab-count-badge">{totalProjectsCount}</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`project-tab-btn ${projectFilterTab === "in-progress" ? "active" : ""}`}
+                      onClick={() => setProjectFilterTab("in-progress")}
+                    >
+                      In Progress <span className="tab-count-badge">{inProgressProjectsCount}</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`project-tab-btn ${projectFilterTab === "drafts" ? "active" : ""}`}
+                      onClick={() => setProjectFilterTab("drafts")}
+                    >
+                      Drafts <span className="tab-count-badge">{draftProjectsCount}</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`project-tab-btn ${projectFilterTab === "completed" ? "active" : ""}`}
+                      onClick={() => setProjectFilterTab("completed")}
+                    >
+                      Completed <span className="tab-count-badge">{completedProjectsCount}</span>
+                    </button>
+                    <button
+                      type="button"
+                      className={`project-tab-btn ${projectFilterTab === "submitted" ? "active" : ""}`}
+                      onClick={() => setProjectFilterTab("submitted")}
+                    >
+                      Submitted <span className="tab-count-badge">{submittedProjectsCount}</span>
+                    </button>
+                  </div>
+
+                  {/* 3-Column Project Cards Grid */}
+                  <div className="projects-cards-grid">
+                    {filteredProjects.map((proj) => (
+                      <article key={proj.id} className="project-card-item">
+                        <div className="project-card-media-wrap">
+                          <img
+                            src={proj.image || "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80"}
+                            alt={proj.title}
+                            className="project-card-img"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80";
+                            }}
+                          />
+                        </div>
+                        <div className="project-card-body">
+                          <span className="project-card-category">{proj.category || "Design"}</span>
+                          <h3 className="project-card-title">{proj.title}</h3>
+                          <p className="project-card-desc">{proj.description}</p>
+                          <div className="project-card-tags-row">
+                            {(proj.tags || []).map((tag, tIdx) => (
+                              <span key={tIdx} className="project-tag-pill">{tag}</span>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="project-card-footer">
+                          <span className="project-card-date">{proj.updatedDate || "Updated recently"}</span>
+                          <button
+                            type="button"
+                            className="project-card-view-btn"
+                            onClick={() => setViewingProject(proj)}
+                          >
+                            View
+                          </button>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Motivational Footer */}
+              <div className="dashboard-status-footer" style={{ marginTop: "3rem" }}>
+                <p>
+                  You're on track for Level {userLevel + 1} — keep showing up, {account.name || "Daniel"}. 🖉
                 </p>
               </div>
             </section>
@@ -4449,6 +5093,229 @@ function AuthPage() {
                     onClick={() => enrollCourse(enrollmentModalCourse.id, false)}
                   >
                     Enroll (Keep Browsing)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Create New Project Modal (Matching Images/new-project.png) */}
+        {isCreateProjectOpen && (
+          <div className="np-backdrop-overlay" onClick={() => setIsCreateProjectOpen(false)}>
+            <div className="np-modal-outer-frame" onClick={(e) => e.stopPropagation()}>
+
+              {/* Card 1: Header Card */}
+              <div className="np-header-card">
+                <div className="np-header-left">
+                  <div className="np-icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#334155">
+                      <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                      <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                      <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                      <path d="M17.5 13v3.5H14v2h3.5V22h2v-3.5H23v-2h-3.5V13h-2z" />
+                    </svg>
+                  </div>
+                  <div className="np-title-group">
+                    <h2 className="np-title-text">New Project</h2>
+                    <p className="np-subtitle-text">Start Something New</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="np-circle-close-btn"
+                  onClick={() => setIsCreateProjectOpen(false)}
+                  aria-label="Close modal"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Card 2: Form Card */}
+              <div className="np-form-card">
+                <form onSubmit={handleCreateProjectSubmit} className="np-project-form">
+
+                  {/* Field 1: Project Title */}
+                  <div className="np-input-group">
+                    <label className="np-label">Project Title</label>
+                    <input
+                      type="text"
+                      required
+                      className="np-field-input"
+                      placeholder="e.g Personal Portfolio Website"
+                      value={newProjectForm.title}
+                      onChange={(e) => setNewProjectForm({ ...newProjectForm, title: e.target.value })}
+                    />
+                  </div>
+
+                  {/* Field 2: Category (matching Images/category-options.png) */}
+                  <div className="np-input-group">
+                    <label className="np-label">Category</label>
+                    <div
+                      className={`np-select-container np-custom-selector ${isCategoryOpen ? "open" : ""}`}
+                      onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                    >
+                      <span className={`np-selector-text ${newProjectForm.category ? "has-value" : ""}`}>
+                        {newProjectForm.category || "Choose a Category"}
+                      </span>
+                      <span className="np-select-arrow">
+                        {isCategoryOpen ? (
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="18 15 12 9 6 15" />
+                          </svg>
+                        ) : (
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="6 9 12 15 18 9" />
+                          </svg>
+                        )}
+                      </span>
+                    </div>
+
+                    {/* Category Options Panel matching Images/category-options.png */}
+                    {isCategoryOpen && (
+                      <div className="np-category-options-panel">
+                        {[
+                          "Design",
+                          "Marketing",
+                          "Media",
+                          "Business",
+                          "Web-Development",
+                          "Branding",
+                          "Copywriting",
+                          "Cyber Security",
+                          "Data Analysis",
+                          "Forex Trading",
+                          "Other"
+                        ].map((cat) => {
+                          const isSelected = newProjectForm.category === cat;
+                          return (
+                            <button
+                              key={cat}
+                              type="button"
+                              className={`np-cat-option-btn ${isSelected ? "selected" : ""}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setNewProjectForm({ ...newProjectForm, category: cat });
+                                setIsCategoryOpen(false);
+                              }}
+                            >
+                              {cat}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Field 3: Description (Optional) */}
+                  <div className="np-input-group">
+                    <label className="np-label">Description (Optional)</label>
+                    <textarea
+                      rows={3}
+                      className="np-field-input np-field-textarea"
+                      placeholder="What are you making and why?"
+                      value={newProjectForm.description}
+                      onChange={(e) => setNewProjectForm({ ...newProjectForm, description: e.target.value })}
+                    />
+                  </div>
+
+                  {/* Field 4: Skills (Comma seperated) - Note exact spelling from image */}
+                  <div className="np-input-group">
+                    <label className="np-label">Skills (Comma seperated)</label>
+                    <input
+                      type="text"
+                      className="np-field-input"
+                      placeholder="e.g UI/UX, Typography, Layout"
+                      value={newProjectForm.tags}
+                      onChange={(e) => setNewProjectForm({ ...newProjectForm, tags: e.target.value })}
+                    />
+                  </div>
+
+                  {/* Field 5: Action Buttons */}
+                  <div className="np-actions-row">
+                    <button
+                      type="button"
+                      className="np-btn-cancel"
+                      onClick={() => setIsCreateProjectOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className={`np-btn-submit ${isCreateProjectFormReady ? "ready" : ""}`}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-1 8h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z" />
+                      </svg>
+                      <span>Create New Project</span>
+                    </button>
+                  </div>
+
+                </form>
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {/* Project View / Detail Modal */}
+        {viewingProject && (
+          <div className="project-modal-backdrop" onClick={() => setViewingProject(null)}>
+            <div className="project-modal-card project-detail-card" onClick={(e) => e.stopPropagation()}>
+              <div className="project-modal-header">
+                <span className="project-card-category">{viewingProject.category || "Design"}</span>
+                <button
+                  type="button"
+                  className="modal-close-btn"
+                  onClick={() => setViewingProject(null)}
+                  aria-label="Close modal"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="project-detail-media">
+                <img src={viewingProject.image} alt={viewingProject.title} />
+              </div>
+              <div className="project-detail-body">
+                <div className="featured-meta-row" style={{ marginBottom: "1rem" }}>
+                  <span className={`featured-status-pill ${viewingProject.status === "completed" ? "status-completed" : "status-inprogress"}`}>
+                    ● {viewingProject.statusLabel || (viewingProject.status === "completed" ? "Completed" : "In Progress")}
+                  </span>
+                  <span className="featured-xp-pill">
+                    ★ + {viewingProject.xp || 50} XP
+                  </span>
+                  <span className="featured-date-text">{viewingProject.updatedDate}</span>
+                </div>
+                <h2 className="project-detail-title">{viewingProject.title}</h2>
+                <p className="project-detail-desc">{viewingProject.description}</p>
+                <div className="project-card-tags-row" style={{ marginTop: "1.2rem" }}>
+                  {(viewingProject.tags || []).map((t, idx) => (
+                    <span key={idx} className="project-tag-pill">{t}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="project-modal-actions" style={{ justifyContent: "space-between" }}>
+                <button
+                  type="button"
+                  className="project-delete-btn"
+                  onClick={() => handleDeleteProject(viewingProject.id)}
+                >
+                  Delete Project
+                </button>
+                <div style={{ display: "flex", gap: "0.75rem" }}>
+                  <button
+                    type="button"
+                    className="project-status-toggle-btn"
+                    onClick={() => handleToggleProjectStatus(viewingProject.id)}
+                  >
+                    {viewingProject.status === "completed" ? "Mark In Progress" : "Mark as Completed ✓"}
+                  </button>
+                  <button
+                    type="button"
+                    className="new-project-primary-btn"
+                    onClick={() => setViewingProject(null)}
+                  >
+                    Close
                   </button>
                 </div>
               </div>
@@ -5035,9 +5902,9 @@ function AuthPage() {
             <div className="otp-footer-inner">
               <span className="otp-copyright">© 2026 MyDearTeenager. All rights reserved.</span>
               <div className="otp-legal-links">
-                <a href="#privacy">Privacy Policy</a>
-                <a href="#terms">Terms of Service</a>
-                <a href="#safety">Safety Center</a>
+                <a href="#privacy" onClick={(e) => e.preventDefault()}>Privacy Policy</a>
+                <a href="#terms" onClick={(e) => e.preventDefault()}>Terms of Service</a>
+                <a href="#safety" onClick={(e) => e.preventDefault()}>Safety Center</a>
               </div>
             </div>
           </footer>
