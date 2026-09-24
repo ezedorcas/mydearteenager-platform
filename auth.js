@@ -2299,6 +2299,16 @@ function AuthPage() {
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [viewingProject, setViewingProject] = useState(null);
+  const [isEditProjectOpen, setIsEditProjectOpen] = useState(false);
+  const [isEditCategoryOpen, setIsEditCategoryOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState(null);
+  const [editProjectForm, setEditProjectForm] = useState({
+    id: "",
+    title: "",
+    category: "",
+    description: "",
+    tags: ""
+  });
   const [newProjectForm, setNewProjectForm] = useState({
     title: "",
     category: "",
@@ -2567,6 +2577,20 @@ function AuthPage() {
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [showUserDropdown]);
+
+  // Close modals with Escape key
+  useEffect(() => {
+    if (!projectToDelete && !isEditProjectOpen && !isCreateProjectOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        if (projectToDelete) setProjectToDelete(null);
+        if (isEditProjectOpen) setIsEditProjectOpen(false);
+        if (isCreateProjectOpen) setIsCreateProjectOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [projectToDelete, isEditProjectOpen, isCreateProjectOpen]);
 
   function updateForm(event) {
     const { name, value, type, checked } = event.target;
@@ -2942,13 +2966,6 @@ function AuthPage() {
     setTimeout(() => setNotice(""), 3500);
   }
 
-  function handleLoadShowcaseProjects() {
-    setProjects(SHOWCASE_PROJECTS_TEMPLATES);
-    persistUserProgress({ projects: SHOWCASE_PROJECTS_TEMPLATES });
-    setNotice("Showcase projects loaded! All project cards and featured banner are now visible.");
-    setTimeout(() => setNotice(""), 3500);
-  }
-
   function handleClearProjectsToZero() {
     setProjects([]);
     persistUserProgress({ projects: [] });
@@ -2989,6 +3006,71 @@ function AuthPage() {
     }
     setNotice("Project removed.");
     setTimeout(() => setNotice(""), 3000);
+  }
+
+  function handleStartEditProject(proj) {
+    if (!proj) return;
+    setEditProjectForm({
+      id: proj.id,
+      title: proj.title || "",
+      category: proj.category || "Design",
+      description: proj.description || proj.desc || "",
+      tags: (proj.tags || []).join(", ")
+    });
+    setIsEditCategoryOpen(false);
+    setIsEditProjectOpen(true);
+  }
+
+  function handleEditProjectSubmit(e) {
+    e.preventDefault();
+    if (!editProjectForm.id) return;
+    const cleanTitle = (editProjectForm.title || "").trim();
+    if (!cleanTitle) return;
+    const rawTags = (editProjectForm.tags || "")
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+
+    const newDesc = (editProjectForm.description || "").trim();
+    const updated = projects.map((p) => {
+      if (p.id === editProjectForm.id) {
+        return {
+          ...p,
+          title: cleanTitle,
+          category: editProjectForm.category || p.category || "Design",
+          description: newDesc,
+          desc: newDesc,
+          tags: rawTags.length > 0 ? rawTags : p.tags,
+          updatedDate: "Updated Just now"
+        };
+      }
+      return p;
+    });
+
+    setProjects(updated);
+    persistUserProgress({ projects: updated });
+    const current = updated.find((p) => p.id === editProjectForm.id);
+    if (current) setViewingProject(current);
+    setIsEditProjectOpen(false);
+    setNotice("Project details updated!");
+    setTimeout(() => setNotice(""), 3500);
+  }
+
+  function handleTogglePortfolio(projectId) {
+    const updated = projects.map((p) => {
+      if (p.id === projectId) {
+        return { ...p, inPortfolio: !p.inPortfolio };
+      }
+      return p;
+    });
+    setProjects(updated);
+    persistUserProgress({ projects: updated });
+    const current = updated.find((p) => p.id === projectId);
+    if (current) {
+      setViewingProject(current);
+      setNotice(current.inPortfolio ? "Added to Portfolio! 🎉" : "Removed from Portfolio.");
+      setTimeout(() => setNotice(""), 3000);
+    }
   }
 
  
@@ -3238,6 +3320,12 @@ function AuthPage() {
     (newProjectForm.tags || "").trim()
   );
 
+  const isEditProjectFormReady = Boolean(
+    (editProjectForm.title || "").trim() &&
+    editProjectForm.category &&
+    (editProjectForm.tags || "").trim()
+  );
+
   // If user is logged in and on dashboard view, show Dashboard
   if (account && view === "dashboard") {
     return (
@@ -3254,10 +3342,11 @@ function AuthPage() {
             }}
             title="MyDearTeenager Dashboard"
           >
-            <span className="brand-logo-text">
-              <span className="logo-purple">MyDear</span>
-              <span className="logo-dark">Teenager</span>
-            </span>
+            <img
+              src="./Images/logo.png"
+              alt="MyDearTeenager"
+              className="dashboard-logo-img"
+            />
           </a>
 
           <nav className="dashboard-nav">
@@ -3306,6 +3395,7 @@ function AuthPage() {
               onClick={(e) => {
                 e.preventDefault();
                 setDashboardView("projects");
+                setViewingProject(null);
                 try { history.replaceState(null, "", "#projects"); } catch (err) {}
               }}
             >
@@ -4793,23 +4883,19 @@ function AuthPage() {
               {/* Top Breadcrumb & Header Row */}
               <div className="projects-top-header">
                 <div className="projects-header-left">
-                  <span className="projects-breadcrumb">Projects</span>
+                  <span
+                    className={`projects-breadcrumb ${viewingProject ? "projects-breadcrumb-interactive" : ""}`}
+                    onClick={viewingProject ? () => setViewingProject(null) : undefined}
+                    title={viewingProject ? "← Back to all projects" : undefined}
+                  >
+                    Projects
+                  </span>
                   <h1 className="projects-main-title">Build. Ship. Grow</h1>
                   <p className="projects-main-subtitle">
                     Your personal project workspace — from early ideas to portfolio-ready work.
                   </p>
                 </div>
                 <div className="projects-header-actions">
-                  {projects.length > 0 && (
-                    <button
-                      type="button"
-                      className="projects-reset-btn"
-                      onClick={handleClearProjectsToZero}
-                      title="Reset all projects back to 0 count"
-                    >
-                      Reset to 0
-                    </button>
-                  )}
                   <button
                     type="button"
                     className="new-project-primary-btn"
@@ -4868,8 +4954,181 @@ function AuthPage() {
                 </div>
               </div>
 
-              {/* "Down Side": Empty state if 0 projects, or Featured Project + Filter Tabs + Grid */}
-              {projects.length === 0 ? (
+              {/* "Down Side": Opened Project View OR Empty state OR Featured Project + Filter Tabs + Grid */}
+              {viewingProject ? (
+                /* Opened Project Page View matching Images/opened-project.png */
+                <div className="opened-project-container">
+                  {/* Hero Cover Banner */}
+                  <div className="opened-project-hero-banner">
+                    <img
+                      src={viewingProject.image || "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80"}
+                      alt={viewingProject.title}
+                      className="opened-project-hero-bg-img"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80";
+                      }}
+                    />
+                    <div className="opened-project-hero-overlay">
+                      <span className={`opened-project-status-badge ${viewingProject.status === "completed" ? "completed" : "inprogress"}`}>
+                        {viewingProject.status === "completed" ? "✦ Completed" : "● In Progress"}
+                      </span>
+                      <h1 className="opened-project-hero-title">{viewingProject.title}</h1>
+                    </div>
+                  </div>
+
+                  {/* 2-Column Content Layout */}
+                  <div className="opened-project-grid-layout">
+                    {/* Left Column (About this lesson + Lessons Checklist) */}
+                    <div className="opened-project-left-col">
+                      {/* Card 1: About this lesson */}
+                      <div className="opened-project-card">
+                        <h3 className="opened-project-card-title">About this lesson</h3>
+                        <p className="opened-project-card-desc">
+                          {viewingProject.description || "A responsive portfolio site built from scratch using Figma designs and HTML/CSS, showcasing my skills in UI/UX and front-end layout."}
+                        </p>
+                        <div className="opened-project-tags-row">
+                          {(viewingProject.tags && viewingProject.tags.length > 0
+                            ? viewingProject.tags
+                            : ["UI/UX Design", "Typography", "Layout"]
+                          ).map((tag, tIdx) => (
+                            <span key={tIdx} className="opened-project-tag-pill">{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Card 2: Lessons */}
+                      <div className="opened-project-card opened-project-lessons-card">
+                        <h4 className="opened-project-card-subtitle">Lessons</h4>
+                        <div className="opened-project-checklist">
+                          {[
+                            "Plan & research",
+                            "First draft / prototype",
+                            "Feedback & revisions",
+                            "Final submission"
+                          ].map((lessonTitle, lIdx) => (
+                            <div key={lIdx} className="opened-project-check-item">
+                              <span className="opened-project-check-circle">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                              </span>
+                              <span className="opened-project-check-label">{lessonTitle}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Column (Project Details + Linked Course + Buttons) */}
+                    <div className="opened-project-right-col">
+                      {/* Card 1: Project Details */}
+                      <div className="opened-project-card">
+                        <h3 className="opened-project-card-title">Project Details</h3>
+                        <div className="opened-project-details-rows">
+                          {/* Row 1: Xp reward */}
+                          <div className="op-detail-row">
+                            <div className="op-detail-left">
+                              <span className="op-icon-badge op-badge-orange">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                </svg>
+                              </span>
+                              <span className="op-detail-label">Xp reward</span>
+                            </div>
+                            <strong className="op-detail-val">+{viewingProject.xp || 120}XP</strong>
+                          </div>
+
+                          {/* Row 2: Category */}
+                          <div className="op-detail-row">
+                            <div className="op-detail-left">
+                              <span className="op-icon-badge op-badge-green">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                  <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                                  <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                                  <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                                  <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                                </svg>
+                              </span>
+                              <span className="op-detail-label">Category</span>
+                            </div>
+                            <strong className="op-detail-val">{viewingProject.category || "Design"}</strong>
+                          </div>
+
+                          {/* Row 3: Last Updated */}
+                          <div className="op-detail-row">
+                            <div className="op-detail-left">
+                              <span className="op-icon-badge op-badge-purple">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <circle cx="12" cy="12" r="10" />
+                                  <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                              </span>
+                              <span className="op-detail-label">Last Updated</span>
+                            </div>
+                            <strong className="op-detail-val">
+                              {viewingProject.updatedDate ? viewingProject.updatedDate.replace(/^Updated\s*/i, "") : "Aug 28"}
+                            </strong>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Card 2: Linked Course */}
+                      <div className="opened-project-card opened-project-linked-course-card">
+                        <h4 className="opened-project-card-subtitle">Linked Course</h4>
+                        <div className="op-linked-course-row">
+                          <span className="op-icon-badge op-badge-indigo">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                            </svg>
+                          </span>
+                          <span className="op-linked-course-name">
+                            {viewingProject.linkedCourse || (viewingProject.category === "Marketing" ? "Social Media Growth Strategy" : "UI/UX Design Fundamentals")}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons Stack */}
+                      <div className="opened-project-buttons-stack">
+                        {/* 1. Add to Portfolio */}
+                        <button
+                          type="button"
+                          className="op-btn-primary op-btn-portfolio"
+                          onClick={() => handleTogglePortfolio(viewingProject.id)}
+                        >
+                          {viewingProject.inPortfolio ? "✓ Added to Portfolio" : "Add to Portfolio"}
+                        </button>
+
+                        {/* 2. Edit Details */}
+                        <button
+                          type="button"
+                          className="op-btn-secondary op-btn-edit"
+                          onClick={() => handleStartEditProject(viewingProject)}
+                        >
+                          Edit Details
+                        </button>
+
+                        {/* 3. Delete Project (User instruction: "under the edit details add another button design of delete project") */}
+                        <button
+                          type="button"
+                          className="op-btn-danger op-btn-delete"
+                          onClick={() => setProjectToDelete(viewingProject)}
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            <line x1="10" y1="11" x2="10" y2="17" />
+                            <line x1="14" y1="11" x2="14" y2="17" />
+                          </svg>
+                          <span>Delete Project</span>
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              ) : projects.length === 0 ? (
                 /* Empty state when 0 projects exist (counts are 0) */
                 <div className="projects-empty-state-card">
                   <div className="empty-state-icon-circle">
@@ -5258,67 +5517,228 @@ function AuthPage() {
           </div>
         )}
 
-        {/* Project View / Detail Modal */}
-        {viewingProject && (
-          <div className="project-modal-backdrop" onClick={() => setViewingProject(null)}>
-            <div className="project-modal-card project-detail-card" onClick={(e) => e.stopPropagation()}>
-              <div className="project-modal-header">
-                <span className="project-card-category">{viewingProject.category || "Design"}</span>
+        {/* Edit Project Modal — matches new project modal design with pre-filled fields */}
+        {isEditProjectOpen && (
+          <div className="np-backdrop-overlay" onClick={() => setIsEditProjectOpen(false)}>
+            <div className="np-modal-outer-frame" onClick={(e) => e.stopPropagation()}>
+              
+              {/* Header Card */}
+              <div className="np-header-card">
+                <div className="np-header-left">
+                  <div className="np-icon-box">
+                    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                      <path d="M0.5 6.2C0.5 6.4 0.6 6.5 0.8 6.5H29.2C29.4 6.5 29.5 6.4 29.5 6.2V3.5C29.5 1.57 27.93 0 26 0H4C2.07 0 0.5 1.57 0.5 3.5V6.2Z" fill="#3b82f6" />
+                      <path d="M0 12C0 10.1 1.5 8.5 3.5 8.5H25.5C26 8.5 26.3 9.1 25.9 9.5L11.5 23.9C10.6 24.8 9.5 25.5 8.1 25.9C6 26.5 3.7 26.3 2.3 24.9C1.1 23.7 0.5 22.7 0.5 21.5V12Z" fill="#3b82f6" />
+                      <circle cx="8" cy="14" r="1.6" fill="#ffffff" />
+                      <circle cx="14" cy="14" r="1.6" fill="#ffffff" />
+                      <circle cx="8" cy="20" r="1.6" fill="#ffffff" />
+                      <rect x="10.2" y="15.8" width="23.5" height="7.6" rx="3.8" transform="rotate(-45 22 19.6)" fill="#3b82f6" />
+                    </svg>
+                  </div>
+                  <div className="np-title-group">
+                    <h2 className="np-title-text">Edit Project</h2>
+                    <p className="np-subtitle-text">Update the details</p>
+                  </div>
+                </div>
                 <button
                   type="button"
-                  className="modal-close-btn"
-                  onClick={() => setViewingProject(null)}
+                  className="np-circle-close-btn"
+                  onClick={() => setIsEditProjectOpen(false)}
+                  aria-label="Close edit modal"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Form Card */}
+              <div className="np-form-card">
+                <form onSubmit={handleEditProjectSubmit}>
+                  {/* Field 1: Project Title */}
+                  <div className="np-input-group">
+                    <label className="np-label">Project Title</label>
+                    <input
+                      type="text"
+                      required
+                      className="np-field-input"
+                      placeholder="e.g Personal Portfolio Website"
+                      value={editProjectForm.title}
+                      onChange={(e) => setEditProjectForm({ ...editProjectForm, title: e.target.value })}
+                    />
+                  </div>
+
+                  {/* Field 2: Category */}
+                  <div className="np-input-group">
+                    <label className="np-label">Category</label>
+                    <div
+                      className={`np-select-container np-custom-selector ${isEditCategoryOpen ? "open" : ""}`}
+                      onClick={() => setIsEditCategoryOpen(!isEditCategoryOpen)}
+                    >
+                      <span className={`np-selector-text ${editProjectForm.category ? "has-value" : ""}`}>
+                        {editProjectForm.category || "Choose a Category"}
+                      </span>
+                      <span className="np-select-arrow">
+                        {isEditCategoryOpen ? (
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="18 15 12 9 6 15" />
+                          </svg>
+                        ) : (
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="6 9 12 15 18 9" />
+                          </svg>
+                        )}
+                      </span>
+                    </div>
+
+                    {isEditCategoryOpen && (
+                      <div className="np-category-options-panel">
+                        {[
+                          "Design",
+                          "Marketing",
+                          "Media",
+                          "Business",
+                          "Web-Development",
+                          "Branding",
+                          "Copywriting",
+                          "Cyber Security",
+                          "Data Analysis",
+                          "Forex Trading",
+                          "Other"
+                        ].map((cat) => {
+                          const isSelected = editProjectForm.category === cat;
+                          return (
+                            <button
+                              key={cat}
+                              type="button"
+                              className={`np-cat-option-btn ${isSelected ? "selected" : ""}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditProjectForm({ ...editProjectForm, category: cat });
+                                setIsEditCategoryOpen(false);
+                              }}
+                            >
+                              {cat}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Field 3: Description (Optional) */}
+                  <div className="np-input-group">
+                    <label className="np-label">Description (Optional)</label>
+                    <textarea
+                      rows={3}
+                      className="np-field-input np-field-textarea"
+                      placeholder="What are you making and why?"
+                      value={editProjectForm.description}
+                      onChange={(e) => setEditProjectForm({ ...editProjectForm, description: e.target.value })}
+                    />
+                  </div>
+
+                  {/* Field 4: Skills (Comma seperated) */}
+                  <div className="np-input-group">
+                    <label className="np-label">Skills (Comma seperated)</label>
+                    <input
+                      type="text"
+                      className="np-field-input"
+                      placeholder="e.g UI/UX, Typography, Layout"
+                      value={editProjectForm.tags}
+                      onChange={(e) => setEditProjectForm({ ...editProjectForm, tags: e.target.value })}
+                    />
+                  </div>
+
+                  {/* Field 5: Action Buttons */}
+                  <div className="np-actions-row">
+                    <button
+                      type="button"
+                      className="np-btn-cancel"
+                      onClick={() => setIsEditProjectOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className={`np-btn-submit ${isEditProjectFormReady ? "ready" : ""}`}
+                    >
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2zM7 5v4h8V5H7zm0 14h10v-6H7v6z"/>
+                      </svg>
+                      <span>Save Changes</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {/* Delete Project Confirmation Modal */}
+        {projectToDelete && (
+          <div className="np-backdrop-overlay" onClick={() => setProjectToDelete(null)}>
+            <div className="delete-confirm-modal-frame" onClick={(e) => e.stopPropagation()}>
+              
+              {/* Header Card */}
+              <div className="delete-confirm-header-card">
+                <div className="delete-confirm-header-left">
+                  <div className="delete-confirm-icon-box">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e11d48" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      <line x1="10" y1="11" x2="10" y2="17" />
+                      <line x1="14" y1="11" x2="14" y2="17" />
+                    </svg>
+                  </div>
+                  <div className="delete-confirm-title-group">
+                    <h2 className="delete-confirm-title-text">Delete Project</h2>
+                    <p className="delete-confirm-subtitle-text">This action cannot be undone</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="np-circle-close-btn"
+                  onClick={() => setProjectToDelete(null)}
                   aria-label="Close modal"
                 >
                   ✕
                 </button>
               </div>
-              <div className="project-detail-media">
-                <img src={viewingProject.image} alt={viewingProject.title} />
-              </div>
-              <div className="project-detail-body">
-                <div className="featured-meta-row" style={{ marginBottom: "1rem" }}>
-                  <span className={`featured-status-pill ${viewingProject.status === "completed" ? "status-completed" : "status-inprogress"}`}>
-                    ● {viewingProject.statusLabel || (viewingProject.status === "completed" ? "Completed" : "In Progress")}
-                  </span>
-                  <span className="featured-xp-pill">
-                    ★ + {viewingProject.xp || 50} XP
-                  </span>
-                  <span className="featured-date-text">{viewingProject.updatedDate}</span>
-                </div>
-                <h2 className="project-detail-title">{viewingProject.title}</h2>
-                <p className="project-detail-desc">{viewingProject.description}</p>
-                <div className="project-card-tags-row" style={{ marginTop: "1.2rem" }}>
-                  {(viewingProject.tags || []).map((t, idx) => (
-                    <span key={idx} className="project-tag-pill">{t}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="project-modal-actions" style={{ justifyContent: "space-between" }}>
-                <button
-                  type="button"
-                  className="project-delete-btn"
-                  onClick={() => handleDeleteProject(viewingProject.id)}
-                >
-                  Delete Project
-                </button>
-                <div style={{ display: "flex", gap: "0.75rem" }}>
+
+              {/* Body Card */}
+              <div className="delete-confirm-body-card">
+                <p className="delete-confirm-prompt">
+                  Are you sure you want to delete <strong className="delete-confirm-proj-title">"{projectToDelete.title}"</strong>? This will permanently remove the project and its lessons from your workspace.
+                </p>
+
+                <div className="delete-confirm-actions-row">
                   <button
                     type="button"
-                    className="project-status-toggle-btn"
-                    onClick={() => handleToggleProjectStatus(viewingProject.id)}
+                    className="delete-confirm-cancel-btn"
+                    onClick={() => setProjectToDelete(null)}
                   >
-                    {viewingProject.status === "completed" ? "Mark In Progress" : "Mark as Completed ✓"}
+                    Cancel
                   </button>
                   <button
                     type="button"
-                    className="new-project-primary-btn"
-                    onClick={() => setViewingProject(null)}
+                    className="delete-confirm-submit-btn"
+                    onClick={() => {
+                      const idToDelete = projectToDelete.id;
+                      setProjectToDelete(null);
+                      handleDeleteProject(idToDelete);
+                    }}
                   >
-                    Close
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      <line x1="10" y1="11" x2="10" y2="17" />
+                      <line x1="14" y1="11" x2="14" y2="17" />
+                    </svg>
+                    <span>Delete Project</span>
                   </button>
                 </div>
               </div>
+
             </div>
           </div>
         )}

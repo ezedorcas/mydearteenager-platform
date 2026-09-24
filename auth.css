@@ -1405,9 +1405,18 @@ h1, h2 { font-family: "Inter", sans-serif; }
   display: flex;
   align-items: center;
   gap: .5rem;
-  padding: 0 .6rem 2rem;
+  padding: 0 .4rem 1.6rem;
   text-decoration: none;
   font-size: 1.25rem;
+}
+
+.dashboard-logo-img {
+  width: 140px;
+  max-width: 100%;
+  height: auto;
+  max-height: 52px;
+  object-fit: contain;
+  display: block;
 }
 
 .dashboard-nav, .sidebar-bottom {
@@ -5477,6 +5486,11 @@ h1, h2 { font-family: "Inter", sans-serif; }
     justify-content: center;
     padding-left: 0;
     padding-right: 0;
+    padding-bottom: 1.2rem;
+  }
+  .dashboard-logo-img {
+    width: 44px;
+    max-height: 38px;
   }
   .brand-logo-text, .dashboard-nav a span, .sidebar-bottom a span, .sidebar-profile-card .profile-info, .sidebar-profile-card .profile-arrow {
     display: none;
@@ -8260,24 +8274,6 @@ h1, h2 { font-family: "Inter", sans-serif; }
   transform: translateY(-1px);
 }
 
-.projects-reset-btn {
-  background: #f1f5f9;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 0.6rem 0.95rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.projects-reset-btn:hover {
-  background: #fee2e2;
-  border-color: #fca5a5;
-  color: #dc2626;
-}
-
 /* 4 Stat Cards Grid */
 .projects-stats-grid {
   display: grid;
@@ -9013,7 +9009,7 @@ h1, h2 { font-family: "Inter", sans-serif; }
 
 .np-modal-outer-frame {
   width: 100%;
-  max-width: 530px;
+  max-width: 540px;
   background: #f3f4f6;
   border-radius: 18px;
   padding: 10px;
@@ -9212,7 +9208,7 @@ h1, h2 { font-family: "Inter", sans-serif; }
 .np-category-options-panel {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 10px;
+  gap: 8px 8px;
   margin-top: 12px;
   margin-bottom: 2px;
   animation: npCatFadeIn 0.18s ease-out;
@@ -9230,13 +9226,13 @@ h1, h2 { font-family: "Inter", sans-serif; }
 }
 
 .np-cat-option-btn {
-  background: #faf8f5;
-  border: 1.5px solid #e7e5e0;
-  border-radius: 12px;
-  padding: 7px 15px;
-  font-size: 0.84rem;
-  font-weight: 500;
-  color: #2d3748;
+  background: #ffffff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 6px 13px;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #1e293b;
   cursor: pointer;
   transition: all 0.18s ease;
   font-family: inherit;
@@ -9244,44 +9240,50 @@ h1, h2 { font-family: "Inter", sans-serif; }
 }
 
 .np-cat-option-btn:hover {
-  background: #f3f0ea;
-  border-color: #d8d4cd;
-  color: #1e1b4b;
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
 }
 
 .np-cat-option-btn.selected {
-  background: #6031c5;
-  border-color: #6031c5;
-  color: #ffffff;
+  background: #6031c5 !important;
+  border-color: #6031c5 !important;
+  color: #ffffff !important;
   font-weight: 600;
+  box-shadow: 0 2px 8px rgba(96, 49, 197, 0.35);
 }
 
 
 .np-field-textarea {
-  height: 80px;
-  min-height: 80px;
-  max-height: 80px;
+  height: 84px;
+  min-height: 84px;
   padding: 10px 14px;
   resize: none;
-  line-height: 1.45;
+  line-height: 1.5;
+  font-size: 0.88rem;
+  scrollbar-width: none;
+}
+
+.np-field-textarea::-webkit-scrollbar {
+  display: none;
 }
 
 .np-actions-row {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
-  margin-top: 4px;
+  margin-top: 10px;
 }
 
 .np-btn-cancel {
   flex: 1;
-  height: 42px;
-  background: #faf8f5;
-  border: 1.5px solid #e7e5e0;
+  height: 44px;
+  background: #ffffff;
+  border: 1.5px solid #e5e7eb;
   border-radius: 10px;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
-  color: #334155;
+  color: #475569;
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
@@ -9290,17 +9292,18 @@ h1, h2 { font-family: "Inter", sans-serif; }
 }
 
 .np-btn-cancel:hover {
-  background: #f3f0ea;
-  border-color: #d8d4cd;
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #1e293b;
 }
 
 .np-btn-submit {
-  flex: 1.25;
-  height: 42px;
+  flex: 1;
+  height: 44px;
   background: #af98e2;
   border: none;
   border-radius: 10px;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
   color: #ffffff;
   cursor: pointer;
@@ -9310,15 +9313,12 @@ h1, h2 { font-family: "Inter", sans-serif; }
   gap: 8px;
   box-shadow: 0 4px 12px rgba(175, 152, 226, 0.35);
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(175, 152, 226, 0.25);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0.9;
 }
 
 .np-btn-submit:hover {
-  background: #9e84d9;
-  box-shadow: 0 6px 16px rgba(175, 152, 226, 0.45);
   background: #a28ad6;
+  box-shadow: 0 6px 16px rgba(175, 152, 226, 0.45);
   opacity: 0.96;
 }
 
@@ -9342,4 +9342,508 @@ h1, h2 { font-family: "Inter", sans-serif; }
     padding: 16px 16px 14px;
   }
 }
+
+/* ============================================================
+   Opened Project View — matching Images/opened-project.png
+   ============================================================ */
+
+.opened-project-container {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.opened-project-hero-banner {
+  position: relative;
+  width: 100%;
+  height: 230px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.opened-project-hero-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+}
+
+.opened-project-hero-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.88) 0%, rgba(15, 23, 42, 0.45) 55%, transparent 100%);
+  z-index: 1;
+}
+
+.opened-project-hero-overlay {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.opened-project-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.opened-project-status-badge.completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.opened-project-status-badge.inprogress {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.opened-project-hero-title {
+  color: #ffffff;
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 8px 0 0 0;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+/* 2-Column Content Layout */
+.opened-project-grid-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+.opened-project-left-col,
+.opened-project-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.opened-project-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.opened-project-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.85rem 0;
+  letter-spacing: -0.01em;
+}
+
+.opened-project-card-subtitle {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #64748b;
+  margin: 0 0 1rem 0;
+}
+
+.opened-project-card-desc {
+  color: #64748b;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.opened-project-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1.25rem;
+}
+
+.opened-project-tag-pill {
+  background: #f1f0fb;
+  color: #6366f1;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 13px;
+  border-radius: 9999px;
+  line-height: 1;
+}
+
+/* Lessons Checklist */
+.opened-project-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.opened-project-check-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.opened-project-check-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #22c55e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.opened-project-check-label {
+  color: #1e293b;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+/* Project Details Rows */
+.opened-project-details-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.op-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0;
+}
+
+.op-detail-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.op-icon-badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.op-badge-orange {
+  background: #fff7ed;
+  color: #f97316;
+}
+
+.op-badge-green {
+  background: #f0fdf4;
+  color: #22c55e;
+}
+
+.op-badge-purple {
+  background: #faf5ff;
+  color: #a855f7;
+}
+
+.op-badge-indigo {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.op-detail-label {
+  color: #64748b;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.op-detail-val {
+  color: #1e293b;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+/* Linked Course Card */
+.op-linked-course-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.op-linked-course-name {
+  color: #1e293b;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+/* Action Buttons Stack */
+.opened-project-buttons-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.op-btn-primary {
+  height: 44px;
+  width: 100%;
+  background: #6031c5;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(96, 49, 197, 0.35);
+  transition: all 0.2s ease;
+}
+
+.op-btn-primary:hover {
+  background: #4f22a8;
+  box-shadow: 0 6px 18px rgba(96, 49, 197, 0.45);
+  transform: translateY(-1px);
+}
+
+.op-btn-secondary {
+  height: 44px;
+  width: 100%;
+  background: #ffffff;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.op-btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* Delete Project Destructive Button */
+.op-btn-danger {
+  height: 44px;
+  width: 100%;
+  background: #ffffff;
+  color: #e11d48;
+  border: 1.5px solid #fecdd3;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.op-btn-danger:hover {
+  background: #ffe4e6;
+  border-color: #fda4af;
+  color: #be123c;
+  transform: translateY(-1px);
+}
+
+.op-btn-danger svg {
+  stroke: currentColor;
+}
+
+.projects-breadcrumb-interactive {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.projects-breadcrumb-interactive:hover {
+  color: #6031c5;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .opened-project-grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .opened-project-hero-banner {
+    height: 180px;
+    padding: 1.25rem 1.25rem;
+  }
+  .opened-project-hero-title {
+    font-size: 1.4rem;
+  }
+  .opened-project-card {
+    padding: 1.25rem;
+  }
+}
+
+/* ============================================================
+   Delete Project Confirmation Modal
+   ============================================================ */
+
+.delete-confirm-modal-frame {
+  width: 100%;
+  max-width: 480px;
+  background: #f3f4f6;
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+  box-sizing: border-box;
+  animation: npModalPop 0.22s ease-out;
+}
+
+.delete-confirm-header-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.delete-confirm-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.delete-confirm-icon-box {
+  width: 44px;
+  height: 44px;
+  background: #fff1f2;
+  border: 1.5px solid #fecdd3;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.delete-confirm-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.delete-confirm-title-text {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.delete-confirm-subtitle-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #e11d48;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.delete-confirm-body-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 22px;
+  margin-top: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.delete-confirm-prompt {
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+.delete-confirm-proj-title {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.delete-confirm-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.delete-confirm-cancel-btn {
+  height: 42px;
+  padding: 0 20px;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-confirm-cancel-btn:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.delete-confirm-submit-btn {
+  height: 42px;
+  padding: 0 20px;
+  background: #e11d48;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
+  transition: all 0.2s ease;
+}
+
+.delete-confirm-submit-btn:hover {
+  background: #be123c;
+  box-shadow: 0 6px 18px rgba(225, 29, 72, 0.45);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .delete-confirm-modal-frame {
+    max-width: 100%;
+    padding: 8px;
+  }
+  .delete-confirm-actions-row {
+    flex-direction: column-reverse;
+  }
+  .delete-confirm-cancel-btn,
+  .delete-confirm-submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 

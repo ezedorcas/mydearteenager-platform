@@ -1,0 +1,26 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top Header Rounded Bar -->
+  <rect x="2.5" y="2.5" width="19" height="4.5" rx="2.25" fill="#3b82f6" />
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top Header Rounded Cap -->
+  <path d="M0.5 6.2C0.5 6.4 0.6 6.5 0.8 6.5H29.2C29.4 6.5 29.5 6.4 29.5 6.2V3.5C29.5 1.57 27.93 0 26 0H4C2.07 0 0.5 1.57 0.5 3.5V6.2Z" fill="#3b82f6" />
+  
+  <!-- Notepad Body with Smooth Diagonal Cut -->
+  <path d="M2.5 9C2.5 8.17 3.17 7.5 4 7.5H19.5C20.05 7.5 20.5 7.95 20.5 8.5V10.2C20.5 10.6 20.35 10.98 20.07 11.26L12.76 18.57C12.48 18.85 12.1 19 11.7 19H4C3.17 19 2.5 18.33 2.5 17.5V9Z" fill="#3b82f6" />
+  <!-- Notepad Body with Smooth 45-degree Cutout -->
+  <path d="M0 12C0 10.1 1.5 8.5 3.5 8.5H25.5C26 8.5 26.3 9.1 25.9 9.5L11.5 23.9C10.6 24.8 9.5 25.5 8.1 25.9C6 26.5 3.7 26.3 2.3 24.9C1.1 23.7 0.5 22.7 0.5 21.5V12Z" fill="#3b82f6" />
+  
+  <!-- 3 Neat Circular Indicator Dots -->
+  <circle cx="6.8" cy="11.8" r="1.15" fill="#ffffff" />
+  <circle cx="11.2" cy="11.8" r="1.15" fill="#ffffff" />
+  <circle cx="6.8" cy="15.5" r="1.15" fill="#ffffff" />
+  <!-- 3 Crisp Circular White Dots -->
+  <circle cx="8" cy="14" r="1.6" fill="#ffffff" />
+  <circle cx="14" cy="14" r="1.6" fill="#ffffff" />
+  <circle cx="8" cy="20" r="1.6" fill="#ffffff" />
+  
+  <!-- Diagonal Stylus / Pen with Rounded Ends -->
+  <path d="M12.2 21.6C11.7 21.9 11.1 21.7 10.8 21.2C10.5 20.7 10.7 20.1 11.2 19.8L18.6 12.4C19.1 11.9 19.9 11.9 20.4 12.4L21.4 13.4C21.9 13.9 21.9 14.7 21.4 15.2L14 22.6C13.5 23.1 12.7 23.1 12.2 22.6L12.2 21.6Z" fill="#3b82f6" />
+  <rect x="10.2" y="15.8" width="23.5" height="7.6" rx="3.8" transform="rotate(-45 22 19.6)" fill="#3b82f6" />
+</svg>
+
