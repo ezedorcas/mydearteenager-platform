@@ -1361,6 +1361,39 @@ const SHOWCASE_PROJECTS_TEMPLATES = [
   }
 ];
 
+// Calculate project status based on task progression:
+// - "draft": User has not completed the first step (!tasks[0]?.done)
+// - "in-progress": User has completed the first step (tasks[0]?.done) but not all steps
+// - "completed": User has completed all steps
+// - "submitted": Reserved for tutor review feature
+function getProjectStatus(project) {
+  if (!project) return { status: "draft", statusLabel: "Draft" };
+  const tasks = project.tasks;
+  if (Array.isArray(tasks) && tasks.length > 0) {
+    const doneCount = tasks.filter((t) => t && t.done).length;
+    const isFirstStepDone = Boolean(tasks[0] && tasks[0].done);
+    const isAllDone = doneCount === tasks.length;
+    if (isAllDone) {
+      return { status: "completed", statusLabel: "Completed" };
+    }
+    if (isFirstStepDone) {
+      return { status: "in-progress", statusLabel: "In Progress" };
+    }
+    return { status: "draft", statusLabel: "Draft" };
+  }
+  const rawStatus = project.status || "draft";
+  const label =
+    project.statusLabel ||
+    (rawStatus === "completed"
+      ? "Completed"
+      : rawStatus === "in-progress"
+      ? "In Progress"
+      : rawStatus === "submitted"
+      ? "Submitted"
+      : "Draft");
+  return { status: rawStatus, statusLabel: label };
+}
+
 // Calculate level progression where XP requirement increases as levels go higher
 // Level 1: 500 XP, Level 2: 750 XP, Level 3: 1,000 XP, Level 4: 1,250 XP, Level 5: 1,500 XP...
 function getLevelInfo(totalXp) {
@@ -1984,6 +2017,226 @@ function getPersonalizedRecommendations(selectedInterests = [], selectedGoals = 
   return scored.slice(0, 3);
 }
 
+// Dynamic AI Project Outline Generator for Claude, ChatGPT, and Gemini mentors
+// Generates tailored outlines based on project title, category, skills/tags, and linked course
+function generateAiProjectOutlines(title, category, tags = [], courseName = "") {
+  const normTitle = (title || "Personal Portfolio Design").trim();
+  const normCat = (category || "Design").trim();
+  const tagList = Array.isArray(tags) ? tags : String(tags).split(",").map((t) => t.trim()).filter(Boolean);
+  const primaryTag = tagList[0] || (normCat === "Design" ? "UI/UX" : normCat);
+  const secondaryTag = tagList[1] || (normCat === "Design" ? "layout" : "fundamentals");
+
+  // Exact reproduction for Personal Portfolio Design sample project
+  const isSamplePortfolio = /portfolio/i.test(normTitle) && (/design/i.test(normCat) || /personal/i.test(normTitle));
+
+  const catVerbMap = {
+    Design: {
+      research1: `Define the goal and audience for ${normTitle}`,
+      research2: `Gather references and ${primaryTag} Inspirations`,
+      build1: `Sketch a rough plan or wireframe`,
+      build2: `Build the first draft using ${secondaryTag}`,
+      review1: `Get Feedback from a mentor or peer`,
+      review2: `Revise, Polish and Publish`,
+      fast1: `Build a quick prototype for your personal portfolio project`,
+      fast2: `Fix the biggest ${primaryTag} issues`,
+      fast3: `Add finishing touches with ${secondaryTag}`,
+      fastReview: `Share and collect Feedback`,
+      explore1: `Find 5 standout design examples`,
+      explore2: `Note how each one uses ${primaryTag}`,
+      explorePitch: `Write a one line pitch for your angle`,
+      exploreBuild: `Build ${normTitle}- Version 1`,
+      exploreRefine: `Compare with your examples and refine`
+    },
+    "Web-Development": {
+      research1: `Define technical specs & architecture for ${normTitle}`,
+      research2: `Gather API documentation and ${primaryTag} references`,
+      build1: `Scaffold core folder structure & routes`,
+      build2: `Build working UI components using ${secondaryTag}`,
+      review1: `Run responsive tests & code review with a mentor`,
+      review2: `Deploy live build and verify cross-browser performance`,
+      fast1: `Build a fast interactive prototype for ${normTitle}`,
+      fast2: `Fix responsive layout & ${primaryTag} bugs`,
+      fast3: `Add finishing touches with ${secondaryTag}`,
+      fastReview: `Deploy demo link and collect peer feedback`,
+      explore1: `Find 5 standout web projects in this niche`,
+      explore2: `Analyze how each one implements ${primaryTag}`,
+      explorePitch: `Draft a 1-sentence technical elevator pitch`,
+      exploreBuild: `Build ${normTitle} - Alpha Release`,
+      exploreRefine: `Compare against live benchmarks and optimize`
+    },
+    Marketing: {
+      research1: `Define target persona & core value for ${normTitle}`,
+      research2: `Research high-converting ${primaryTag} campaigns`,
+      build1: `Draft campaign funnel & key messaging framework`,
+      build2: `Produce promotional creatives using ${secondaryTag}`,
+      review1: `Review copy & conversion triggers with a mentor`,
+      review2: `Launch live campaign & audit analytics`,
+      fast1: `Draft rapid campaign MVP for ${normTitle}`,
+      fast2: `Fix the biggest conversion & ${primaryTag} leaks`,
+      fast3: `Optimize ad headlines using ${secondaryTag}`,
+      fastReview: `Publish test campaign and gather response data`,
+      explore1: `Find 5 viral case studies in modern marketing`,
+      explore2: `Examine how each one leverages ${primaryTag}`,
+      explorePitch: `Write a compelling 1-line promotional angle`,
+      exploreBuild: `Launch ${normTitle} - Initial Campaign`,
+      exploreRefine: `Benchmark engagement against competitors & refine`
+    },
+    Business: {
+      research1: `Map customer segments & problem space for ${normTitle}`,
+      research2: `Study unit economics & ${primaryTag} strategies`,
+      build1: `Draft lean canvas & revenue roadmap`,
+      build2: `Build operational plan utilizing ${secondaryTag}`,
+      review1: `Present pitch deck to advisors or mentors`,
+      review2: `Refine financial model & finalize strategy`,
+      fast1: `Create a lean 1-page business plan for ${normTitle}`,
+      fast2: `Identify and fix ${primaryTag} friction points`,
+      fast3: `Streamline workflow using ${secondaryTag}`,
+      fastReview: `Interview prospective users for validation`,
+      explore1: `Analyze 5 industry-leading business models`,
+      explore2: `Identify how each company monetizes ${primaryTag}`,
+      explorePitch: `Summarize the core value proposition in 1 line`,
+      exploreBuild: `Formulate ${normTitle} - Executive Strategy`,
+      exploreRefine: `Validate against industry metrics and adjust`
+    },
+    "Data Analysis": {
+      research1: `Define research questions & key hypotheses for ${normTitle}`,
+      research2: `Gather raw dataset & inspect ${primaryTag} metrics`,
+      build1: `Clean data pipeline & compute exploratory statistics`,
+      build2: `Build interactive visualizations using ${secondaryTag}`,
+      review1: `Validate statistical validity with a mentor`,
+      review2: `Publish executive insights report`,
+      fast1: `Generate quick summary dashboard for ${normTitle}`,
+      fast2: `Resolve missing values & ${primaryTag} anomalies`,
+      fast3: `Format presentation charts using ${secondaryTag}`,
+      fastReview: `Present preliminary insights for peer feedback`,
+      explore1: `Find 5 benchmark data dashboards in this domain`,
+      explore2: `Deconstruct how each models ${primaryTag}`,
+      explorePitch: `Draft a 1-line thesis on the data story`,
+      exploreBuild: `Build ${normTitle} - Version 1`,
+      exploreRefine: `Cross-reference with reference dashboards & refine`
+    },
+    "Cyber Security": {
+      research1: `Define threat model & attack surface for ${normTitle}`,
+      research2: `Gather CVE vulnerability data in ${primaryTag}`,
+      build1: `Design security policy & defensive perimeter`,
+      build2: `Configure security rules utilizing ${secondaryTag}`,
+      review1: `Perform automated vulnerability assessment`,
+      review2: `Document compliance & audit findings`,
+      fast1: `Run immediate baseline security scan for ${normTitle}`,
+      fast2: `Patch highest-risk ${primaryTag} exposures`,
+      fast3: `Harden access controls using ${secondaryTag}`,
+      fastReview: `Verify protection with regression scan`,
+      explore1: `Study 5 landmark security breach reports`,
+      explore2: `Examine defense mechanisms against ${primaryTag}`,
+      explorePitch: `State primary defense objective in 1 line`,
+      exploreBuild: `Deploy ${normTitle} - Defensive Profile`,
+      exploreRefine: `Compare against CIS benchmarks and harden`
+    }
+  };
+
+  const fallbackMap = {
+    research1: `Define scope and objectives for ${normTitle}`,
+    research2: `Gather references and ${primaryTag} inspirations`,
+    build1: `Sketch a rough plan and outline milestones`,
+    build2: `Build the first working draft using ${secondaryTag}`,
+    review1: `Get feedback from a mentor or peer`,
+    review2: `Revise, polish and finalize deliverables`,
+    fast1: `Build a quick prototype for ${normTitle}`,
+    fast2: `Fix the biggest ${primaryTag} issues`,
+    fast3: `Add finishing touches with ${secondaryTag}`,
+    fastReview: `Share and collect feedback`,
+    explore1: `Find 5 standout examples in ${normCat}`,
+    explore2: `Note how each one uses ${primaryTag}`,
+    explorePitch: `Write a one-line pitch for your angle`,
+    exploreBuild: `Build ${normTitle} - Version 1`,
+    exploreRefine: `Compare with benchmark examples and refine`
+  };
+
+  const t = isSamplePortfolio ? catVerbMap.Design : (catVerbMap[normCat] || fallbackMap);
+
+  const model1Plan = {
+    key: "model1",
+    name: "AI Model 1",
+    subtitle: "Structured mentor",
+    tagline: "Plan carefully, build in deliberate milestones, and finish with a polished review.",
+    stats: "6 tasks · ~2 weeks",
+    totalTime: "6.3hrs total",
+    xp: 140,
+    segments: [
+      { color: "#3b82f6", flex: 1 },
+      { color: "#3b82f6", flex: 1 },
+      { color: "#7c3aed", flex: 1.5 },
+      { color: "#7c3aed", flex: 2 },
+      { color: "#10b981", flex: 1 },
+      { color: "#10b981", flex: 1 }
+    ],
+    tasks: [
+      { num: "01", phase: "Research", phaseLabel: "01 · Research", title: t.research1, duration: "30 mins", type: "research" },
+      { num: "02", phase: "Research", phaseLabel: "02 · Research", title: t.research2, duration: "45 mins", type: "research" },
+      { num: "03", phase: "Build", phaseLabel: "03 · Build", title: t.build1, duration: "1 hour", type: "build" },
+      { num: "04", phase: "Build", phaseLabel: "04 · Build", title: t.build2, duration: "2 hours", type: "build" },
+      { num: "05", phase: "Review", phaseLabel: "05 · Review", title: t.review1, duration: "30 mins", type: "review" },
+      { num: "06", phase: "Review", phaseLabel: "06 · Review", title: t.review2, duration: "30 mins", type: "review" }
+    ]
+  };
+
+  const model2Plan = {
+    key: "model2",
+    name: "AI Model 2",
+    subtitle: "Fast-track builder",
+    tagline: "Ship a rough version fast, then improve it based on what you learn as you go",
+    stats: "4 tasks · ~1 week",
+    totalTime: "4hrs total",
+    xp: 100,
+    segments: [
+      { color: "#7c3aed", flex: 2 },
+      { color: "#7c3aed", flex: 1.5 },
+      { color: "#7c3aed", flex: 1.5 },
+      { color: "#10b981", flex: 1 }
+    ],
+    tasks: [
+      { num: "01", phase: "Build", phaseLabel: "01 · Build", title: t.fast1, duration: "1.5 hours", type: "build" },
+      { num: "02", phase: "Build", phaseLabel: "02 · Build", title: t.fast2, duration: "1 hour", type: "build" },
+      { num: "03", phase: "Build", phaseLabel: "03 · Build", title: t.fast3, duration: "1 hour", type: "build" },
+      { num: "04", phase: "Review", phaseLabel: "04 · Review", title: t.fastReview, duration: "30 mins", type: "review" }
+    ]
+  };
+
+  const model3Plan = {
+    key: "model3",
+    name: "AI Model 3",
+    subtitle: "Research Explorer",
+    tagline: "Study what already works and put your own spin on it",
+    stats: "5 tasks · ~10 days",
+    totalTime: "4.8hrs total",
+    xp: 120,
+    segments: [
+      { color: "#3b82f6", flex: 1.2 },
+      { color: "#3b82f6", flex: 1 },
+      { color: "#10b981", flex: 0.8 },
+      { color: "#7c3aed", flex: 2.2 },
+      { color: "#10b981", flex: 1.2 }
+    ],
+    tasks: [
+      { num: "01", phase: "Research", phaseLabel: "01 · Research", title: t.explore1, duration: "45 mins", type: "research" },
+      { num: "02", phase: "Research", phaseLabel: "02 · Research", title: t.explore2, duration: "30 mins", type: "research" },
+      { num: "03", phase: "Review", phaseLabel: "03 · Review", title: t.explorePitch, duration: "20 mins", type: "review" },
+      { num: "04", phase: "Build", phaseLabel: "04 · Build", title: t.exploreBuild, duration: "2.5 hours", type: "build" },
+      { num: "05", phase: "Review", phaseLabel: "05 · Review", title: t.exploreRefine, duration: "45 mins", type: "review" }
+    ]
+  };
+
+  return {
+    model1: model1Plan,
+    model2: model2Plan,
+    model3: model3Plan,
+    // Aliases for backward compatibility
+    claude: model1Plan,
+    chatgpt: model2Plan,
+    gemini: model3Plan
+  };
+}
+
 function AuthPage() {
   const [account, setAccount] = useState(() => {
     const stored = readStorage(ACCOUNT_KEY, null);
@@ -2299,9 +2552,19 @@ function AuthPage() {
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [viewingProject, setViewingProject] = useState(null);
+  const [isWorkspaceOpen, setIsWorkspaceOpen] = useState(false);
+  const [workspaceActiveTaskIndex, setWorkspaceActiveTaskIndex] = useState(0);
+  const [submissionFormat, setSubmissionFormat] = useState("screenshot"); // "screenshot" | "link" | "pdf" | "reflection"
+  const [proofFile, setProofFile] = useState(null);
+  const [proofLink, setProofLink] = useState("");
+  const [proofCaption, setProofCaption] = useState("");
+  const [proofReflection, setProofReflection] = useState("");
   const [isEditProjectOpen, setIsEditProjectOpen] = useState(false);
   const [isEditCategoryOpen, setIsEditCategoryOpen] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
+  const [isProjectOutlineOpen, setIsProjectOutlineOpen] = useState(false);
+  const [selectedOutlineMentor, setSelectedOutlineMentor] = useState("model1");
+  const [pendingProjectData, setPendingProjectData] = useState(null);
   const [editProjectForm, setEditProjectForm] = useState({
     id: "",
     title: "",
@@ -2580,17 +2843,19 @@ function AuthPage() {
 
   // Close modals with Escape key
   useEffect(() => {
-    if (!projectToDelete && !isEditProjectOpen && !isCreateProjectOpen) return;
+    if (!projectToDelete && !isEditProjectOpen && !isCreateProjectOpen && !isProjectOutlineOpen && !isWorkspaceOpen) return;
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         if (projectToDelete) setProjectToDelete(null);
         if (isEditProjectOpen) setIsEditProjectOpen(false);
         if (isCreateProjectOpen) setIsCreateProjectOpen(false);
+        if (isProjectOutlineOpen) setIsProjectOutlineOpen(false);
+        if (isWorkspaceOpen) setIsWorkspaceOpen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [projectToDelete, isEditProjectOpen, isCreateProjectOpen]);
+  }, [projectToDelete, isEditProjectOpen, isCreateProjectOpen, isProjectOutlineOpen, isWorkspaceOpen]);
 
   function updateForm(event) {
     const { name, value, type, checked } = event.target;
@@ -2935,35 +3200,85 @@ function AuthPage() {
 
     const chosenImage = categoryCoverImages[catVal] || categoryCoverImages.Design;
 
-    const created = {
-      id: "proj-" + Date.now(),
+    // Find linked course matching category or tags
+    const linkedCourseObj = (coursesList || []).find(
+      (c) => c.category === catVal || (c.tags && c.tags.some((t) => tagsArray.includes(t)))
+    ) || (coursesList && coursesList[0]);
+
+    const pendingData = {
       title: cleanTitle,
       category: catVal,
       description: descVal,
       tags: tagsArray.length > 0 ? tagsArray : ["Creative", catVal],
-      status: "in-progress",
-      statusLabel: "In Progress",
-      xp: 60,
-      updatedDate: "Updated Just now",
       image: chosenImage,
-      featured: projects.length === 0
+      linkedCourse: linkedCourseObj ? linkedCourseObj.title : `${catVal} Fundamentals`
+    };
+
+    setPendingProjectData(pendingData);
+    setIsCreateProjectOpen(false);
+    setSelectedOutlineMentor("model1");
+    setIsProjectOutlineOpen(true);
+  }
+
+  function handleOutlineEditDetails() {
+    setIsProjectOutlineOpen(false);
+    setIsCreateProjectOpen(true);
+  }
+
+  function handleConfirmCreateProjectWithOutline() {
+    if (!pendingProjectData) return;
+    const mentorKey = selectedOutlineMentor || "model1";
+    const outlines = generateAiProjectOutlines(
+      pendingProjectData.title,
+      pendingProjectData.category,
+      pendingProjectData.tags,
+      pendingProjectData.linkedCourse
+    );
+    const chosenMentorPlan = outlines[mentorKey] || outlines.model1;
+
+    const created = {
+      id: "proj-" + Date.now(),
+      title: pendingProjectData.title,
+      category: pendingProjectData.category,
+      description: pendingProjectData.description,
+      tags: pendingProjectData.tags,
+      status: "draft",
+      statusLabel: "Draft",
+      xp: chosenMentorPlan.xp || 120,
+      updatedDate: "Updated Just now",
+      image: pendingProjectData.image,
+      featured: projects.length === 0,
+      mentor: mentorKey,
+      mentorName: chosenMentorPlan.name,
+      mentorSubtitle: chosenMentorPlan.subtitle,
+      linkedCourse: pendingProjectData.linkedCourse,
+      tasks: chosenMentorPlan.tasks.map((t) => ({
+        title: t.title,
+        phase: t.phase,
+        phaseLabel: t.phaseLabel,
+        duration: t.duration,
+        type: t.type,
+        done: false
+      }))
     };
 
     const nextProjects = [created, ...projects];
     setProjects(nextProjects);
     persistUserProgress({ projects: nextProjects });
-    setIsCreateProjectOpen(false);
+    setIsProjectOutlineOpen(false);
+    setPendingProjectData(null);
     setNewProjectForm({
       title: "",
       category: "",
       description: "",
       tags: "",
-      status: "in-progress",
+      status: "draft",
       xp: 50,
       image: ""
     });
-    setNotice(`Project "${created.title}" created successfully!`);
+    setNotice(`Project "${created.title}" created with ${chosenMentorPlan.name} outline!`);
     setTimeout(() => setNotice(""), 3500);
+    setViewingProject(created);
   }
 
   function handleClearProjectsToZero() {
@@ -3071,6 +3386,133 @@ function AuthPage() {
       setNotice(current.inPortfolio ? "Added to Portfolio! 🎉" : "Removed from Portfolio.");
       setTimeout(() => setNotice(""), 3000);
     }
+  }
+
+  function handleOpenWorkspace(initialTaskIndex) {
+    if (!viewingProject) return;
+    const currentTasks = (viewingProject.tasks && viewingProject.tasks.length > 0)
+      ? viewingProject.tasks
+      : [];
+
+    const firstUndone = currentTasks.findIndex((t) => !t.done);
+    const safeTarget = firstUndone !== -1 ? firstUndone : 0;
+
+    if (typeof initialTaskIndex === "number" && initialTaskIndex >= 0 && initialTaskIndex < currentTasks.length) {
+      const isUnlocked = initialTaskIndex === 0 || currentTasks.slice(0, initialTaskIndex).every((t) => t.done);
+      if (isUnlocked) {
+        setWorkspaceActiveTaskIndex(initialTaskIndex);
+      } else {
+        const prevTask = currentTasks[initialTaskIndex - 1];
+        setNotice(`🔒 Step ${String(initialTaskIndex + 1).padStart(2, "0")} is locked! Complete "${prevTask?.title || `Step ${initialTaskIndex}`}" first.`);
+        setTimeout(() => setNotice(""), 3500);
+        setWorkspaceActiveTaskIndex(safeTarget);
+      }
+    } else {
+      setWorkspaceActiveTaskIndex(safeTarget);
+    }
+    setIsWorkspaceOpen(true);
+  }
+
+  function handleSubmitProof(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (!viewingProject) return;
+
+    // Validation: cannot submit if no file / proof provided
+    if (submissionFormat === "screenshot" || submissionFormat === "pdf") {
+      if (!proofFile) {
+        setNotice(
+          submissionFormat === "screenshot"
+            ? "⚠️ Please upload or drop a screenshot of your work before submitting."
+            : "⚠️ Please upload or drop a PDF file before submitting."
+        );
+        setTimeout(() => setNotice(""), 3500);
+        return;
+      }
+    } else if (submissionFormat === "link") {
+      if (!proofLink || !proofLink.trim()) {
+        setNotice("⚠️ Please enter a link to your work before submitting.");
+        setTimeout(() => setNotice(""), 3500);
+        return;
+      }
+    } else if (submissionFormat === "reflection") {
+      if (!proofReflection || !proofReflection.trim()) {
+        setNotice("⚠️ Please write a brief reflection on your work before submitting.");
+        setTimeout(() => setNotice(""), 3500);
+        return;
+      }
+    }
+
+    const currentTasks = (viewingProject.tasks && viewingProject.tasks.length > 0)
+      ? viewingProject.tasks.map((t, idx) => {
+          if (typeof t === "string") {
+            return {
+              title: t,
+              phase: String(idx + 1).padStart(2, "0"),
+              phaseLabel: idx === 0 ? "Research" : idx === 1 ? "Build" : "Review",
+              duration: "45 mins",
+              type: idx === 0 ? "research" : idx === 1 ? "build" : "review",
+              done: false
+            };
+          }
+          return { ...t };
+        })
+      : [];
+
+    const taskIdx = workspaceActiveTaskIndex;
+    if (taskIdx < 0 || taskIdx >= currentTasks.length) return;
+
+    const activeTask = currentTasks[taskIdx];
+
+    const updatedTasks = currentTasks.map((t, idx) => {
+      if (idx === taskIdx) {
+        return {
+          ...t,
+          done: true,
+          submission: {
+            format: submissionFormat,
+            caption: proofCaption || "",
+            link: proofLink || "",
+            reflection: proofReflection || "",
+            fileName: proofFile ? proofFile.name : null,
+            submittedAt: new Date().toISOString()
+          }
+        };
+      }
+      return t;
+    });
+
+    const statusInfo = getProjectStatus({ ...viewingProject, tasks: updatedTasks });
+
+    const updatedProj = {
+      ...viewingProject,
+      tasks: updatedTasks,
+      status: statusInfo.status,
+      statusLabel: statusInfo.statusLabel,
+      updatedDate: "Updated Just now"
+    };
+
+    setViewingProject(updatedProj);
+    const nextProjects = projects.map((p) => (p.id === updatedProj.id ? updatedProj : p));
+    setProjects(nextProjects);
+    persistUserProgress({ projects: nextProjects });
+
+    // Advance to next uncompleted task if available
+    const nextUndoneIndex = updatedTasks.findIndex((t, idx) => idx > taskIdx && !t.done);
+    if (nextUndoneIndex !== -1) {
+      setWorkspaceActiveTaskIndex(nextUndoneIndex);
+    }
+
+    setProofFile(null);
+    setProofLink("");
+    setProofCaption("");
+    setProofReflection("");
+
+    if (statusInfo.status === "completed") {
+      setNotice(`Proof submitted for Step ${taskIdx + 1}! All steps completed — Project is now Completed! 🎉🏆`);
+    } else {
+      setNotice(`Proof submitted for Step ${taskIdx + 1} (${activeTask.title})! Project is now In Progress. 🚀`);
+    }
+    setTimeout(() => setNotice(""), 3500);
   }
 
  
@@ -3297,21 +3739,25 @@ function AuthPage() {
 
   // Dynamic stats calculated from projects (all start at 0 when projects is empty)
   const totalProjectsCount = projects.length;
-  const completedProjectsCount = projects.filter((p) => p.status === "completed").length;
-  const inProgressProjectsCount = projects.filter((p) => p.status === "in-progress").length;
-  const draftProjectsCount = projects.filter((p) => p.status === "draft").length;
-  const submittedProjectsCount = projects.filter((p) => p.status === "submitted").length;
+  const completedProjectsCount = projects.filter((p) => getProjectStatus(p).status === "completed").length;
+  const inProgressProjectsCount = projects.filter((p) => getProjectStatus(p).status === "in-progress").length;
+  const draftProjectsCount = projects.filter((p) => getProjectStatus(p).status === "draft").length;
+  const submittedProjectsCount = projects.filter((p) => getProjectStatus(p).status === "submitted").length;
   const xpFromProjectsCount = projects.reduce((sum, p) => sum + (p.xp || 0), 0);
 
   const filteredProjects = projects.filter((p) => {
-    if (projectFilterTab === "in-progress") return p.status === "in-progress";
-    if (projectFilterTab === "drafts") return p.status === "draft";
-    if (projectFilterTab === "completed") return p.status === "completed";
-    if (projectFilterTab === "submitted") return p.status === "submitted";
+    const pStatus = getProjectStatus(p).status;
+    if (projectFilterTab === "in-progress") return pStatus === "in-progress";
+    if (projectFilterTab === "drafts") return pStatus === "draft";
+    if (projectFilterTab === "completed") return pStatus === "completed";
+    if (projectFilterTab === "submitted") return pStatus === "submitted";
     return true; // "all"
   });
 
-  const featuredProject = projects.find((p) => p.featured) || projects.find((p) => p.status === "in-progress") || projects[0];
+  const featuredProject =
+    projects.find((p) => p.featured) ||
+    projects.find((p) => getProjectStatus(p).status === "in-progress") ||
+    projects[0];
 
   // Turns "Create New Project" button from light purple to sharp purple upon filling all required fields
   const isCreateProjectFormReady = Boolean(
@@ -4970,9 +5416,24 @@ function AuthPage() {
                       }}
                     />
                     <div className="opened-project-hero-overlay">
-                      <span className={`opened-project-status-badge ${viewingProject.status === "completed" ? "completed" : "inprogress"}`}>
-                        {viewingProject.status === "completed" ? "✦ Completed" : "● In Progress"}
-                      </span>
+                      {(() => {
+                        const currentStatusInfo = getProjectStatus(viewingProject);
+                        const statusClass =
+                          currentStatusInfo.status === "completed"
+                            ? "completed"
+                            : currentStatusInfo.status === "in-progress"
+                            ? "inprogress"
+                            : "draft";
+                        return (
+                          <span className={`opened-project-status-badge ${statusClass}`}>
+                            {currentStatusInfo.status === "completed"
+                              ? "✦ Completed"
+                              : currentStatusInfo.status === "in-progress"
+                              ? "● In Progress"
+                              : "• Draft"}
+                          </span>
+                        );
+                      })()}
                       <h1 className="opened-project-hero-title">{viewingProject.title}</h1>
                     </div>
                   </div>
@@ -4997,32 +5458,225 @@ function AuthPage() {
                         </div>
                       </div>
 
-                      {/* Card 2: Lessons */}
-                      <div className="opened-project-card opened-project-lessons-card">
-                        <h4 className="opened-project-card-subtitle">Lessons</h4>
-                        <div className="opened-project-checklist">
-                          {[
-                            "Plan & research",
-                            "First draft / prototype",
-                            "Feedback & revisions",
-                            "Final submission"
-                          ].map((lessonTitle, lIdx) => (
-                            <div key={lIdx} className="opened-project-check-item">
-                              <span className="opened-project-check-circle">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                  <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                              </span>
-                              <span className="opened-project-check-label">{lessonTitle}</span>
+                      {/* Card 2: Project Outline (Matching Images/project-marker.png) */}
+                      {(() => {
+                        const projectTasks = (viewingProject.tasks && viewingProject.tasks.length > 0)
+                          ? viewingProject.tasks.map((t, idx) => {
+                              if (typeof t === "string") {
+                                return {
+                                  title: t,
+                                  phase: String(idx + 1).padStart(2, "0"),
+                                  phaseLabel: idx === 0 ? "Research" : idx === 1 ? "Build" : "Review",
+                                  duration: "45 mins",
+                                  type: idx === 0 ? "research" : idx === 1 ? "build" : "review",
+                                  done: false
+                                };
+                              }
+                              return t;
+                            })
+                          : [
+                              { title: "Plan & research", phase: "01", phaseLabel: "Research", duration: "45 mins", type: "research", done: false },
+                              { title: "First draft / prototype", phase: "02", phaseLabel: "Build", duration: "1.5 hours", type: "build", done: false },
+                              { title: "Feedback & revisions", phase: "03", phaseLabel: "Review", duration: "45 mins", type: "review", done: false },
+                              { title: "Final submission", phase: "04", phaseLabel: "Review", duration: "30 mins", type: "review", done: false }
+                            ];
+
+                        const totalTasks = projectTasks.length;
+                        const doneTasks = projectTasks.filter((t) => t.done).length;
+                        const completionPct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+                        const totalXp = viewingProject.xp || 100;
+                        const earnedXp = Math.round((completionPct / 100) * totalXp);
+
+                        // Calculate remaining time
+                        let remainingMinutes = 0;
+                        projectTasks.filter((t) => !t.done).forEach((t) => {
+                          const dur = String(t.duration || "");
+                          const hourMatch = dur.match(/([\d.]+)\s*hour/i);
+                          const minMatch = dur.match(/(\d+)\s*min/i);
+                          if (hourMatch) remainingMinutes += parseFloat(hourMatch[1]) * 60;
+                          else if (minMatch) remainingMinutes += parseInt(minMatch[1], 10);
+                          else remainingMinutes += 45;
+                        });
+                        const remainingHoursFormatted = remainingMinutes > 0
+                          ? (remainingMinutes / 60).toFixed(1).replace(/\.0$/, "") + "hrs to go"
+                          : "All tasks done!";
+
+                        // First uncompleted task is active/highlighted
+                        const activeTaskIndex = projectTasks.findIndex((t) => !t.done);
+                        const mentorDisplay = viewingProject.mentorName || "AI Model 1";
+
+                        return (
+                          <div className="opened-project-card op-outline-card">
+                            {/* Outline Header */}
+                            <div className="op-outline-header">
+                              <div className="op-outline-header-left">
+                                {/* Circular Progress Indicator */}
+                                <div className="op-progress-circle-wrap">
+                                  <svg className="op-progress-circle-svg" viewBox="0 0 44 44">
+                                    <circle className="op-progress-circle-bg" cx="22" cy="22" r="18" />
+                                    <circle
+                                      className="op-progress-circle-fill"
+                                      cx="22"
+                                      cy="22"
+                                      r="18"
+                                      strokeDasharray={2 * Math.PI * 18}
+                                      strokeDashoffset={(2 * Math.PI * 18) * (1 - completionPct / 100)}
+                                    />
+                                  </svg>
+                                  <span className="op-progress-circle-text">{completionPct}%</span>
+                                </div>
+
+                                {/* Title & Mentor Badge */}
+                                <div className="op-outline-title-col">
+                                  <div className="op-outline-title-row">
+                                    <h3 className="op-outline-title">Project Outline</h3>
+                                    <span className="op-outline-mentor-badge">
+                                      <span className="op-sparkle">✦</span> Outlined by {mentorDisplay}
+                                    </span>
+                                  </div>
+                                  <div className="op-outline-subtitle">
+                                    {doneTasks} of {totalTasks} tasks done
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* XP Indicator */}
+                              <div className="op-outline-xp-wrap">
+                                <div className="op-outline-xp-val">+{earnedXp}</div>
+                                <div className="op-outline-xp-sub">of {totalXp}XP</div>
+                              </div>
                             </div>
-                          ))}
-                        </div>
-                      </div>
+
+                            <div className="op-outline-divider" />
+
+                            {/* Tasks List */}
+                            <div className="op-outline-tasks-list">
+                              {projectTasks.map((task, tIdx) => {
+                                const isUnlocked = tIdx === 0 || projectTasks.slice(0, tIdx).every((t) => t.done);
+                                const isLocked = !isUnlocked;
+                                const isActive = tIdx === activeTaskIndex;
+                                const isDone = !!task.done;
+                                return (
+                                  <div
+                                    key={tIdx}
+                                    className={`op-task-row ${isActive ? "active" : ""} ${isDone ? "completed" : ""} ${isLocked ? "locked" : ""}`}
+                                    onClick={() => {
+                                      if (isLocked) {
+                                        const prevTask = projectTasks[tIdx - 1];
+                                        setNotice(`🔒 Step ${String(tIdx + 1).padStart(2, "0")} is locked! Complete "${prevTask?.title || `Step ${tIdx}`}" first.`);
+                                        setTimeout(() => setNotice(""), 3500);
+                                        return;
+                                      }
+                                      handleOpenWorkspace(tIdx);
+                                    }}
+                                    title={
+                                      isDone
+                                        ? `Task ${tIdx + 1} completed via submission`
+                                        : isLocked
+                                        ? `Locked: Complete step ${tIdx} first to unlock`
+                                        : `Click to open workspace and complete Task ${tIdx + 1}`
+                                    }
+                                  >
+                                    <div className="op-task-left">
+                                      {/* Radio / Check circle (Auto-marked on submission / Locked indicator) */}
+                                      <span
+                                        className={`op-task-radio ${isDone ? "checked" : ""} ${isLocked ? "locked" : ""}`}
+                                        title={isDone ? "Completed via submission" : isLocked ? "Locked until previous task is completed" : "Ready to start"}
+                                      >
+                                        {isDone ? (
+                                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                            <polyline points="20 6 9 17 4 12" />
+                                          </svg>
+                                        ) : isLocked ? (
+                                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                          </svg>
+                                        ) : null}
+                                      </span>
+
+                                      {/* Task Details */}
+                                      <div className="op-task-info">
+                                        <div className={`op-task-title ${isDone ? "strikethrough" : ""} ${isLocked ? "locked" : ""}`}>
+                                          {task.title}
+                                        </div>
+                                        <div className="op-task-meta-row">
+                                          <span className={`op-task-phase-tag phase-${task.type || "research"} ${isLocked ? "locked" : ""}`}>
+                                            {task.num || String(tIdx + 1).padStart(2, "0")} · {task.phase || (task.type === "research" ? "Research" : task.type === "build" ? "Build" : "Review")}
+                                          </span>
+                                          {isLocked && (
+                                            <span className="op-task-locked-badge">
+                                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                              </svg>
+                                              <span>Locked</span>
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Note: "Submit P" design button deliberately removed as requested by user ("remove that design of submit p") */}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {/* Card 3: Project stages (Matching Images/project-marker.png) */}
+                      {(() => {
+                        const projectTasks = (viewingProject.tasks && viewingProject.tasks.length > 0)
+                          ? viewingProject.tasks
+                          : [];
+                        const totalTasks = projectTasks.length;
+                        const doneTasks = projectTasks.filter((t) => t.done).length;
+                        const completionPct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+
+                        const stages = [
+                          { id: 1, title: "Plan & research", isDone: true }, // Default completed once outline is initiated, matching project-marker.png
+                          { id: 2, title: "First draft / prototype", isDone: doneTasks >= 2 || completionPct >= 40 },
+                          { id: 3, title: "Feedback & revisions", isDone: (doneTasks >= 3 && doneTasks >= Math.ceil(totalTasks * 0.75)) || completionPct >= 75 },
+                          { id: 4, title: "Final submission", isDone: doneTasks === totalTasks && totalTasks > 0 }
+                        ];
+
+                        return (
+                          <div className="opened-project-card op-stages-card">
+                            <h4 className="op-stages-title">Project stages</h4>
+                            <div className="op-stages-timeline">
+                              {stages.map((stage, sIdx) => {
+                                const isLast = sIdx === stages.length - 1;
+                                return (
+                                  <div key={stage.id} className="op-stage-item">
+                                    <div className="op-stage-node-col">
+                                      <span className={`op-stage-circle ${stage.isDone ? "done" : ""}`}>
+                                        {stage.isDone ? (
+                                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                            <polyline points="20 6 9 17 4 12" />
+                                          </svg>
+                                        ) : null}
+                                      </span>
+                                      {!isLast && <div className={`op-stage-line ${stage.isDone ? "done" : ""}`} />}
+                                    </div>
+                                    <div className="op-stage-label-col">
+                                      <span className={`op-stage-label ${stage.isDone ? "done" : ""}`}>
+                                        {stage.title}
+                                      </span>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })()}
                     </div>
 
-                    {/* Right Column (Project Details + Linked Course + Buttons) */}
+                    {/* Right Column (Project Details + Linked Course + Open Workspace + Buttons) */}
                     <div className="opened-project-right-col">
-                      {/* Card 1: Project Details */}
+                      {/* Card 1: Project Details (Matching Images/project-marker.png) */}
                       <div className="opened-project-card">
                         <h3 className="opened-project-card-title">Project Details</h3>
                         <div className="opened-project-details-rows">
@@ -5089,18 +5743,35 @@ function AuthPage() {
                         </div>
                       </div>
 
+                      {/* Card 3: Open Workspace (Matching Images/project-marker.png) */}
+                      <div
+                        className="op-workspace-card"
+                        onClick={handleOpenWorkspace}
+                      >
+                        <div className="op-workspace-left">
+                          <div className="op-workspace-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                              <line x1="8" y1="21" x2="16" y2="21" />
+                              <line x1="12" y1="17" x2="12" y2="21" />
+                            </svg>
+                          </div>
+                          <div className="op-workspace-info">
+                            <div className="op-workspace-title">Open Workspace</div>
+                            <div className="op-workspace-sub">Your tools + outline, side by side</div>
+                          </div>
+                        </div>
+                        <div className="op-workspace-arrow">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="7" y1="17" x2="17" y2="7" />
+                            <polyline points="7 7 17 7 17 17" />
+                          </svg>
+                        </div>
+                      </div>
+
                       {/* Action Buttons Stack */}
                       <div className="opened-project-buttons-stack">
-                        {/* 1. Add to Portfolio */}
-                        <button
-                          type="button"
-                          className="op-btn-primary op-btn-portfolio"
-                          onClick={() => handleTogglePortfolio(viewingProject.id)}
-                        >
-                          {viewingProject.inPortfolio ? "✓ Added to Portfolio" : "Add to Portfolio"}
-                        </button>
-
-                        {/* 2. Edit Details */}
+                        {/* 1. Edit Details */}
                         <button
                           type="button"
                           className="op-btn-secondary op-btn-edit"
@@ -5109,7 +5780,7 @@ function AuthPage() {
                           Edit Details
                         </button>
 
-                        {/* 3. Delete Project (User instruction: "under the edit details add another button design of delete project") */}
+                        {/* 2. Delete Project */}
                         <button
                           type="button"
                           className="op-btn-danger op-btn-delete"
@@ -5152,9 +5823,20 @@ function AuthPage() {
                         <h2 className="featured-project-title">{featuredProject.title}</h2>
                         <p className="featured-project-desc">{featuredProject.description}</p>
                         <div className="featured-meta-row">
-                          <span className={`featured-status-pill ${featuredProject.status === "completed" ? "status-completed" : "status-inprogress"}`}>
-                            ● {featuredProject.statusLabel || (featuredProject.status === "completed" ? "Completed" : "In Progress")}
-                          </span>
+                          {(() => {
+                            const featStatus = getProjectStatus(featuredProject);
+                            const featClass =
+                              featStatus.status === "completed"
+                                ? "status-completed"
+                                : featStatus.status === "in-progress"
+                                ? "status-inprogress"
+                                : "status-draft";
+                            return (
+                              <span className={`featured-status-pill ${featClass}`}>
+                                ● {featStatus.statusLabel}
+                              </span>
+                            );
+                          })()}
                           <span className="featured-xp-pill">
                             ★ + {featuredProject.xp || 50} XP
                           </span>
@@ -5238,7 +5920,23 @@ function AuthPage() {
                           />
                         </div>
                         <div className="project-card-body">
-                          <span className="project-card-category">{proj.category || "Design"}</span>
+                          <div className="project-card-header-row">
+                            <span className="project-card-category">{proj.category || "Design"}</span>
+                            {(() => {
+                              const cardStatus = getProjectStatus(proj);
+                              const cardClass =
+                                cardStatus.status === "completed"
+                                  ? "status-completed"
+                                  : cardStatus.status === "in-progress"
+                                  ? "status-inprogress"
+                                  : "status-draft";
+                              return (
+                                <span className={`project-card-status-badge ${cardClass}`}>
+                                  ● {cardStatus.statusLabel}
+                                </span>
+                              );
+                            })()}
+                          </div>
                           <h3 className="project-card-title">{proj.title}</h3>
                           <p className="project-card-desc">{proj.description}</p>
                           <div className="project-card-tags-row">
@@ -5516,6 +6214,808 @@ function AuthPage() {
             </div>
           </div>
         )}
+
+        {/* Full Dedicated Workspace & Submission View (Matching Images/workspace-design.png) */}
+        {isWorkspaceOpen && viewingProject && (() => {
+          const projectTasks = (viewingProject.tasks && viewingProject.tasks.length > 0)
+            ? viewingProject.tasks.map((t, idx) => {
+                if (typeof t === "string") {
+                  return {
+                    title: t,
+                    phase: String(idx + 1).padStart(2, "0"),
+                    phaseLabel: idx === 0 ? "Research" : idx === 1 ? "Build" : "Review",
+                    duration: "45 mins",
+                    type: idx === 0 ? "research" : idx === 1 ? "build" : "review",
+                    done: false
+                  };
+                }
+                return t;
+              })
+            : [
+                { title: "Find 5 standout design examples", phase: "01", phaseLabel: "Research", duration: "45 mins", type: "research", done: false },
+                { title: "Note how each one uses UI/UX", phase: "02", phaseLabel: "Research", duration: "30 mins", type: "research", done: false },
+                { title: "Write a one line pitch for your angle", phase: "03", phaseLabel: "Review", duration: "20 mins", type: "review", done: false },
+                { title: "Build Personal Portfolio Design - Version 1", phase: "04", phaseLabel: "Build", duration: "2.5 hours", type: "build", done: false },
+                { title: "Compare with your examples and refine", phase: "05", phaseLabel: "Review", duration: "45 mins", type: "review", done: false }
+              ];
+
+          const totalTasks = projectTasks.length;
+          const doneTasks = projectTasks.filter((t) => t.done).length;
+          const completionPct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+
+          let remainingMinutes = 0;
+          projectTasks.filter((t) => !t.done).forEach((t) => {
+            const dur = String(t.duration || "");
+            const hourMatch = dur.match(/([\d.]+)\s*hour/i);
+            const minMatch = dur.match(/(\d+)\s*min/i);
+            if (hourMatch) remainingMinutes += parseFloat(hourMatch[1]) * 60;
+            else if (minMatch) remainingMinutes += parseInt(minMatch[1], 10);
+            else remainingMinutes += 45;
+          });
+          const remainingHoursFormatted = remainingMinutes > 0
+            ? (remainingMinutes / 60).toFixed(1).replace(/\.0$/, "") + "h left"
+            : "0h left";
+
+          const isRequestedLocked = workspaceActiveTaskIndex > 0 && !projectTasks.slice(0, workspaceActiveTaskIndex).every((t) => t.done);
+          const safeActiveIndex = isRequestedLocked
+            ? (projectTasks.findIndex((t) => !t.done) !== -1 ? projectTasks.findIndex((t) => !t.done) : 0)
+            : workspaceActiveTaskIndex;
+          const activeTask = projectTasks[safeActiveIndex] || projectTasks[0];
+
+          const hasProofUploaded = (submissionFormat === "screenshot" || submissionFormat === "pdf")
+            ? !!proofFile
+            : submissionFormat === "link"
+            ? !!(proofLink && proofLink.trim())
+            : submissionFormat === "reflection"
+            ? !!(proofReflection && proofReflection.trim())
+            : false;
+
+          const workspaceTools = [
+            {
+              name: "Figma",
+              category: "Design",
+              url: "https://www.figma.com",
+              icon: (
+                <svg viewBox="0 0 38 57" fill="none">
+                  <path d="M19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5Z" fill="#1ABCFE" />
+                  <path d="M0 47.5C0 42.2533 4.25329 38 9.5 38H19V47.5C19 52.7467 14.7467 57 9.5 57C4.25329 57 0 52.7467 0 47.5Z" fill="#0ACF83" />
+                  <path d="M19 0V19H28.5C33.7467 19 38 14.7467 38 9.5C38 4.25329 33.7467 0 28.5 0H19Z" fill="#FF7262" />
+                  <path d="M0 9.5C0 14.7467 4.25329 19 9.5 19H19V0H9.5C4.25329 0 0 4.25329 0 9.5Z" fill="#F24E1E" />
+                  <path d="M0 28.5C0 33.7467 4.25329 38 9.5 38H19V19H9.5C4.25329 19 0 23.2533 0 28.5Z" fill="#A259FF" />
+                </svg>
+              )
+            },
+            {
+              name: "Canva",
+              category: "Design",
+              url: "https://www.canva.com",
+              icon: (
+                <svg viewBox="0 0 64 64" fill="none">
+                  <defs>
+                    <linearGradient id="mdt-canva-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#00c4cc" />
+                      <stop offset="100%" stopColor="#7d2ae8" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="32" cy="32" r="32" fill="url(#mdt-canva-grad)" />
+                  <path fill="#ffffff" d="M45.6 43.1c-1.7 2.3-3.9 4.7-6.8 6.5c-2.8 1.8-6 3.2-9.8 3.2c-3.5 0-6.4-1.8-8-3.3c-2.4-2.3-3.7-5.6-4.1-8.7c-1.2-9.6,4.7-22.3,13.8-27.8c2.1-1.3,4.4-1.9,6.6-1.9c4.4,0,7.7,3.1,8.1,6.9c0.4,3.4-0.9,6.3-4.7,8.2c-1.9,1-2.9,0.9-3.2,0.5c-0.2-0.3-0.1-0.8,0.3-1.1c3.5-2.9,3.6-5.3,3.2-8.7c-0.3-2.2-1.7-3.6-3.3-3.6c-6.9,0-16.9,15.5-15.5,26.7c0.5,4.4,3.2,9.5,8.8,9.5c1.8,0,3.8-0.5,5.5-1.4c3.9-2,5.6-3.4,7.9-6.6c0.3-0.4,0.6-0.9,0.9-1.3c0.2-0.4,0.6-0.5,0.9-0.5c0.3,0,0.7,0.3,0.7,0.8c0,0.3-0.1,0.9-0.5,1.4C46.3,42.1,46,42.7,45.6,43.1L45.6,43.1z" />
+                </svg>
+              )
+            },
+            {
+              name: "Photoshop",
+              category: "Design",
+              url: "https://photoshop.adobe.com",
+              icon: (
+                <svg viewBox="0 0 128 128">
+                  <path fill="#001e36" d="M22.667 1.6h82.666C117.867 1.6 128 11.733 128 24.267v79.466c0 12.534-10.133 22.667-22.667 22.667H22.667C10.133 126.4 0 116.267 0 103.733V24.267C0 11.733 10.133 1.6 22.667 1.6Z" />
+                  <path fill="#31a8ff" d="M45.867 33.333c-1.6 0-3.2 0-4.853.054-1.654.053-3.201.053-4.641.107-1.44.053-2.773.053-4.053.106-1.227.053-2.08.053-2.987.053-.373 0-.533.213-.533.587v54.88c0 .48.213.694.64.694h10.347c.373-.054.64-.374.586-.747v-17.12c1.013 0 1.76 0 2.294.053.533.053 1.386.053 2.666.053 4.374 0 8.374-.48 12-1.813 3.467-1.28 6.454-3.52 8.587-6.507 2.133-2.986 3.2-6.773 3.2-11.36 0-2.4-.426-4.693-1.226-6.933A16.98 16.98 0 0 0 64 39.36a19.049 19.049 0 0 0-7.147-4.374c-2.987-1.12-6.613-1.653-10.986-1.653Zm1.19 10.505c1.9.036 3.75.368 5.476 1.068 1.547.587 2.827 1.654 3.734 3.04a8.779 8.779 0 0 1 1.227 4.748c0 2.346-.534 4.16-1.654 5.493-1.174 1.333-2.667 2.347-4.373 2.827-1.974.64-4.054.959-6.134.959h-2.827c-.64 0-1.332-.053-2.079-.106v-17.92c.373-.054 1.12-.107 2.187-.053 1.013-.054 2.239-.054 3.626-.054.273-.007.546-.008.817-.002zm44.73 2.723c-3.787 0-6.934.586-9.44 1.866-2.293 1.067-4.267 2.773-5.6 4.906-1.173 1.974-1.814 4.16-1.814 6.454a11.447 11.447 0 0 0 1.227 5.44 13.809 13.809 0 0 0 4.054 4.533 32.629 32.629 0 0 0 7.573 3.84c2.613 1.013 4.373 1.813 5.227 2.506.853.694 1.28 1.387 1.28 2.134 0 .96-.587 1.867-1.44 2.24-.96.48-2.4.747-4.427.747-2.133 0-4.267-.267-6.294-.8a22.834 22.834 0 0 1-6.613-2.613c-.16-.107-.32-.16-.48-.053-.16.106-.213.319-.213.479v9.28c-.053.427.213.8.587 1.013a21.49 21.49 0 0 0 5.44 1.707c2.4.48 4.799.693 7.252.693 3.84 0 7.041-.586 9.654-1.706 2.4-.96 4.48-2.613 5.973-4.747a12.41 12.41 0 0 0 2.08-7.093 11.512 11.512 0 0 0-1.226-5.493c-1.014-1.814-2.454-3.307-4.214-4.427a38.625 38.625 0 0 0-8.213-3.894 48.784 48.784 0 0 1-3.787-1.76c-.693-.373-1.333-.853-1.813-1.44-.32-.427-.533-.906-.533-1.386 0-.48.16-1.013.426-1.44.374-.533.96-.907 1.653-1.067 1.014-.266 2.134-.427 3.2-.374 2.027 0 4 .267 5.974.694 1.814.373 3.52.96 5.12 1.814.213.106.48.106.96 0a.656.656 0 0 0 .267-.534v-8.693c0-.214-.054-.427-.107-.64-.107-.213-.32-.427-.533-.48A18.762 18.762 0 0 0 98.4 47.04a45.98 45.98 0 0 0-6.613-.48z" />
+                </svg>
+              )
+            },
+            {
+              name: "CapCut",
+              category: "Video",
+              url: "https://www.capcut.com",
+              icon: (
+                <svg viewBox="0 0 512 512" fill="none">
+                  <path fillRule="nonzero" fill="#000000" d="M109.095 181.505c2.223-19.532 18.316-34.578 37.955-35.483l167.194-.001a40.612 40.612 0 0130.095 17.427 42.152 42.152 0 016.39 14.915l49.135-24.364a2.185 2.185 0 013.141 1.674v27.628l.001.096a4.571 4.571 0 01-2.837 4.229 177620.936 177620.936 0 00-135.63 67.336l135.324 66.948a4.695 4.695 0 013.142 4.08v27.685a2.266 2.266 0 01-3.613 1.821c-16.12-8.162-32.464-15.854-48.462-24.18a63.503 63.503 0 01-4.282 11.225 40.813 40.813 0 01-26.098 20.135 44.994 44.994 0 01-11.221.919l-155.833.003c-3.51 0-7.04 0-10.53-.266-18.089-2.705-32.049-17.363-33.869-35.565v-26.77a5.935 5.935 0 014.08-4.879c27.791-13.732 55.521-27.587 83.353-41.258a32412.61 32412.61 0 00-84.17-41.748 5.41 5.41 0 01-3.223-4.918c-.042-8.876-.185-17.792-.042-26.689zm30.975.184c-1.674 3.367-.898 7.263-1.041 10.896 30.608 15.12 60.99 30.321 91.536 45.339 30.185-14.963 60.384-29.927 90.596-44.89 0-2.714.123-5.428 0-8.162a10.203 10.203 0 00-10.096-8.734h-.106l-161.565.001a10.082 10.082 0 00-9.345 5.55h.021zm-1.041 135.406c.142 3.673-.654 7.631 1.122 11.039a10.204 10.204 0 009.284 5.405l161.667.002.081-.001c3.618 0 6.961-1.94 8.754-5.081 2.04-3.57 1.102-7.855 1.305-11.773-30.26-14.936-60.48-30.118-90.801-44.89a43915.126 43915.126 0 00-91.432 45.299h.02z" />
+                </svg>
+              )
+            },
+            {
+              name: "Notion",
+              category: "Planning",
+              url: "https://www.notion.so",
+              icon: (
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z" fill="#000000" />
+                </svg>
+              )
+            },
+            {
+              name: "Framer",
+              category: "Web",
+              url: "https://www.framer.com",
+              icon: (
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z" fill="#0055ff" />
+                </svg>
+              )
+            },
+            {
+              name: "ChatGPT",
+              category: "AI",
+              url: "https://chatgpt.com",
+              icon: (
+                <svg viewBox="0 0 24 24" fill="#000000">
+                  <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" />
+                </svg>
+              )
+            },
+            {
+              name: "Meta Insights",
+              category: "Marketing",
+              url: "https://business.facebook.com",
+              icon: (
+                <svg viewBox="0 0 24 24" fill="#0081FB">
+                  <path d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z" />
+                </svg>
+              )
+            },
+            {
+              name: "Illustrator",
+              category: "Design",
+              url: "https://www.adobe.com/products/illustrator.html",
+              icon: (
+                <svg viewBox="0 0 128 128">
+                  <path fill="#330000" d="M22.7 1.6h82.7c12.5 0 22.7 10.1 22.7 22.7v79.5c0 12.5-10.1 22.7-22.7 22.7H22.7C10.1 126.4 0 116.3 0 103.7V24.3C0 11.7 10.1 1.6 22.7 1.6" />
+                  <path fill="#ff9a00" d="M61.9 76.3H42l-4 12.5c-.1.5-.5.8-1 .7H27c-.6 0-.7-.3-.6-1l17.2-49.4c.2-.5.3-1.1.5-1.8.2-1.1.3-2.3.3-3.5-.1-.3.2-.5.4-.6h13.8c.4 0 .6.2.7.4l19.5 54.9c.2.6 0 .9-.5.9H67.1c-.4.1-.7-.2-.9-.6zM45.1 65.4h13.5c-.3-1.1-.7-2.5-1.2-3.8-.5-1.4-1-3-1.4-4.6-.5-1.7-1-3.3-1.5-4.9-.5-1.7-1-3.2-1.4-4.7-.4-1.5-.8-2.9-1.2-4.2h-.1c-.5 2.3-1.1 4.6-1.8 6.9-.8 2.6-1.6 5.2-2.5 7.9-.8 2.7-1.6 5.2-2.4 7.4m45.6-22.7c-1.8.1-3.5-.6-4.7-1.9-1.2-1.3-1.9-3.1-1.8-4.9-.1-1.8.6-3.5 1.9-4.7 1.3-1.2 3-1.9 4.7-1.9 2.1 0 3.7.6 4.9 1.9 1.2 1.3 1.8 3 1.8 4.7.1 1.8-.6 3.6-1.9 4.9-1.3 1.3-3.1 2-4.9 1.9m-6 46.3V47.9c0-.5.2-.7.7-.7H96c.5 0 .7.3.7.7V89c0 .6-.2.9-.7.9H85.5c-.5-.1-.8-.4-.8-.9" />
+                </svg>
+              )
+            },
+            {
+              name: "VS code",
+              category: "Web Development",
+              url: "https://code.visualstudio.com",
+              icon: (
+                <svg viewBox="0 0 128 128">
+                  <mask id="mdt-vsc-mask" width="128" height="128" x="0" y="0" maskUnits="userSpaceOnUse" style={{ maskType: "alpha" }}>
+                    <path fill="#fff" fillRule="evenodd" d="M90.767 127.126a7.968 7.968 0 0 0 6.35-.244l26.353-12.681a8 8 0 0 0 4.53-7.209V21.009a8 8 0 0 0-4.53-7.21L97.117 1.12a7.97 7.97 0 0 0-9.093 1.548l-50.45 46.026L15.6 32.013a5.328 5.328 0 0 0-6.807.302l-7.048 6.411a5.335 5.335 0 0 0-.006 7.888L20.796 64 1.74 81.387a5.336 5.336 0 0 0 .006 7.887l7.048 6.411a5.327 5.327 0 0 0 6.807.303l21.974-16.68 50.45 46.025a7.96 7.96 0 0 0 2.743 1.793Zm5.252-92.183L57.74 64l38.28 29.058V34.943Z" clipRule="evenodd" />
+                  </mask>
+                  <g mask="url(#mdt-vsc-mask)">
+                    <path fill="#0065A9" d="M123.471 13.82 97.097 1.12A7.973 7.973 0 0 0 88 2.668L1.662 81.387a5.333 5.333 0 0 0 .006 7.887l7.052 6.411a5.333 5.333 0 0 0 6.811.303l103.971-78.875c3.488-2.646 8.498-.158 8.498 4.22v-.306a8.001 8.001 0 0 0-4.529-7.208Z" />
+                    <path fill="#007ACC" d="m123.471 114.181-26.374 12.698A7.973 7.973 0 0 1 88 125.333L1.662 46.613a5.333 5.333 0 0 1 .006-7.887l7.052-6.411a5.333 5.333 0 0 1 6.811-.303l103.971 78.874c3.488 2.647 8.498.159 8.498-4.219v.306a8.001 8.001 0 0 1-4.529 7.208Z" />
+                    <path fill="#1F9CF0" d="M97.098 126.882A7.977 7.977 0 0 1 88 125.333c2.952 2.952 8 .861 8-3.314V5.98c0-4.175-5.048-6.266-8-3.313a7.977 7.977 0 0 1 9.098-1.549L123.467 13.8A8 8 0 0 1 128 21.01v85.982a8 8 0 0 1-4.533 7.21l-26.369 12.681Z" />
+                    <path fill="#ffffff" opacity="0.2" d="M90.767 127.126a7.968 7.968 0 0 0 6.35-.244l26.353-12.681a8 8 0 0 0 4.53-7.209V21.009a8 8 0 0 0-4.53-7.21L97.117 1.12a7.97 7.97 0 0 0-9.093 1.548l-50.45 46.026L15.6 32.013a5.328 5.328 0 0 0-6.807.302l-7.048 6.411a5.335 5.335 0 0 0-.006 7.888L20.796 64 1.74 81.387a5.336 5.336 0 0 0 .006 7.887l7.048 6.411a5.327 5.327 0 0 0 6.807.303l21.974-16.68 50.45 46.025a7.96 7.96 0 0 0 2.743 1.793Zm5.252-92.183L57.74 64l38.28 29.058V34.943Z" />
+                  </g>
+                </svg>
+              )
+            }
+          ];
+
+          return (
+            <div className="workspace-page-container">
+              {/* Top Dark Banner Header */}
+              <div className="ws-header">
+                {/* Top Nav Row */}
+                <div className="ws-top-bar">
+                  <div className="ws-top-left">
+                    <button
+                      type="button"
+                      className="ws-back-btn"
+                      onClick={() => setIsWorkspaceOpen(false)}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="15 18 9 12 15 6" />
+                      </svg>
+                      <span>Back to Projects</span>
+                    </button>
+                    {(() => {
+                      const wsStatusInfo = getProjectStatus(viewingProject);
+                      return (
+                        <span className={`ws-status-badge ws-status-${wsStatusInfo.status}`}>
+                          <span className={`ws-status-dot ws-dot-${wsStatusInfo.status}`} />
+                          <span>{wsStatusInfo.statusLabel}</span>
+                        </span>
+                      );
+                    })()}
+                  </div>
+
+                  <div className="ws-top-right">
+                    {/* Session Progress Widget */}
+                    <div className="ws-session-widget">
+                      <div className="ws-session-circle-wrap">
+                        <svg className="ws-session-circle-svg" viewBox="0 0 32 32">
+                          <circle className="ws-session-circle-bg" cx="16" cy="16" r="13" />
+                          <circle
+                            className="ws-session-circle-fill"
+                            cx="16"
+                            cy="16"
+                            r="13"
+                            strokeDasharray={2 * Math.PI * 13}
+                            strokeDashoffset={(2 * Math.PI * 13) * (1 - completionPct / 100)}
+                          />
+                        </svg>
+                        <span className="ws-session-circle-text">{completionPct}%</span>
+                      </div>
+                      <div className="ws-session-tasks-info">
+                        <strong>{doneTasks} out of {totalTasks} tasks</strong>
+                        <span>{doneTasks === totalTasks ? "Completed" : `${totalTasks - doneTasks} left`}</span>
+                      </div>
+                    </div>
+
+                    {/* Document / Notes outline shortcut */}
+                    <button
+                      type="button"
+                      className="ws-icon-action-btn"
+                      onClick={() => {
+                        setNotice(`Workspace synced: ${doneTasks} of ${totalTasks} tasks completed.`);
+                        setTimeout(() => setNotice(""), 3000);
+                      }}
+                      title="Workspace summary"
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                        <polyline points="10 9 9 9 8 9" />
+                      </svg>
+                      <span className="ws-arrow-mini">↗</span>
+                    </button>
+
+                    {/* User Avatar with Green Online indicator */}
+                    <div className="ws-user-avatar-wrap">
+                      <img
+                        src={account?.avatar || "Images/avatar-daniel.png"}
+                        alt={account?.name || "Daniel"}
+                        className="ws-user-avatar-img"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "Images/avatar-daniel.png";
+                        }}
+                      />
+                      <span className="ws-online-indicator" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Project Title */}
+                <h1 className="ws-project-title">{viewingProject.title}</h1>
+
+                {/* Task Status Bar Banner */}
+                <div className="ws-task-bar">
+                  <div className="ws-task-bar-left">
+                    <div className="ws-step-badge">
+                      {activeTask.num || String(safeActiveIndex + 1).padStart(2, "0")}
+                    </div>
+                    <div className="ws-task-bar-info">
+                      <div className="ws-task-bar-meta">
+                        Now working on · {activeTask.phase || (activeTask.type === "research" ? "Research" : activeTask.type === "build" ? "Build" : "Review")}
+                      </div>
+                      <h3 className="ws-task-bar-title">{activeTask.title}</h3>
+                    </div>
+                  </div>
+
+                  <div className="ws-task-bar-right">
+                    <button
+                      type="button"
+                      className="ws-submit-proof-btn"
+                      onClick={() => {
+                        const el = document.getElementById("workspace-proof-section");
+                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                      }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="12" y1="18" x2="12" y2="12" />
+                        <line x1="9" y1="15" x2="15" y2="15" />
+                      </svg>
+                      <span>Submit Proof</span>
+                    </button>
+
+                    {/* Step pills */}
+                    <div className="ws-step-pills-row">
+                      {projectTasks.map((t, idx) => {
+                        const isUnlocked = idx === 0 || projectTasks.slice(0, idx).every((prev) => prev.done);
+                        const isLocked = !isUnlocked;
+                        const isActive = idx === safeActiveIndex;
+                        const isDone = !!t.done;
+                        return (
+                          <button
+                            key={idx}
+                            type="button"
+                            disabled={isLocked}
+                            className={`ws-step-pill ${isActive ? "active" : ""} ${isDone ? "done" : ""} ${isLocked ? "locked" : ""}`}
+                            onClick={() => {
+                              if (isLocked) {
+                                setNotice(`🔒 Step ${String(idx + 1).padStart(2, "0")} is locked! Complete step ${String(idx).padStart(2, "0")} first.`);
+                                setTimeout(() => setNotice(""), 3500);
+                                return;
+                              }
+                              setWorkspaceActiveTaskIndex(idx);
+                            }}
+                            title={isLocked ? `Step ${idx + 1} is locked until step ${idx} is completed` : `Switch to task ${idx + 1}: ${t.title}`}
+                          >
+                            {isLocked ? (
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                              </svg>
+                            ) : (
+                              String(idx + 1).padStart(2, "0")
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Main Content Area */}
+              <div className="ws-content">
+                {/* 1. "Do the work" Section */}
+                <div className="ws-section">
+                  <h2 className="ws-section-title">Do the work</h2>
+                  <p className="ws-section-sub">Open a tool in a new tab. Come back here when you're done.</p>
+
+                  <div className="ws-tools-grid">
+                    {workspaceTools.map((tool) => (
+                      <a
+                        key={tool.name}
+                        href={tool.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="ws-tool-card"
+                        title={`Open ${tool.name} in a new tab`}
+                      >
+                        <div className="ws-tool-left">
+                          <div className="ws-tool-icon">{tool.icon}</div>
+                          <div className="ws-tool-info">
+                            <h4 className="ws-tool-name">{tool.name}</h4>
+                            <span className="ws-tool-cat">{tool.category}</span>
+                          </div>
+                        </div>
+                        <div className="ws-tool-arrow">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="7" y1="17" x2="17" y2="7" />
+                            <polyline points="7 7 17 7 17 17" />
+                          </svg>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 2. "Show your proof" Section */}
+                <div className="ws-section" id="workspace-proof-section">
+                  <h2 className="ws-section-title">Show your proof</h2>
+                  <p className="ws-section-sub">
+                    For task {activeTask.num || String(safeActiveIndex + 1).padStart(2, "0")} · {activeTask.title}
+                  </p>
+
+                  <div className="ws-proof-card">
+                    <div className="ws-format-select-label">Select Submission Format</div>
+
+                    {/* 4 Format Tabs */}
+                    <div className="ws-format-tabs-row">
+                      <button
+                        type="button"
+                        className={`ws-format-tab-btn ${submissionFormat === "screenshot" ? "active" : ""}`}
+                        onClick={() => setSubmissionFormat("screenshot")}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                          <circle cx="8.5" cy="8.5" r="1.5" />
+                          <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                        <span>Screenshot</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        className={`ws-format-tab-btn ${submissionFormat === "link" ? "active" : ""}`}
+                        onClick={() => setSubmissionFormat("link")}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                        </svg>
+                        <span>Link</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        className={`ws-format-tab-btn ${submissionFormat === "pdf" ? "active" : ""}`}
+                        onClick={() => setSubmissionFormat("pdf")}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                          <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        <span>PDF</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        className={`ws-format-tab-btn ${submissionFormat === "reflection" ? "active" : ""}`}
+                        onClick={() => setSubmissionFormat("reflection")}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                        </svg>
+                        <span>Reflection</span>
+                      </button>
+                    </div>
+
+                    <div className="ws-upload-field-label">Show what you made</div>
+
+                    {/* Dynamic format area */}
+                    {submissionFormat === "screenshot" && (
+                      <div
+                        className="ws-dropzone"
+                        onClick={() => document.getElementById("ws-file-input")?.click()}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          const f = e.dataTransfer.files && e.dataTransfer.files[0];
+                          if (f) setProofFile(f);
+                        }}
+                      >
+                        <input
+                          id="ws-file-input"
+                          type="file"
+                          accept="image/*"
+                          style={{ display: "none" }}
+                          onChange={(e) => {
+                            const f = e.target.files && e.target.files[0];
+                            if (f) setProofFile(f);
+                          }}
+                        />
+                        {proofFile ? (
+                          <div className="ws-file-selected-box">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                              <polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                            <span className="ws-file-selected-name">{proofFile.name}</span>
+                            <span className="ws-file-remove-link" onClick={(e) => { e.stopPropagation(); setProofFile(null); }}>
+                              Remove
+                            </span>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="ws-dropzone-icon">
+                              <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                                <rect width="24" height="24" rx="4" fill="#3b82f6" />
+                                <path d="M12 7V17M12 7L8 11M12 7L16 11" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </div>
+                            <h4 className="ws-dropzone-title">Drop your screenshot here</h4>
+                            <p className="ws-dropzone-sub">or click to browse · Max 4 MB</p>
+                          </>
+                        )}
+                      </div>
+                    )}
+
+                    {submissionFormat === "link" && (
+                      <div className="ws-link-input-wrap">
+                        <div className="ws-link-prefix">https://</div>
+                        <input
+                          type="url"
+                          className="ws-link-input"
+                          placeholder="www.figma.com/file/... or link to your work"
+                          value={proofLink}
+                          onChange={(e) => setProofLink(e.target.value)}
+                        />
+                      </div>
+                    )}
+
+                    {submissionFormat === "pdf" && (
+                      <div
+                        className="ws-dropzone"
+                        onClick={() => document.getElementById("ws-pdf-input")?.click()}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          const f = e.dataTransfer.files && e.dataTransfer.files[0];
+                          if (f) setProofFile(f);
+                        }}
+                      >
+                        <input
+                          id="ws-pdf-input"
+                          type="file"
+                          accept="application/pdf"
+                          style={{ display: "none" }}
+                          onChange={(e) => {
+                            const f = e.target.files && e.target.files[0];
+                            if (f) setProofFile(f);
+                          }}
+                        />
+                        {proofFile ? (
+                          <div className="ws-file-selected-box">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span className="ws-file-selected-name">{proofFile.name}</span>
+                            <span className="ws-file-remove-link" onClick={(e) => { e.stopPropagation(); setProofFile(null); }}>
+                              Remove
+                            </span>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="ws-dropzone-icon">
+                              <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                                <rect width="24" height="24" rx="4" fill="#ef4444" />
+                                <path d="M12 7V17M12 7L8 11M12 7L16 11" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </div>
+                            <h4 className="ws-dropzone-title">Drop your PDF here</h4>
+                            <p className="ws-dropzone-sub">or click to browse · Max 10 MB</p>
+                          </>
+                        )}
+                      </div>
+                    )}
+
+                    {submissionFormat === "reflection" && (
+                      <textarea
+                        className="ws-reflection-textarea"
+                        placeholder="Write what you created, challenges you faced, and your key learnings for this task..."
+                        value={proofReflection}
+                        onChange={(e) => setProofReflection(e.target.value)}
+                        rows="5"
+                      />
+                    )}
+
+                    {/* Short Caption Input */}
+                    <div className="ws-caption-wrap">
+                      <input
+                        type="text"
+                        className="ws-caption-input"
+                        placeholder="Add a short caption (optional)"
+                        value={proofCaption}
+                        onChange={(e) => setProofCaption(e.target.value)}
+                      />
+                    </div>
+
+                    {/* Proof Card Footer */}
+                    <div className="ws-proof-footer">
+                      <span className="ws-proof-footer-note">Your mentor will see this proof</span>
+                      <button
+                        type="button"
+                        disabled={!hasProofUploaded}
+                        className={`ws-submit-tick-btn ${!hasProofUploaded ? "disabled" : ""}`}
+                        onClick={handleSubmitProof}
+                        title={
+                          !hasProofUploaded
+                            ? (submissionFormat === "screenshot" || submissionFormat === "pdf"
+                                ? "Please upload your file before submitting"
+                                : "Please provide your proof before submitting")
+                            : "Submit & tick off"
+                        }
+                      >
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                          <polyline points="14 2 14 8 20 8" />
+                          <polyline points="9 15 11 17 15 13" />
+                        </svg>
+                        <span>Submit & tick off</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. "Getting proof from your tool" Section */}
+                <div className="ws-tips-card">
+                  <h4 className="ws-tips-title">Getting proof from your tool</h4>
+                  <ul className="ws-tips-list">
+                    <li>
+                      <strong>• Share link</strong> — in Figma, Canva or Notion hit Share → Copy link.
+                    </li>
+                    <li>
+                      <strong>• Screenshot</strong> — ⌘⇧4 on Mac or Win⇧S on Windows.
+                    </li>
+                    <li>
+                      <strong>• Export</strong> — download a PDF, PNG or video and upload it.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* Project Outline Modal (Matching Images/project-outline.png) */}
+        {isProjectOutlineOpen && pendingProjectData && (() => {
+          const aiOutlines = generateAiProjectOutlines(
+            pendingProjectData.title,
+            pendingProjectData.category,
+            pendingProjectData.tags,
+            pendingProjectData.linkedCourse
+          );
+
+          return (
+            <div className="np-backdrop-overlay" onClick={() => setIsProjectOutlineOpen(false)}>
+              <div className="po-modal-outer-frame" onClick={(e) => e.stopPropagation()}>
+
+                {/* Header Card */}
+                <div className="po-header-card">
+                  <div className="po-header-left">
+                    <h2 className="po-header-title">
+                      Pick an outline for “{pendingProjectData.title}”
+                    </h2>
+                    <p className="po-header-subtitle">
+                      Three AI mentors drafted different project outlines. Choose the one that fits how you like to work
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="np-circle-close-btn"
+                    onClick={() => setIsProjectOutlineOpen(false)}
+                    aria-label="Close modal"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {/* 3 Mentor Cards Grid */}
+                <div className="po-mentors-grid">
+                  {[aiOutlines.model1, aiOutlines.model2, aiOutlines.model3].filter(Boolean).map((mentor) => {
+                    const isSelected = selectedOutlineMentor === mentor.key;
+                    return (
+                      <div
+                        key={mentor.key}
+                        className={`po-mentor-card ${isSelected ? "selected" : ""}`}
+                        onClick={() => setSelectedOutlineMentor(mentor.key)}
+                      >
+                        {/* Mentor Header */}
+                        <div className="po-mentor-header-row">
+                          <div className="po-mentor-info-group">
+                            <div className={`po-mentor-avatar-box po-avatar-${mentor.key}`}>
+                              {/* Model 1: Structured Architecture / Layers Icon */}
+                              {(mentor.key === "model1" || mentor.key === "claude") && (
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                  <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                  <polyline points="2 17 12 22 22 17" />
+                                  <polyline points="2 12 12 17 22 12" />
+                                </svg>
+                              )}
+                              {/* Model 2: Fast-Track Sprint Velocity Icon */}
+                              {(mentor.key === "model2" || mentor.key === "chatgpt") && (
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                                </svg>
+                              )}
+                              {/* Model 3: Research Discovery Compass Icon */}
+                              {(mentor.key === "model3" || mentor.key === "gemini") && (
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                  <circle cx="12" cy="12" r="10" />
+                                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="#2563eb" />
+                                </svg>
+                              )}
+                            </div>
+                            <div className="po-mentor-title-box">
+                              <h3 className="po-mentor-name">{mentor.name}</h3>
+                              <p className="po-mentor-role">{mentor.subtitle}</p>
+                            </div>
+                          </div>
+
+                          {/* Radio button */}
+                          <div className={`po-radio-circle ${isSelected ? "selected" : ""}`}>
+                            {isSelected && <span className="po-radio-dot" />}
+                          </div>
+                        </div>
+
+                        {/* Summary stats */}
+                        <div className="po-mentor-stats-row">
+                          <span className="po-stats-tasks">{mentor.stats}</span>
+                          <span className="po-stats-time">{mentor.totalTime}</span>
+                        </div>
+
+                        {/* Tagline */}
+                        <p className="po-mentor-tagline">{mentor.tagline}</p>
+
+                        {/* Segmented progress bar */}
+                        <div className="po-segmented-bar">
+                          {mentor.segments.map((seg, sIdx) => (
+                            <span
+                              key={sIdx}
+                              className="po-segment-pill"
+                              style={{ backgroundColor: seg.color, flex: seg.flex }}
+                            />
+                          ))}
+                        </div>
+
+                        {/* Timeline with tasks */}
+                        <div className="po-timeline-wrap">
+                          <div className="po-timeline-stem" />
+                          <div className="po-tasks-list">
+                            {mentor.tasks.map((task, tIdx) => (
+                              <div key={tIdx} className="po-task-item">
+                                <div className={`po-task-node-icon po-node-${task.type}`}>
+                                  {task.type === "research" && (
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                      <circle cx="12" cy="12" r="2.5" fill="#2563eb" />
+                                      <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(30 12 12)" />
+                                      <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(-30 12 12)" />
+                                    </svg>
+                                  )}
+                                  {task.type === "build" && (
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                                      <polyline points="16 18 22 12 16 6" />
+                                      <polyline points="8 6 2 12 8 18" />
+                                    </svg>
+                                  )}
+                                  {task.type === "review" && (
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                      <polyline points="14 2 14 8 20 8" />
+                                      <line x1="9" y1="13" x2="15" y2="13" />
+                                      <line x1="9" y1="17" x2="13" y2="17" />
+                                    </svg>
+                                  )}
+                                </div>
+                                <div className="po-task-card">
+                                  <h4 className="po-task-title">{task.title}</h4>
+                                  <div className="po-task-footer-row">
+                                    <span className={`po-phase-label po-phase-${task.type}`}>
+                                      {task.phaseLabel}
+                                    </span>
+                                    <span className="po-duration-label">
+                                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                                        <circle cx="12" cy="13" r="8" />
+                                        <path d="M12 9v4l2 2" />
+                                        <path d="M10 2h4" />
+                                      </svg>
+                                      {task.duration}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Bottom Actions Bar */}
+                <div className="po-actions-row">
+                  <button
+                    type="button"
+                    className="po-btn-edit-details"
+                    onClick={handleOutlineEditDetails}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
+                      <path d="M10 13l-3 3 3 3" />
+                      <line x1="7" y1="16" x2="15" y2="16" />
+                    </svg>
+                    <span>Edit Details</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="po-btn-create-project"
+                    onClick={handleConfirmCreateProjectWithOutline}
+                  >
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-1 8h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z" />
+                    </svg>
+                    <span>Create Project</span>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Edit Project Modal — matches new project modal design with pre-filled fields */}
         {isEditProjectOpen && (
