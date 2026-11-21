@@ -1,0 +1,4 @@
+.vercel
+dist-artifact/
+__pycache__/
+*.pyc
