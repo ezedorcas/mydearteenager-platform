@@ -1,0 +1,86 @@
+<section class="demo-sec" id="how" aria-labelledby="demo-title">
+  <div class="wrap">
+    <div>
+      <h2 id="demo-title" class="h2" data-reveal="up">Try a one&#8209;minute lesson.</h2>
+      <p class="lede" data-reveal="up" style="--i:1">Every skill on MDT works the same way. Here's a tiny one about design. Go on, tap through it.</p>
+      <ol class="steps" id="steps">
+        <li data-reveal="up" style="--i:2"><button type="button"><span class="ico"><span class="ms" aria-hidden="true">route</span><span class="done"><span class="ms" aria-hidden="true">check</span></span></span><span><b>Learn</b><small>Short lessons, one idea at a time</small></span></button></li>
+        <li data-reveal="up" style="--i:3"><button type="button"><span class="ico"><span class="ms" aria-hidden="true">bolt</span><span class="done"><span class="ms" aria-hidden="true">check</span></span></span><span><b>Practise</b><small>Quick checks so it sticks</small></span></button></li>
+        <li data-reveal="up" style="--i:4"><button type="button"><span class="ico"><span class="ms" aria-hidden="true">palette</span><span class="done"><span class="ms" aria-hidden="true">check</span></span></span><span><b>Make</b><small>Every path ends in a real project</small></span></button></li>
+        <li data-reveal="up" style="--i:5"><button type="button"><span class="ico"><span class="ms" aria-hidden="true">workspace_premium</span><span class="done"><span class="ms" aria-hidden="true">check</span></span></span><span><b>Show</b><small>XP, badges and a portfolio of your work</small></span></button></li>
+      </ol>
+      <span class="hand-note demo-note" data-reveal="write">No sign-up needed. It's just for fun.</span>
+    </div>
+    <div class="demo-stage" data-tilt-zone>
+      <div class="annot annot-xp" data-reveal="write" aria-hidden="true">
+        <svg viewBox="0 0 64 44"><path d="M60 34 C 44 40, 18 34, 6 12 M6 12 L6 22 M6 12 L15 15"/></svg>
+        XP for every win
+      </div>
+      <div class="annot annot-folio" data-reveal="write" aria-hidden="true">
+        <svg viewBox="0 0 64 44"><path d="M60 8 C 46 2, 18 8, 6 34 M6 34 L6 24 M6 34 L15 30"/></svg>
+        Your work, saved<br>to your portfolio
+      </div>
+      <div data-reveal="phone">
+        <div class="phone-tilt" data-tilt>
+          <div class="phone" role="group" aria-label="Interactive lesson demo">
+            <div class="screen-wrap" id="screen-wrap">
+              <div class="app-bar">
+                <span class="app-logo">MDT</span>
+                <span class="app-pill pill-xp" id="pill-xp"><span class="ms fill" aria-hidden="true">bolt</span><b id="xp">0</b>&nbsp;XP</span>
+                <span class="app-pill pill-streak" id="pill-streak" aria-label="Streak"><span class="ms fill" aria-hidden="true">local_fire_department</span><b id="streak">0</b></span>
+              </div>
+              <div class="lesson-bar" id="lesson-bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              <div class="screens" aria-live="polite">
+                <div class="screen">
+                  <span class="tag">Design basics, lesson 1</span>
+                  <h3>Contrast makes things easy to read</h3>
+                  <div class="contrast-box">
+                    <div class="sample" id="sample">Can you read me?</div>
+                    <label for="contrast">Drag to add contrast</label>
+                    <input class="range" type="range" id="contrast" min="0" max="100" value="12">
+                  </div>
+                  <p>Contrast is how much two things stand apart. Dark text on a light background is easy to read. Light on light disappears.</p>
+                  <button class="app-btn" type="button" data-next>Got it <span class="ms" aria-hidden="true">arrow_forward</span></button>
+                </div>
+                <div class="screen" hidden>
+                  <span class="tag">Quick check</span>
+                  <h3>Which poster can you read from across the room?</h3>
+                  <div class="posters">
+                    <button type="button" class="poster-opt" data-answer="wrong" aria-label="Poster A, light purple text on a light purple background"><span class="letter">A</span><span class="poster low"><b>School fair</b><small>Sat 10am</small></span></button>
+                    <button type="button" class="poster-opt" data-answer="right" aria-label="Poster B, white text on a dark navy background"><span class="letter">B</span><span class="poster high"><b>School fair</b><small>Sat 10am</small></span></button>
+                  </div>
+                  <p class="feedback" id="feedback">Tap a poster.</p>
+                </div>
+                <div class="screen" hidden>
+                  <span class="tag">Your project</span>
+                  <h3>Make a poster for something you love</h3>
+                  <div class="my-poster" id="my-poster"><b id="poster-text">Made by me</b><small>Coming soon</small></div>
+                  <div class="mini-field"><label for="poster-input">Your headline</label><input type="text" id="poster-input" maxlength="22" value="Made by me" autocomplete="off"></div>
+                  <div class="swatches" role="group" aria-label="Poster colour">
+                    <span>Colour</span>
+                    <button type="button" class="swatch" aria-label="Navy" aria-pressed="true" data-bg="var(--p-navy)" data-fg="var(--p-paper)" style="background:var(--p-navy)"></button>
+                    <button type="button" class="swatch" aria-label="Violet" aria-pressed="false" data-bg="var(--p-violet)" data-fg="var(--p-paper)" style="background:var(--p-violet)"></button>
+                    <button type="button" class="swatch" aria-label="Paper" aria-pressed="false" data-bg="var(--p-paper)" data-fg="var(--p-navy)" style="background:var(--p-paper)"></button>
+                  </div>
+                  <button class="app-btn" type="button" id="submit-project">Submit project <span class="ms" aria-hidden="true">check</span></button>
+                </div>
+                <div class="screen" hidden>
+                  <div class="badge-big" id="badge"><span class="ms fill" aria-hidden="true">star</span><b>First<br>project</b></div>
+                  <div class="show-head"><span class="xp-gain">Badge unlocked. +50 XP</span><h3>You learned it, practised it and made something.</h3></div>
+                  <div class="folio">
+                    <div class="my-poster" id="folio-poster"><b id="folio-text">Made by me</b><small>.</small></div>
+                    <div><strong id="folio-title">Poster: Made by me</strong><span>Added to your portfolio</span></div>
+                  </div>
+                  <div class="show-btns">
+                    <a class="app-btn" href="join.html" data-cta="join"><span class="label">Join the waitlist</span></a>
+                    <button class="app-btn ghost" type="button" id="restart"><span class="ms" aria-hidden="true">refresh</span> Start over</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

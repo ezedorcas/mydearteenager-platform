@@ -1,0 +1,84 @@
+<!--{"title":"Skill Academy","desc":"Browse MyDearTeenager's first learning paths: design, coding, content creation, business, money, AI, communication and personal growth.","nav":"academy","scripts":["courses.js"]}-->
+<section class="page-hero">
+  <div class="wrap">
+    <div>
+      <span class="kicker load-up" style="--d:0s">the skill academy</span>
+      <h1 data-split>Pick up a skill you'll <span class="mark">actually use.</span></h1>
+      <p class="sub load-up" style="--d:.45s">Structured learning paths that end with a real project. Our first ones are being written now. Open any book to see the plan.</p>
+    </div>
+    <div class="hero-visual" data-tilt-zone>
+      <figure class="paper frame taped" data-tilt data-reveal="drop">
+        <img src="assets/img/academy.webp" width="720" height="661" alt="The Skill Academy screen in the MDT app, with learning paths for UI/UX design, digital marketing and content creation" fetchpriority="high">
+      </figure>
+      <div class="paper lined note taped-2 load-up" style="--d:1s">New paths<br>added over time.</div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0" aria-labelledby="books-title">
+  <div class="wrap">
+    <h2 id="books-title" class="sr-only">Learning paths</h2>
+    <div class="academy-tools" data-reveal="up">
+      <div class="tabs" role="group" aria-label="Filter by subject">
+        <button type="button" class="tab" data-cat-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="tab" data-cat-filter="design" aria-pressed="false">Design</button>
+        <button type="button" class="tab" data-cat-filter="tech" aria-pressed="false">Technology</button>
+        <button type="button" class="tab" data-cat-filter="media" aria-pressed="false">Media</button>
+        <button type="button" class="tab" data-cat-filter="business" aria-pressed="false">Business</button>
+        <button type="button" class="tab" data-cat-filter="money" aria-pressed="false">Money</button>
+        <button type="button" class="tab" data-cat-filter="comms" aria-pressed="false">Communication</button>
+        <button type="button" class="tab" data-cat-filter="growth" aria-pressed="false">Personal growth</button>
+      </div>
+      <label class="search"><span class="sr-only">Search learning paths</span><span class="ms" aria-hidden="true">search</span><input type="search" id="course-search" placeholder="Search, for example: video"></label>
+    </div>
+    <div class="books" id="books" aria-live="polite"></div>
+    <p class="books-empty" id="books-empty" hidden>Nothing here yet. Suggest it below and we might build it.</p>
+  </div>
+</section>
+
+<section class="band graph" aria-labelledby="next-title">
+  <div class="wrap">
+    <div class="split-2 center">
+      <div>
+        <h2 id="next-title" class="h2" data-reveal="up">More subjects on the way.</h2>
+        <p class="lede" data-reveal="up" style="--i:1">These are on our list for after launch. Tell us what you'd want to learn and we'll use it to decide what comes next.</p>
+        <div class="chips" style="margin-top:22px" data-reveal="up">
+          <span class="chip"><span class="ms" aria-hidden="true">science</span>Science and engineering</span>
+          <span class="chip"><span class="ms" aria-hidden="true">favorite</span>Health and wellbeing</span>
+          <span class="chip"><span class="ms" aria-hidden="true">work</span>Career and university prep</span>
+          <span class="chip"><span class="ms" aria-hidden="true">groups</span>Leadership and teamwork</span>
+        </div>
+      </div>
+      <div class="paper form-sheet taped" data-reveal="up" style="--i:1">
+        <form data-form="suggest" data-title="Suggestion received!" data-body="Thanks. We read every suggestion when we plan new learning paths." novalidate>
+          <div class="fields tight">
+            <div class="field" id="s-skill-f" data-required="Tell us the skill you'd like to learn.">
+              <label for="s-skill">What should we teach next?</label>
+              <input type="text" id="s-skill" name="skill" placeholder="For example: 3D animation, music production">
+              <span class="err" hidden></span>
+            </div>
+            <div class="field">
+              <label for="s-why">Why does it matter to you? <span class="help">(optional)</span></label>
+              <input type="text" id="s-why" name="why">
+            </div>
+            <div class="form-foot"><button class="btn" type="submit">Send suggestion</button><span class="form-error" role="alert" hidden></span></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="tutor-cta">
+  <div class="wrap">
+    <a class="build-row" href="teach.html" data-reveal="up"><h3 id="tutor-cta">Know one of these subjects well?</h3><p>We're looking for tutors and creators to help write and teach our first learning paths.</p><span class="link-cta"><span>Apply to teach</span><span class="ms" aria-hidden="true">arrow_forward</span></span></a>
+  </div>
+</section>
+
+<div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
+  <button type="button" class="drawer-close" aria-label="Close"><span class="ms" aria-hidden="true">close</span></button>
+  <div id="drawer-body"></div>
+</aside>
+
+{{> cta}}

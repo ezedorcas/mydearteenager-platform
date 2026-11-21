@@ -1,0 +1,80 @@
+<div class="paper form-sheet taped" data-reveal="up" style="--i:1">
+  <form id="wl-form" novalidate>
+    <fieldset>
+      <legend>I'm signing up as</legend>
+      <div class="roles">
+        <input type="radio" name="role" id="role-teen" value="teen" checked><label for="role-teen">A teen</label>
+        <input type="radio" name="role" id="role-parent" value="parent"><label for="role-parent">A parent</label>
+        <input type="radio" name="role" id="role-tutor" value="tutor"><label for="role-tutor">A tutor or creator</label>
+        <input type="radio" name="role" id="role-school" value="school"><label for="role-school">A school or organisation</label>
+      </div>
+    </fieldset>
+    <div class="fields">
+      <div class="field-row">
+        <div class="field" id="f-name">
+          <label for="name">First name</label>
+          <input type="text" id="name" name="name" autocomplete="given-name">
+          <span class="err" hidden></span>
+        </div>
+        <div class="field" id="f-email">
+          <label for="email" id="email-label">Your email</label>
+          <input type="email" id="email" name="email" autocomplete="email" inputmode="email">
+          <span class="err" hidden></span>
+        </div>
+      </div>
+      <div class="field" id="f-age" data-for="teen">
+        <label for="age">How old are you?</label>
+        <select id="age" name="age">
+          <option value="">Choose your age</option>
+          <option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option>
+        </select>
+        <span class="err" hidden></span>
+      </div>
+      <div class="field" id="f-guardian" data-for="teen" hidden>
+        <label for="guardian">Parent or guardian's email</label>
+        <input type="email" id="guardian" name="guardian" autocomplete="off" inputmode="email">
+        <span class="help">Because you're under 18, we'll ask them to say yes before we keep your details.</span>
+        <span class="err" hidden></span>
+      </div>
+      <div class="field" data-for="teen parent">
+        <span class="label" id="int-label">What sounds interesting? <span class="help">(optional)</span></span>
+        <div class="interest-chips" role="group" aria-labelledby="int-label">
+          <input type="checkbox" id="i-design" name="interests" value="design"><label for="i-design">Design</label>
+          <input type="checkbox" id="i-tech" name="interests" value="tech"><label for="i-tech">Coding</label>
+          <input type="checkbox" id="i-content" name="interests" value="content"><label for="i-content">Content creation</label>
+          <input type="checkbox" id="i-communication" name="interests" value="communication"><label for="i-communication">Communication</label>
+          <input type="checkbox" id="i-entrepreneurship" name="interests" value="entrepreneurship"><label for="i-entrepreneurship">Business</label>
+          <input type="checkbox" id="i-personal" name="interests" value="personal"><label for="i-personal">Personal growth</label>
+          <input type="checkbox" id="i-ai" name="interests" value="ai"><label for="i-ai">AI tools</label>
+          <input type="checkbox" id="i-money" name="interests" value="money"><label for="i-money">Money skills</label>
+        </div>
+      </div>
+      <div class="field" id="f-skill" data-for="tutor" hidden>
+        <label for="skill">What could you teach?</label>
+        <input type="text" id="skill" name="skill" placeholder="For example: video editing, Python, public speaking">
+        <span class="err" hidden></span>
+      </div>
+      <div class="field" id="f-org" data-for="school" hidden>
+        <label for="org">School or organisation name</label>
+        <input type="text" id="org" name="org" autocomplete="organization">
+        <span class="err" hidden></span>
+      </div>
+      <div class="field" id="f-consent">
+        <label class="check" for="consent"><input type="checkbox" id="consent" name="consent"><span>MyDearTeenager can email me about the launch. I can unsubscribe at any time. See our <a href="privacy.html">privacy policy</a>.</span></label>
+        <span class="err" hidden></span>
+      </div>
+      <div class="form-foot">
+        <button class="btn magnetic" type="submit">Join the waitlist</button>
+        <span class="form-error" role="alert" hidden></span>
+      </div>
+    </div>
+  </form>
+  <div class="success" id="wl-success" hidden tabindex="-1">
+    <div class="envelope" aria-hidden="true">
+      <div class="env-back"></div><div class="env-letter"></div><div class="env-front"></div><div class="env-flap"></div><div class="env-seal">MDT</div>
+    </div>
+    <span class="big">You're on the list!</span>
+    <p>We'll email you as soon as MDT opens.</p>
+    <button class="btn ghost small" type="button" data-again>Add another person</button>
+  </div>
+</div>
